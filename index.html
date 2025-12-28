@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Test Site</title>
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; max-width: 720px; margin: 48px auto; padding: 0 16px; }
+      .card { border: 1px solid #ddd; border-radius: 16px; padding: 20px; }
+      button { padding: 10px 14px; border-radius: 12px; border: 1px solid #ccc; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>✅ It’s live!</h1>
+      <p>This is a free test website deployed with GitHub Pages.</p>
+      <button id="btn">Click me</button>
+      <p id="out"></p>
+    </div>
+
+    <script>
+      document.getElementById("btn").addEventListener("click", () => {
+        document.getElementById("out").textContent = "Button works — " + new Date().toLocaleString();
+      });
+    </script>
+  </body>
+</html>
