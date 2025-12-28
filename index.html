@@ -11,13 +11,12 @@
     :root{
       --bg:#070A0F;
       --text:#F4F4F5;
-      --muted:rgba(244,244,245,.72);
+      --muted:rgba(244,244,245,.74);
       --line:rgba(255,255,255,.14);
-      --glass:rgba(0,0,0,.38);
-      --glass2:rgba(255,255,255,.06);
+      --glass:rgba(0,0,0,.34);
       --gold:#f5b400;
       --shadow: 0 26px 120px rgba(0,0,0,.65);
-      --shadow2: 0 10px 30px rgba(245,180,0,.12);
+      --shadow2: 0 10px 30px rgba(245,180,0,.14);
       --r: 26px;
     }
     *{box-sizing:border-box}
@@ -32,14 +31,11 @@
     a{color:inherit;text-decoration:none}
 
     /* Video BG */
-    .bg{
-      position:fixed; inset:0; z-index:-3; overflow:hidden;
-      background:var(--bg);
-    }
+    .bg{position:fixed; inset:0; z-index:-3; overflow:hidden; background:var(--bg);}
     .bg video{
       width:100%; height:100%;
       object-fit:cover;
-      filter: brightness(.72) contrast(1.05) saturate(1.08);
+      filter: brightness(.72) contrast(1.06) saturate(1.08);
       transform: scale(1.03);
     }
     .shade{
@@ -47,19 +43,19 @@
       background:
         radial-gradient(900px 620px at 18% 6%, rgba(245,180,0,.18), transparent 62%),
         radial-gradient(900px 620px at 78% 72%, rgba(255,255,255,.07), transparent 60%),
-        linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.62));
+        linear-gradient(to bottom, rgba(0,0,0,.10), rgba(0,0,0,.68));
     }
 
-    /* Top bar */
+    /* Header like AkashX */
     header{
       position:sticky; top:0; z-index:10;
       backdrop-filter: blur(14px);
-      background: rgba(0,0,0,.42);
+      background: rgba(0,0,0,.44);
       border-bottom:1px solid rgba(255,255,255,.08);
     }
     .topbar{
       max-width:1200px; margin:0 auto; padding:14px 18px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
     }
     .brand{
       display:flex; align-items:center; gap:12px; min-width:0;
@@ -72,7 +68,16 @@
       padding:6px;
     }
     .brand .sub{display:block; font-weight:800; color:rgba(255,255,255,.65); font-size:12px; margin-top:2px}
-    .nav{display:flex; gap:10px; align-items:center}
+
+    .midnav{
+      display:flex; gap:18px; align-items:center;
+      font-weight:850;
+      color: rgba(255,255,255,.86);
+    }
+    .midnav a{padding:10px 6px; border-radius:10px}
+    .midnav a:hover{background: rgba(255,255,255,.06)}
+
+    .rightnav{display:flex; gap:10px; align-items:center}
     .pill{
       padding:10px 12px; border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
@@ -87,133 +92,91 @@
       font-weight:950;
       box-shadow: var(--shadow2);
     }
-    @media (max-width: 920px){
-      .nav .pill{display:none}
+
+    /* Responsive header */
+    .menuBtn{display:none}
+    @media (max-width: 980px){
+      .midnav{display:none}
+      .menuBtn{display:inline-flex}
     }
 
-    /* Hero */
-    main{max-width:1200px; margin:0 auto; padding:52px 18px 100px}
+    /* Hero overlay (center) */
+    main{max-width:1200px; margin:0 auto; padding:52px 18px 90px}
     .hero{
       min-height: calc(100vh - 120px);
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:18px;
+      display:flex;
       align-items:center;
+      justify-content:center;
+      position:relative;
     }
-    @media (max-width: 980px){
-      .hero{grid-template-columns:1fr; min-height:auto}
-      main{padding:26px 14px 80px}
-    }
-
-    .card{
+    .overlay{
+      width:min(980px, 100%);
+      text-align:center;
+      padding:34px 18px;
+      border-radius: 34px;
       border:1px solid rgba(255,255,255,.12);
-      border-radius: var(--r);
-      background: var(--glass);
+      background: rgba(0,0,0,.30);
       backdrop-filter: blur(18px);
       box-shadow: var(--shadow);
-      padding:28px;
       position:relative;
       overflow:hidden;
     }
-    .card::before{
+    .overlay::before{
       content:"";
       position:absolute; inset:-2px;
-      background: radial-gradient(600px 260px at 20% 10%, rgba(245,180,0,.14), transparent 70%);
+      background: radial-gradient(700px 260px at 50% 0%, rgba(245,180,0,.14), transparent 70%);
       pointer-events:none;
       opacity:.9;
     }
-    .badge{
+    .welcome{
       position:relative;
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 12px;
+      display:inline-block;
+      font-weight:850;
+      letter-spacing:.4px;
+      color: rgba(255,255,255,.80);
+      margin-bottom:14px;
+      padding:10px 16px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
-      font-size:13px; font-weight:950;
-      color:rgba(255,255,255,.82);
     }
     h1{
       position:relative;
-      margin:14px 0 10px;
-      font-size: clamp(40px, 6.5vw, 64px);
-      letter-spacing:-1.2px;
+      margin:0 0 12px;
+      font-size: clamp(44px, 7vw, 82px);
+      letter-spacing:-1.4px;
       line-height:1.02;
     }
-    p{
+    .subtext{
       position:relative;
-      margin:0;
-      color:var(--muted);
+      margin:0 auto;
+      color: var(--muted);
       line-height:1.7;
-      max-width:70ch;
       font-size:16px;
+      max-width: 78ch;
     }
-    .actions{
+    .centerBtnWrap{
       position:relative;
       margin-top:22px;
       display:flex;
-      gap:12px;
-      flex-wrap:wrap;
+      justify-content:center;
     }
-    .btn{
-      border-radius: 16px;
-      padding:14px 18px;
+    .bigCta{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:16px 22px;
+      border-radius: 999px;
       font-weight:950;
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
-    }
-    .btn.primary{
+      border:1px solid rgba(245,180,0,.45);
       background: linear-gradient(180deg, rgba(245,180,0,.98), rgba(245,180,0,.72));
-      border-color: rgba(245,180,0,.45);
       color:#0b0b0b;
       box-shadow: var(--shadow2);
     }
-    .hint{
-      position:relative;
-      margin-top:12px;
-      font-size:12px;
-      color: rgba(255,255,255,.55);
-    }
+    .chev{font-size:18px; transform: translateY(-1px)}
 
-    /* Right panel */
-    .panel{
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: var(--r);
-      background: rgba(0,0,0,.28);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 18px 70px rgba(0,0,0,.55);
-      padding:18px;
-    }
-    .panel h3{
-      margin:0 0 12px;
-      letter-spacing:.6px;
-      font-size:13px;
-      opacity:.85;
-    }
-    .row{
-      display:flex;
-      gap:10px;
-      padding:12px 12px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      margin-bottom:10px;
-    }
-    .dot{
-      width:10px; height:10px; border-radius:999px;
-      background: var(--gold);
-      margin-top:6px;
-      box-shadow: 0 0 0 5px rgba(245,180,0,.12);
-      flex:0 0 10px;
-    }
-    .row strong{display:block}
-    .row span{display:block; color:var(--muted); font-size:13px; margin-top:2px}
-
-    /* Sections below */
+    /* Below sections */
     section{scroll-margin-top:90px}
     .section{
-      margin-top:16px;
+      margin-top:18px;
       border:1px solid rgba(255,255,255,.12);
       border-radius: var(--r);
       background: rgba(0,0,0,.34);
@@ -221,8 +184,12 @@
       padding:18px 20px;
     }
     .section h2{margin:0 0 8px}
-    .section p{max-width:90ch}
+    .section p{max-width:90ch; color:var(--muted); margin:0; line-height:1.7}
 
+    @media (max-width: 640px){
+      main{padding:26px 14px 70px}
+      .overlay{padding:26px 14px}
+    }
   </style>
 </head>
 
@@ -242,71 +209,69 @@
         </div>
       </a>
 
-      <nav class="nav">
-        <a class="pill" href="#about">About</a>
-        <a class="pill" href="#join">Join</a>
-        <a class="cta" href="./plans.html">Plans</a>
+      <!-- AkashX-like center nav -->
+      <nav class="midnav" aria-label="Primary">
+        <a href="#trading">Trading</a>
+        <a href="#live">Live Sessions</a>
+        <a href="#academy">Academy</a>
+        <a href="#tools">Tools</a>
+        <a href="#lifestyle">Lifestyle</a>
       </nav>
+
+      <!-- Right -->
+      <div class="rightnav">
+        <a class="pill" href="#about">About</a>
+        <a class="cta" href="./plans.html">Get Started</a>
+      </div>
     </div>
   </header>
 
   <main>
     <div class="hero">
-      <div class="card">
-        <span class="badge">⚡ Community • Growth • Discipline</span>
-        <h1>PowerFulClub</h1>
-        <p>
-          A focused community built to level up together. We build discipline, skills, and real
-          momentum — and we do it as a team.
+      <div class="overlay">
+        <div class="welcome">Welcome to PowerFulClub</div>
+        <h1>Level Up Together</h1>
+        <p class="subtext">
+          A focused community built to level up together. We build discipline, skills, and real momentum — and we do it as a team.
         </p>
 
-        <div class="actions">
-          <a href="./plans.html"><button class="btn primary">Join the Club</button></a>
-          <a href="#about"><button class="btn">Learn More</button></a>
-        </div>
-
-        <div class="hint">
-          Video is muted to allow autoplay. Later we can add a “Play with sound” button.
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3>WHAT WE STAND FOR</h3>
-
-        <div class="row">
-          <div class="dot"></div>
-          <div>
-            <strong>Discipline</strong>
-            <span>Consistency beats motivation.</span>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="dot"></div>
-          <div>
-            <strong>Growth</strong>
-            <span>Skills + mindset + execution.</span>
-          </div>
-        </div>
-
-        <div class="row" style="margin-bottom:0;">
-          <div class="dot"></div>
-          <div>
-            <strong>Community</strong>
-            <span>Win together. Learn together.</span>
-          </div>
+        <div class="centerBtnWrap">
+          <a class="bigCta" href="./plans.html">
+            Get Started Now <span class="chev">›</span>
+          </a>
         </div>
       </div>
     </div>
 
-    <section id="about" class="section">
-      <h2>About</h2>
-      <p>Drop 1–3 sentences about what PowerFulClub is, and I’ll write this section clean.</p>
+    <!-- Sections for the nav (placeholders for now) -->
+    <section id="trading" class="section">
+      <h2>Trading</h2>
+      <p>Placeholder. Tell me what you want here and I’ll design it.</p>
     </section>
 
-    <section id="join" class="section">
-      <h2>Join</h2>
-      <p>Hit “Plans” to view memberships. Next we can connect checkout + automatic access.</p>
+    <section id="live" class="section">
+      <h2>Live Sessions</h2>
+      <p>Placeholder. Add schedule, Zoom links, or clips later.</p>
+    </section>
+
+    <section id="academy" class="section">
+      <h2>Academy</h2>
+      <p>Placeholder. Courses, lessons, or a roadmap.</p>
+    </section>
+
+    <section id="tools" class="section">
+      <h2>Tools</h2>
+      <p>Placeholder. Resources, templates, indicators, etc.</p>
+    </section>
+
+    <section id="lifestyle" class="section">
+      <h2>Lifestyle</h2>
+      <p>Placeholder. Community vibes, events, travel, etc.</p>
+    </section>
+
+    <section id="about" class="section">
+      <h2>About</h2>
+      <p>Drop 1–3 sentences about PowerFulClub and I’ll rewrite this clean.</p>
     </section>
   </main>
 </body>
