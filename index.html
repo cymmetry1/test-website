@@ -1,27 +1,389 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Test Site</title>
-    <style>
-      body { font-family: system-ui, Arial, sans-serif; max-width: 720px; margin: 48px auto; padding: 0 16px; }
-      .card { border: 1px solid #ddd; border-radius: 16px; padding: 20px; }
-      button { padding: 10px 14px; border-radius: 12px; border: 1px solid #ccc; cursor: pointer; }
-    </style>
-  </head>
-  <body>
-    <div class="card">
-      <h1>✅ It’s live!</h1>
-      <p>This is a free test website deployed with GitHub Pages.</p>
-      <button id="btn">Click me</button>
-      <p id="out"></p>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClubPower — Pricing</title>
+  <meta name="description" content="Choose a plan and get started." />
+  <style>
+    :root{
+      --bg:#0b0f19;
+      --panel:#0f172a;
+      --panel2:#0b1224;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --line:rgba(255,255,255,.10);
+      --accent:#3b82f6;
+      --accent2:#22c55e;
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 15% 10%, rgba(59,130,246,.25), transparent 55%),
+                  radial-gradient(900px 500px at 80% 0%, rgba(34,197,94,.14), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{max-width:1100px;margin:0 auto;padding:28px 16px 64px}
+    header{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:8px 0 18px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+    .logo{
+      width:38px;height:38px;border-radius:12px;
+      background: linear-gradient(135deg, rgba(59,130,246,.95), rgba(34,197,94,.85));
+      box-shadow: 0 10px 30px rgba(59,130,246,.18);
+    }
+    .nav{display:flex;gap:14px;align-items:center}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border:1px solid var(--line);
+      border-radius:999px;background:rgba(255,255,255,.04);
+      text-decoration:none;color:var(--text);
+    }
+    .btn{
+      border:1px solid rgba(59,130,246,.35);
+      background: linear-gradient(180deg, rgba(59,130,246,.95), rgba(59,130,246,.7));
+      padding:10px 14px;border-radius:999px;color:white;text-decoration:none;
+      box-shadow: 0 10px 28px rgba(59,130,246,.22);
+      font-weight:650;
+    }
 
-    <script>
-      document.getElementById("btn").addEventListener("click", () => {
-        document.getElementById("out").textContent = "Button works — " + new Date().toLocaleString();
+    .hero{padding:14px 0 18px}
+    .kicker{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 10px;border:1px solid var(--line);
+      border-radius:999px;background:rgba(255,255,255,.04);
+      color:var(--muted);font-size:13px
+    }
+    h1{margin:12px 0 6px;font-size:38px;line-height:1.1}
+    .sub{margin:0;color:var(--muted);max-width:720px}
+
+    .grid{
+      margin-top:22px;
+      display:grid;
+      grid-template-columns: 1.1fr 1fr 1fr 1fr;
+      gap:14px;
+      align-items:stretch;
+    }
+
+    .legend{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.03);
+      padding:18px;
+    }
+    .legend h3{margin:0 0 10px;font-size:14px;color:var(--muted);font-weight:600}
+    .legend ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+    .legend li{display:flex;gap:10px;align-items:center;color:var(--text)}
+    .ico{
+      width:34px;height:34px;border-radius:12px;
+      display:grid;place-items:center;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color:var(--muted);
+      flex: 0 0 34px;
+    }
+    .legend small{color:var(--muted);display:block;margin-top:10px}
+
+    .card{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      padding:18px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .tag{
+      font-size:12px;color:var(--muted);
+      border:1px solid var(--line);
+      border-radius:999px;padding:6px 10px;
+      background: rgba(255,255,255,.04);
+    }
+    .tag.hot{
+      color:#0b1224;
+      background: rgba(34,197,94,.9);
+      border-color: rgba(34,197,94,.65);
+      font-weight:750;
+    }
+    .plan{font-weight:750;margin:2px 0 2px;font-size:14px;color:var(--muted)}
+    .price{
+      font-size:34px;font-weight:900;letter-spacing:-.4px;margin:4px 0 2px;
+    }
+    .per{color:var(--muted);font-size:13px;margin:0 0 12px}
+    .meta{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+    .meta .row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;color:var(--text)}
+    .meta .row span{color:var(--muted)}
+    .cta{
+      margin-top:14px;
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+    }
+    .cta button{
+      width:100%;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:12px 14px;border-radius:14px;
+      cursor:pointer;font-weight:750;
+    }
+    .cta button.primary{
+      border-color: rgba(59,130,246,.5);
+      background: linear-gradient(180deg, rgba(59,130,246,.95), rgba(59,130,246,.72));
+      color:white;
+    }
+    .cta button:hover{filter:brightness(1.06)}
+    .note{
+      margin-top:22px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--radius);
+      padding:14px 16px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .modal-backdrop{
+      position:fixed;inset:0;
+      background: rgba(0,0,0,.65);
+      display:none;align-items:center;justify-content:center;
+      padding:20px;
+    }
+    .modal{
+      width:min(560px, 100%);
+      border-radius: 18px;
+      border:1px solid var(--line);
+      background: #0b1224;
+      box-shadow: 0 30px 90px rgba(0,0,0,.55);
+      padding:18px;
+    }
+    .modal h2{margin:6px 0 6px}
+    .modal p{margin:0 0 12px;color:var(--muted)}
+    .modal .box{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      padding:12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      overflow:auto;
+    }
+    .modal .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
+    .modal .actions button{
+      border-radius: 12px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      cursor:pointer;
+      font-weight:700;
+    }
+    .modal .actions button.primary{
+      border-color: rgba(34,197,94,.45);
+      background: linear-gradient(180deg, rgba(34,197,94,.95), rgba(34,197,94,.72));
+      color:#06110b;
+    }
+
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr; }
+      h1{font-size:32px}
+      .card{box-shadow:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          ClubPower
+          <div style="font-size:12px;color:var(--muted);font-weight:600">Subscriptions</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a class="pill" href="#" id="viewSite">Live site</a>
+        <a class="btn" href="#" id="contactBtn">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="kicker">⚡ Pricing • Choose a plan</div>
+      <h1>Start today. Upgrade anytime.</h1>
+      <p class="sub">This is a clean pricing page template like the one you showed. Buttons work now, and later we can connect real subscriptions (Stripe checkout) when you’re ready.</p>
+    </section>
+
+    <section class="grid" aria-label="Pricing">
+      <aside class="legend">
+        <h3>What you get</h3>
+        <ul>
+          <li><div class="ico">🎯</div><div><strong>Profit target</strong><br><span style="color:var(--muted);font-size:13px">Goal to hit for the period</span></div></li>
+          <li><div class="ico">📉</div><div><strong>Max daily loss</strong><br><span style="color:var(--muted);font-size:13px">Risk cap per day</span></div></li>
+          <li><div class="ico">🧾</div><div><strong>Max loss</strong><br><span style="color:var(--muted);font-size:13px">Overall drawdown limit</span></div></li>
+          <li><div class="ico">🗓️</div><div><strong>Min days</strong><br><span style="color:var(--muted);font-size:13px">Required activity days</span></div></li>
+          <li><div class="ico">♾️</div><div><strong>Period</strong><br><span style="color:var(--muted);font-size:13px">How long you have</span></div></li>
+          <li><div class="ico">💸</div><div><strong>Refund</strong><br><span style="color:var(--muted);font-size:13px">Eligible refund policy</span></div></li>
+        </ul>
+        <small>All prices here are placeholders for your project.</small>
+      </aside>
+
+      <article class="card" data-plan="Starter">
+        <div class="top">
+          <div>
+            <div class="plan">Account</div>
+            <div class="price">$10,000</div>
+            <p class="per">$89 • one-time</p>
+          </div>
+          <div class="tag">Starter</div>
+        </div>
+        <div class="meta">
+          <div class="row"><strong>Step 1</strong><span>10%</span></div>
+          <div class="row"><strong>Step 2</strong><span>5%</span></div>
+          <div class="row"><strong>Max daily loss</strong><span>5%</span></div>
+          <div class="row"><strong>Max loss</strong><span>10%</span></div>
+          <div class="row"><strong>Min days</strong><span>4 days</span></div>
+          <div class="row"><strong>Period</strong><span>Unlimited</span></div>
+          <div class="row"><strong>Refund</strong><span style="color:var(--accent2);font-weight:800">Yes (100%)</span></div>
+        </div>
+        <div class="cta">
+          <button class="primary" data-action="subscribe">Start now</button>
+        </div>
+      </article>
+
+      <article class="card" data-plan="Growth">
+        <div class="top">
+          <div>
+            <div class="plan">Account</div>
+            <div class="price">$25,000</div>
+            <p class="per">$250 • one-time</p>
+          </div>
+          <div class="tag">Growth</div>
+        </div>
+        <div class="meta">
+          <div class="row"><strong>Step 1</strong><span>10%</span></div>
+          <div class="row"><strong>Step 2</strong><span>5%</span></div>
+          <div class="row"><strong>Max daily loss</strong><span>5%</span></div>
+          <div class="row"><strong>Max loss</strong><span>10%</span></div>
+          <div class="row"><strong>Min days</strong><span>4 days</span></div>
+          <div class="row"><strong>Period</strong><span>Unlimited</span></div>
+          <div class="row"><strong>Refund</strong><span style="color:var(--accent2);font-weight:800">Yes (100%)</span></div>
+        </div>
+        <div class="cta">
+          <button class="primary" data-action="subscribe">Start now</button>
+        </div>
+      </article>
+
+      <article class="card" data-plan="Pro">
+        <div class="top">
+          <div>
+            <div class="plan">Account</div>
+            <div class="price">$50,000</div>
+            <p class="per">$345 • one-time</p>
+          </div>
+          <div class="tag hot">Best value</div>
+        </div>
+        <div class="meta">
+          <div class="row"><strong>Step 1</strong><span>10%</span></div>
+          <div class="row"><strong>Step 2</strong><span>5%</span></div>
+          <div class="row"><strong>Max daily loss</strong><span>5%</span></div>
+          <div class="row"><strong>Max loss</strong><span>10%</span></div>
+          <div class="row"><strong>Min days</strong><span>4 days</span></div>
+          <div class="row"><strong>Period</strong><span>Unlimited</span></div>
+          <div class="row"><strong>Refund</strong><span style="color:var(--accent2);font-weight:800">Yes (100%)</span></div>
+        </div>
+        <div class="cta">
+          <button class="primary" data-action="subscribe">Start now</button>
+        </div>
+      </article>
+    </section>
+
+    <div class="note">
+      <strong>Next step:</strong> when you’re ready for real subscriptions, we’ll connect the “Start now” buttons to Stripe Checkout links (no backend required), or build a full login + recurring subscription system.
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-label="Plan selected">
+    <div class="modal">
+      <h2 id="modalTitle">Plan</h2>
+      <p id="modalText"></p>
+      <div class="box" id="modalBox"></div>
+      <div class="actions">
+        <button id="closeBtn">Close</button>
+        <button class="primary" id="copyBtn">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const backdrop = document.getElementById("backdrop");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalText = document.getElementById("modalText");
+    const modalBox = document.getElementById("modalBox");
+    const closeBtn = document.getElementById("closeBtn");
+    const copyBtn = document.getElementById("copyBtn");
+
+    function openModal(title, text, box){
+      modalTitle.textContent = title;
+      modalText.textContent = text;
+      modalBox.textContent = box;
+      backdrop.style.display = "flex";
+    }
+    function closeModal(){ backdrop.style.display = "none"; }
+
+    document.querySelectorAll("button[data-action='subscribe']").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const card = e.target.closest(".card");
+        const plan = card?.getAttribute("data-plan") || "Plan";
+        const example = [
+          "Later we’ll connect this to Stripe Checkout:",
+          "",
+          "1) Create a Stripe Product + Price",
+          "2) Create a Checkout Link",
+          "3) Replace this placeholder with your link",
+          "",
+          "Example link:",
+          "https://buy.stripe.com/your_checkout_link"
+        ].join("\\n");
+        openModal(
+          `Selected: ${plan}`,
+          "Right now this is a UI demo. Want the next step to be real subscriptions?",
+          example
+        );
       });
-    </script>
-  </body>
+    });
+
+    closeBtn.addEventListener("click", closeModal);
+    backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
+
+    copyBtn.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(modalBox.textContent || "");
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => (copyBtn.textContent = "Copy"), 900);
+      }catch{
+        alert("Copy failed. You can select and copy manually.");
+      }
+    });
+
+    document.getElementById("viewSite").addEventListener("click", (e) => {
+      e.preventDefault();
+      window.open("https://cymmetry1.github.io/test-website/", "_blank");
+    });
+
+    document.getElementById("contactBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      openModal(
+        "Contact",
+        "Replace this with your email / Discord / form later.",
+        "Example:\nEmail: you@example.com\nDiscord: yourhandle\n\nWe can add a real contact form next."
+      );
+    });
+  </script>
+</body>
 </html>
