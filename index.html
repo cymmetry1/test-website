@@ -5,52 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PowerFulClub</title>
   <link rel="icon" href="favicon.png" />
-  <meta name="theme-color" content="#0b0b0b" />
+  <meta name="theme-color" content="#070A0F" />
 
   <style>
     :root{
+      --bg:#070A0F;
+      --text:#F4F4F5;
+      --muted:rgba(244,244,245,.72);
+      --line:rgba(255,255,255,.14);
+      --glass:rgba(0,0,0,.38);
+      --glass2:rgba(255,255,255,.06);
       --gold:#f5b400;
-      --glass: rgba(0,0,0,.42);
-      --line: rgba(255,255,255,.14);
-      --muted: rgba(255,255,255,.74);
-      --shadow: 0 30px 120px rgba(0,0,0,.65);
-      --r: 24px;
+      --shadow: 0 26px 120px rgba(0,0,0,.65);
+      --shadow2: 0 10px 30px rgba(245,180,0,.12);
+      --r: 26px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:#fff;
-      background:#0b0b0b;
+      color:var(--text);
+      background:var(--bg);
       overflow-x:hidden;
     }
+    a{color:inherit;text-decoration:none}
 
-    /* Video background */
+    /* Video BG */
     .bg{
-      position:fixed; inset:0; z-index:-2; overflow:hidden;
-      background:#0b0b0b;
+      position:fixed; inset:0; z-index:-3; overflow:hidden;
+      background:var(--bg);
     }
     .bg video{
       width:100%; height:100%;
       object-fit:cover;
+      filter: brightness(.72) contrast(1.05) saturate(1.08);
       transform: scale(1.03);
-      filter: brightness(.70) contrast(1.05);
     }
     .shade{
-      position:fixed; inset:0; z-index:-1;
+      position:fixed; inset:0; z-index:-2; pointer-events:none;
       background:
-        radial-gradient(900px 600px at 20% 10%, rgba(245,180,0,.16), transparent 60%),
-        radial-gradient(900px 600px at 80% 70%, rgba(255,255,255,.06), transparent 60%),
-        linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.55));
-      pointer-events:none;
+        radial-gradient(900px 620px at 18% 6%, rgba(245,180,0,.18), transparent 62%),
+        radial-gradient(900px 620px at 78% 72%, rgba(255,255,255,.07), transparent 60%),
+        linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.62));
     }
 
     /* Top bar */
     header{
       position:sticky; top:0; z-index:10;
-      backdrop-filter: blur(12px);
-      background: rgba(0,0,0,.40);
+      backdrop-filter: blur(14px);
+      background: rgba(0,0,0,.42);
       border-bottom:1px solid rgba(255,255,255,.08);
     }
     .topbar{
@@ -58,8 +62,8 @@
       display:flex; align-items:center; justify-content:space-between; gap:12px;
     }
     .brand{
-      display:flex; align-items:center; gap:12px; font-weight:950;
-      min-width:0;
+      display:flex; align-items:center; gap:12px; min-width:0;
+      font-weight:950;
     }
     .brand img{
       width:42px; height:42px; border-radius:12px;
@@ -67,91 +71,158 @@
       background: rgba(0,0,0,.25);
       padding:6px;
     }
-    .brand span{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+    .brand .sub{display:block; font-weight:800; color:rgba(255,255,255,.65); font-size:12px; margin-top:2px}
     .nav{display:flex; gap:10px; align-items:center}
     .pill{
       padding:10px 12px; border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.22);
-      font-weight:850;
+      background: rgba(255,255,255,.06);
+      font-weight:900;
     }
     .cta{
       padding:10px 14px; border-radius:999px;
       border:1px solid rgba(245,180,0,.45);
       background: linear-gradient(180deg, rgba(245,180,0,.98), rgba(245,180,0,.72));
-      color:#0b0b0b; font-weight:950;
-      box-shadow: 0 10px 30px rgba(245,180,0,.12);
+      color:#0b0b0b;
+      font-weight:950;
+      box-shadow: var(--shadow2);
+    }
+    @media (max-width: 920px){
+      .nav .pill{display:none}
     }
 
-    /* Layout */
-    main{max-width:1200px;margin:0 auto;padding:64px 18px 90px}
+    /* Hero */
+    main{max-width:1200px; margin:0 auto; padding:52px 18px 100px}
     .hero{
+      min-height: calc(100vh - 120px);
       display:grid;
-      grid-template-columns: 1.15fr .75fr;
+      grid-template-columns: 1.1fr .9fr;
       gap:18px;
-      align-items:stretch;
-      min-height: calc(100vh - 140px);
+      align-items:center;
     }
     @media (max-width: 980px){
       .hero{grid-template-columns:1fr; min-height:auto}
+      main{padding:26px 14px 80px}
     }
-    .glass{
-      border:1px solid var(--line);
+
+    .card{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: var(--r);
       background: var(--glass);
       backdrop-filter: blur(18px);
-      border-radius: var(--r);
       box-shadow: var(--shadow);
-      padding:26px;
+      padding:28px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 260px at 20% 10%, rgba(245,180,0,.14), transparent 70%);
+      pointer-events:none;
+      opacity:.9;
     }
     .badge{
+      position:relative;
       display:inline-flex; align-items:center; gap:8px;
-      padding:6px 12px; border-radius:999px;
-      background: rgba(255,255,255,.08);
+      padding:6px 12px;
+      border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
-      font-size:13px; font-weight:800;
-      margin-bottom:14px;
+      background: rgba(255,255,255,.06);
+      font-size:13px; font-weight:950;
+      color:rgba(255,255,255,.82);
     }
     h1{
-      margin:0 0 12px;
-      font-size: clamp(36px, 6vw, 58px);
-      letter-spacing:-1px;
+      position:relative;
+      margin:14px 0 10px;
+      font-size: clamp(40px, 6.5vw, 64px);
+      letter-spacing:-1.2px;
+      line-height:1.02;
     }
-    p{margin:0;color:var(--muted);line-height:1.65;max-width:70ch}
-    .buttons{margin-top:22px; display:flex; gap:12px; flex-wrap:wrap}
+    p{
+      position:relative;
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      max-width:70ch;
+      font-size:16px;
+    }
+    .actions{
+      position:relative;
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
     .btn{
-      padding:14px 20px; border-radius:16px;
-      font-weight:950; border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.08);
-      color:#fff; cursor:pointer;
+      border-radius: 16px;
+      padding:14px 18px;
+      font-weight:950;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
     }
     .btn.primary{
       background: linear-gradient(180deg, rgba(245,180,0,.98), rgba(245,180,0,.72));
       border-color: rgba(245,180,0,.45);
       color:#0b0b0b;
+      box-shadow: var(--shadow2);
+    }
+    .hint{
+      position:relative;
+      margin-top:12px;
+      font-size:12px;
+      color: rgba(255,255,255,.55);
     }
 
-    .values h3{margin:0 0 14px; letter-spacing:.4px; opacity:.9}
-    .item{display:flex; gap:10px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.08)}
-    .dot{width:10px;height:10px;border-radius:50%; background:var(--gold); margin-top:6px}
-    .item strong{display:block}
-    .item span{color:var(--muted); font-size:14px; line-height:1.35}
+    /* Right panel */
+    .panel{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: var(--r);
+      background: rgba(0,0,0,.28);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 18px 70px rgba(0,0,0,.55);
+      padding:18px;
+    }
+    .panel h3{
+      margin:0 0 12px;
+      letter-spacing:.6px;
+      font-size:13px;
+      opacity:.85;
+    }
+    .row{
+      display:flex;
+      gap:10px;
+      padding:12px 12px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      margin-bottom:10px;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: var(--gold);
+      margin-top:6px;
+      box-shadow: 0 0 0 5px rgba(245,180,0,.12);
+      flex:0 0 10px;
+    }
+    .row strong{display:block}
+    .row span{display:block; color:var(--muted); font-size:13px; margin-top:2px}
 
-    /* Sections */
+    /* Sections below */
     section{scroll-margin-top:90px}
     .section{
-      margin-top:18px;
+      margin-top:16px;
       border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.35);
       border-radius: var(--r);
-      backdrop-filter: blur(14px);
+      background: rgba(0,0,0,.34);
+      backdrop-filter: blur(16px);
       padding:18px 20px;
     }
     .section h2{margin:0 0 8px}
     .section p{max-width:90ch}
 
-    @media (max-width: 980px){
-      .nav .pill{display:none}
-    }
   </style>
 </head>
 
@@ -163,10 +234,14 @@
 
   <header>
     <div class="topbar">
-      <a class="brand" href="./index.html">
-        <img src="logo-512.png" alt="PowerFulClub logo" />
-        <span>PowerFulClub</span>
+      <a class="brand" href="./">
+        <img src="logo-512.png" alt="PowerFulClub">
+        <div>
+          <div>PowerFulClub</div>
+          <span class="sub">Official site</span>
+        </div>
       </a>
+
       <nav class="nav">
         <a class="pill" href="#about">About</a>
         <a class="pill" href="#join">Join</a>
@@ -177,40 +252,61 @@
 
   <main>
     <div class="hero">
-      <div class="glass">
-        <div class="badge">⚡ Community • Growth • Discipline</div>
+      <div class="card">
+        <span class="badge">⚡ Community • Growth • Discipline</span>
         <h1>PowerFulClub</h1>
         <p>
-          A focused community built to level up together. We build discipline, skills,
-          and real momentum — and we do it as a team.
+          A focused community built to level up together. We build discipline, skills, and real
+          momentum — and we do it as a team.
         </p>
 
-        <div class="buttons">
+        <div class="actions">
           <a href="./plans.html"><button class="btn primary">Join the Club</button></a>
           <a href="#about"><button class="btn">Learn More</button></a>
         </div>
+
+        <div class="hint">
+          Video is muted to allow autoplay. Later we can add a “Play with sound” button.
+        </div>
       </div>
 
-      <div class="glass values">
+      <div class="panel">
         <h3>WHAT WE STAND FOR</h3>
-        <div class="item"><div class="dot"></div><div><strong>Discipline</strong><span>Consistency beats motivation.</span></div></div>
-        <div class="item"><div class="dot"></div><div><strong>Growth</strong><span>Skills + mindset + execution.</span></div></div>
-        <div class="item" style="border-bottom:none;"><div class="dot"></div><div><strong>Community</strong><span>Win together. Learn together.</span></div></div>
+
+        <div class="row">
+          <div class="dot"></div>
+          <div>
+            <strong>Discipline</strong>
+            <span>Consistency beats motivation.</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="dot"></div>
+          <div>
+            <strong>Growth</strong>
+            <span>Skills + mindset + execution.</span>
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom:0;">
+          <div class="dot"></div>
+          <div>
+            <strong>Community</strong>
+            <span>Win together. Learn together.</span>
+          </div>
+        </div>
       </div>
     </div>
 
     <section id="about" class="section">
       <h2>About</h2>
-      <p>
-        Placeholder about text. Tell me in 1–3 sentences what PowerFulClub is and I’ll rewrite this clean.
-      </p>
+      <p>Drop 1–3 sentences about what PowerFulClub is, and I’ll write this section clean.</p>
     </section>
 
     <section id="join" class="section">
       <h2>Join</h2>
-      <p>
-        Click “Plans” or “Join the Club” to see subscriptions. Later we’ll connect checkout + automatic access.
-      </p>
+      <p>Hit “Plans” to view memberships. Next we can connect checkout + automatic access.</p>
     </section>
   </main>
 </body>
