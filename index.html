@@ -15,13 +15,15 @@
       --text:#F4F4F5;
       --muted:rgba(244,244,245,.72);
       --gold:#f5b400;
-      --glass:rgba(0,0,0,.35);
-      --line:rgba(255,255,255,.12);
+      --glass:rgba(0,0,0,.45);
+      --line:rgba(255,255,255,.18);
       --shadow:0 30px 120px rgba(0,0,0,.7);
       --radius:28px;
       --max:1200px;
     }
+
     *{box-sizing:border-box}
+
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
@@ -29,30 +31,50 @@
       background:var(--bg);
       overflow-x:hidden;
     }
+
     a{text-decoration:none;color:inherit}
 
-    /* Video background */
-    .bg{position:fixed; inset:0; z-index:-3; overflow:hidden}
-    .bg video{
-      width:100%; height:100%;
-      object-fit:cover;
-      filter:brightness(.65) contrast(1.05);
-      transform:scale(1.03);
-    }
-    .shade{
-      position:fixed; inset:0; z-index:-2;
-      background:
-        radial-gradient(800px 500px at 20% 0%, rgba(245,180,0,.15), transparent 60%),
-        linear-gradient(to bottom, rgba(0,0,0,.2), rgba(0,0,0,.75));
+    /* ================= VIDEO BACKGROUND ================= */
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      overflow:hidden;
     }
 
-    /* Header */
-    header{
-      position:sticky; top:0; z-index:10;
-      backdrop-filter:blur(14px);
-      background:rgba(0,0,0,.45);
-      border-bottom:1px solid var(--line);
+    .bg video{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:brightness(.6) contrast(1.05);
+      transform:scale(1.03);
     }
+
+    .shade{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      background:
+        radial-gradient(900px 520px at 20% 0%, rgba(245,180,0,.18), transparent 60%),
+        linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.85));
+    }
+
+    /* ================= HEADER ================= */
+    header{
+      position:sticky;
+      top:0;
+      z-index:10;
+
+      backdrop-filter:blur(18px);
+      background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,.85),
+        rgba(0,0,0,.6)
+      );
+
+      border-bottom:1px solid rgba(255,255,255,.18);
+    }
+
     .topbar{
       max-width:var(--max);
       margin:0 auto;
@@ -61,97 +83,126 @@
       justify-content:space-between;
       align-items:center;
     }
+
     .brand{
       display:flex;
       align-items:center;
-      gap:12px;
+      gap:14px;
       font-weight:900;
+      letter-spacing:.2px;
     }
+
     .brand img{
-      width:42px; height:42px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      padding:6px;
-      background:rgba(0,0,0,.25);
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      padding:7px;
+
+      background:rgba(0,0,0,.65);
+      border:1px solid rgba(255,255,255,.3);
+
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,.5),
+        0 10px 30px rgba(0,0,0,.7),
+        0 0 22px rgba(245,180,0,.35);
     }
-    nav{display:flex; gap:18px; font-weight:700}
-    nav a{opacity:.85}
+
+    nav{
+      display:flex;
+      gap:22px;
+      font-weight:700;
+      opacity:.95;
+    }
+
     nav a:hover{opacity:1}
 
     .cta{
-      padding:10px 16px;
+      padding:10px 18px;
       border-radius:999px;
       background:linear-gradient(180deg, #f5b400, #d99a00);
       color:#0b0b0b;
       font-weight:900;
+      box-shadow:0 6px 20px rgba(245,180,0,.35);
     }
 
-    /* Hero */
+    /* ================= HERO ================= */
     main{
       max-width:var(--max);
       margin:0 auto;
-      padding:80px 18px 100px;
+      padding:90px 18px 110px;
     }
+
     .hero{
-      min-height:calc(100vh - 140px);
+      min-height:calc(100vh - 150px);
       display:grid;
       place-items:center;
     }
+
     .heroBox{
       text-align:center;
-      padding:42px 22px;
+      padding:46px 26px;
       border-radius:var(--radius);
       background:var(--glass);
       border:1px solid var(--line);
-      backdrop-filter:blur(18px);
+      backdrop-filter:blur(20px);
       box-shadow:var(--shadow);
-      max-width:900px;
+      max-width:920px;
     }
+
     .badge{
       display:inline-block;
-      padding:8px 16px;
+      padding:8px 18px;
       border-radius:999px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
+      background:rgba(255,255,255,.08);
       font-weight:800;
-      margin-bottom:18px;
+      margin-bottom:20px;
     }
+
     h1{
-      margin:0 0 16px;
-      font-size:clamp(44px,7vw,82px);
-      letter-spacing:-1.2px;
+      margin:0 0 18px;
+      font-size:clamp(46px,7vw,84px);
+      letter-spacing:-1.4px;
+      line-height:1.05;
     }
+
     .sub{
-      max-width:70ch;
-      margin:0 auto 26px;
+      max-width:72ch;
+      margin:0 auto 30px;
       color:var(--muted);
-      line-height:1.7;
+      line-height:1.75;
+      font-size:16px;
     }
+
     .bigCta{
       display:inline-flex;
       gap:10px;
       align-items:center;
-      padding:16px 26px;
+      padding:18px 30px;
       border-radius:999px;
       background:linear-gradient(180deg, #f5b400, #d99a00);
       color:#0b0b0b;
       font-weight:900;
+      box-shadow:0 10px 28px rgba(245,180,0,.45);
     }
 
-    /* Sections */
+    /* ================= SECTIONS ================= */
     section{
-      margin-top:26px;
-      padding:26px;
+      margin-top:30px;
+      padding:28px;
       border-radius:var(--radius);
       background:var(--glass);
       border:1px solid var(--line);
-      backdrop-filter:blur(14px);
+      backdrop-filter:blur(16px);
     }
-    section h2{margin:0 0 8px}
-    section p{margin:0; color:var(--muted); line-height:1.7}
 
+    section h2{margin:0 0 10px}
+    section p{margin:0;color:var(--muted);line-height:1.75}
+
+    /* ================= MOBILE ================= */
     @media(max-width:900px){
       nav{display:none}
+      h1{font-size:clamp(40px,9vw,64px)}
     }
   </style>
 </head>
@@ -183,7 +234,7 @@
         <h1>Built for Discipline.<br>Designed for Growth.</h1>
         <p class="sub">
           Prime X is a focused environment for people who take improvement seriously.
-          Trading, skill-building, execution, and accountability — no noise.
+          Trading, execution, structure, and accountability — no noise.
         </p>
         <a href="./plans.html" class="bigCta">Join Prime X</a>
       </div>
@@ -192,7 +243,7 @@
     <section id="what">
       <h2>What You Get</h2>
       <p>
-        A structured community, live sessions, premium resources, and a mindset
+        Structured learning, live sessions, premium resources, and a community
         built around consistency and long-term execution.
       </p>
     </section>
@@ -200,8 +251,8 @@
     <section id="about">
       <h2>About Prime X</h2>
       <p>
-        Prime X is about pushing past limits through discipline and clarity.
-        This is not hype — it’s structure, systems, and results.
+        Prime X exists to push past limits through discipline and clarity.
+        This is not hype — it’s systems, structure, and results.
       </p>
     </section>
   </main>
