@@ -64,14 +64,12 @@
       position:sticky;
       top:0;
       z-index:10;
-
       backdrop-filter:blur(18px);
       background:linear-gradient(
         to bottom,
         rgba(0,0,0,.9),
         rgba(0,0,0,.7)
       );
-
       border-bottom:1px solid rgba(255,255,255,.22);
     }
 
@@ -87,26 +85,29 @@
     .brand{
       display:flex;
       align-items:center;
-      gap:16px;
+      gap:14px;
       font-weight:900;
       font-size:18px;
       letter-spacing:.3px;
     }
 
-    /* 🔥 LOGO — BIG & CLEAR */
+    /* 🔥 LOGO — ZOOMED INTO THE ACTUAL MARK */
     .brand img{
-      width:64px;
-      height:64px;
-      border-radius:18px;
-      padding:10px;
+      width:72px;
+      height:48px;
 
-      background:rgba(0,0,0,.8);
+      object-fit:contain;
+      object-position:center;
+
+      padding:4px;
+      background:rgba(0,0,0,.6);
+      border-radius:14px;
       border:1px solid rgba(255,255,255,.35);
 
       box-shadow:
-        0 0 0 2px rgba(0,0,0,.6),
-        0 14px 40px rgba(0,0,0,.85),
-        0 0 32px rgba(245,180,0,.55);
+        0 0 0 1px rgba(0,0,0,.6),
+        0 10px 30px rgba(0,0,0,.8),
+        0 0 26px rgba(245,180,0,.45);
     }
 
     nav{
@@ -114,11 +115,8 @@
       gap:26px;
       font-weight:700;
       font-size:15px;
-      opacity:.95;
       align-items:center;
     }
-
-    nav a:hover{opacity:1}
 
     .cta{
       padding:12px 22px;
@@ -190,7 +188,6 @@
       box-shadow:0 14px 36px rgba(245,180,0,.55);
     }
 
-    /* ================= SECTIONS ================= */
     section{
       margin-top:34px;
       padding:32px;
@@ -203,10 +200,9 @@
     section h2{margin:0 0 12px}
     section p{margin:0;color:var(--muted);line-height:1.8}
 
-    /* ================= MOBILE ================= */
     @media(max-width:900px){
       nav{display:none}
-      .brand img{width:56px;height:56px}
+      .brand img{width:64px;height:44px}
       h1{font-size:clamp(40px,9vw,66px)}
     }
   </style>
