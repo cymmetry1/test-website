@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prime X</title>
-  <meta name="description" content="Prime X — Beyond Limits. A disciplined community built around trading, skill, and execution." />
+  <meta name="description" content="Prime X — Beyond Limits. Built for discipline, designed for growth." />
 
   <link rel="icon" href="favicon.png" />
   <meta name="theme-color" content="#070A0F" />
@@ -15,11 +15,11 @@
       --text:#F4F4F5;
       --muted:rgba(244,244,245,.72);
       --gold:#f5b400;
-      --glass:rgba(0,0,0,.55);
-      --line:rgba(255,255,255,.22);
+      --line:rgba(255,255,255,.18);
+      --glass:rgba(0,0,0,.6);
       --shadow:0 30px 120px rgba(0,0,0,.75);
-      --radius:30px;
       --max:1200px;
+      --radius:28px;
     }
 
     *{box-sizing:border-box}
@@ -47,7 +47,7 @@
       height:100%;
       object-fit:cover;
       filter:brightness(.55) contrast(1.05);
-      transform:scale(1.03);
+      transform:scale(1.04);
     }
 
     .shade{
@@ -55,7 +55,7 @@
       inset:0;
       z-index:-2;
       background:
-        radial-gradient(900px 520px at 20% 0%, rgba(245,180,0,.2), transparent 60%),
+        radial-gradient(900px 520px at 20% 0%, rgba(245,180,0,.22), transparent 60%),
         linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.9));
     }
 
@@ -68,9 +68,9 @@
       background:linear-gradient(
         to bottom,
         rgba(0,0,0,.9),
-        rgba(0,0,0,.7)
+        rgba(0,0,0,.65)
       );
-      border-bottom:1px solid rgba(255,255,255,.22);
+      border-bottom:1px solid var(--line);
     }
 
     .topbar{
@@ -85,37 +85,33 @@
     .brand{
       display:flex;
       align-items:center;
-      gap:14px;
-      font-weight:900;
-      font-size:18px;
-      letter-spacing:.3px;
+      gap:16px;
     }
 
-    /* 🔥 LOGO — ZOOMED INTO THE ACTUAL MARK */
+    /* 🔥 AKASHX-STYLE LOGO (NO BLACK BOX) */
     .brand img{
-      width:72px;
-      height:48px;
+      width:150px;
+      height:44px;
+
+      padding:0;
+      background:transparent;
+      border:none;
+      border-radius:0;
 
       object-fit:contain;
-      object-position:center;
+      object-position:left center;
 
-      padding:4px;
-      background:rgba(0,0,0,.6);
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.35);
-
-      box-shadow:
-        0 0 0 1px rgba(0,0,0,.6),
-        0 10px 30px rgba(0,0,0,.8),
-        0 0 26px rgba(245,180,0,.45);
+      filter:
+        drop-shadow(0 8px 18px rgba(0,0,0,.8))
+        drop-shadow(0 0 14px rgba(245,180,0,.25));
     }
 
     nav{
       display:flex;
+      align-items:center;
       gap:26px;
       font-weight:700;
       font-size:15px;
-      align-items:center;
     }
 
     .cta{
@@ -124,14 +120,14 @@
       background:linear-gradient(180deg, #f5b400, #d99a00);
       color:#0b0b0b;
       font-weight:900;
-      box-shadow:0 8px 26px rgba(245,180,0,.45);
+      box-shadow:0 10px 26px rgba(245,180,0,.45);
     }
 
     /* ================= HERO ================= */
     main{
       max-width:var(--max);
       margin:0 auto;
-      padding:100px 18px 120px;
+      padding:110px 18px 130px;
     }
 
     .hero{
@@ -141,36 +137,36 @@
     }
 
     .heroBox{
+      max-width:960px;
+      padding:56px 34px;
       text-align:center;
-      padding:52px 30px;
       border-radius:var(--radius);
       background:var(--glass);
       border:1px solid var(--line);
       backdrop-filter:blur(22px);
       box-shadow:var(--shadow);
-      max-width:960px;
     }
 
     .badge{
       display:inline-block;
-      padding:10px 20px;
+      padding:10px 22px;
       border-radius:999px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,.1);
+      background:rgba(255,255,255,.08);
       font-weight:800;
-      margin-bottom:24px;
+      margin-bottom:26px;
     }
 
     h1{
-      margin:0 0 20px;
-      font-size:clamp(48px,7vw,88px);
-      letter-spacing:-1.5px;
+      margin:0 0 22px;
+      font-size:clamp(48px,7vw,86px);
+      letter-spacing:-1.6px;
       line-height:1.05;
     }
 
     .sub{
       max-width:74ch;
-      margin:0 auto 34px;
+      margin:0 auto 36px;
       color:var(--muted);
       line-height:1.8;
       font-size:16px;
@@ -178,9 +174,8 @@
 
     .bigCta{
       display:inline-flex;
-      gap:12px;
       align-items:center;
-      padding:20px 34px;
+      padding:20px 36px;
       border-radius:999px;
       background:linear-gradient(180deg, #f5b400, #d99a00);
       color:#0b0b0b;
@@ -189,8 +184,8 @@
     }
 
     section{
-      margin-top:34px;
-      padding:32px;
+      margin-top:36px;
+      padding:34px;
       border-radius:var(--radius);
       background:var(--glass);
       border:1px solid var(--line);
@@ -202,8 +197,8 @@
 
     @media(max-width:900px){
       nav{display:none}
-      .brand img{width:64px;height:44px}
-      h1{font-size:clamp(40px,9vw,66px)}
+      .brand img{width:130px;height:40px}
+      h1{font-size:clamp(40px,9vw,64px)}
     }
   </style>
 </head>
@@ -217,8 +212,7 @@
   <header>
     <div class="topbar">
       <div class="brand">
-        <img src="logo-512.png" alt="Prime X logo">
-        Prime X
+        <img src="primex-mark.png?v=5" alt="Prime X logo">
       </div>
       <nav>
         <a href="#about">About</a>
