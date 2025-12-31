@@ -204,81 +204,94 @@
     .cta:hover{ transform: translateY(-1px); filter: brightness(1.02); }
     .cta:active{ transform: translateY(0px) scale(.99); }
 
-    /* Modal overlay */
-    .overlay{
-      position: fixed;
-      inset: 0;
-      z-index: 60;
-      display: grid;
-      place-items: center;
-      padding: 22px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .25s ease;
-      background: rgba(0,0,0,.38);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+    /* ===== OPTION 1 ADDITIONS (NO CHANGES TO HERO/NAV) ===== */
+
+    /* CTA premium micro-interaction (press + glow pulse) */
+    .cta.is-priming{
+      transform: translateY(0px) scale(.985);
+      box-shadow: 0 18px 55px rgba(242,180,0,.30), 0 10px 30px rgba(0,0,0,.45);
+      filter: brightness(1.03);
     }
 
-    /* Modal panel (same vibe as hero card) */
-    .modal{
-      width: min(560px, 100%);
+    /* Sign In / Sign Up section wrapper (new section only) */
+    .auth-section{
+      padding: 40px 22px 120px;
+      display:flex;
+      justify-content:center;
+    }
+
+    /* Use the same approved glass vibe without altering existing hero */
+    .auth-card{
+      width: min(900px, 100%);
       border-radius: var(--radius);
       background: var(--glass-strong);
       border: 1px solid var(--stroke);
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      transform: translateY(10px) scale(.96);
-      opacity: 0;
-      transition: transform .25s ease, opacity .25s ease;
+      padding: 28px 24px 26px;
       position: relative;
       overflow:hidden;
+
+      /* Cinematic entrance (initial hidden state) */
+      opacity: 0;
+      transform: translateY(16px) scale(.985);
+      filter: blur(2px);
+      transition: opacity .7s cubic-bezier(.16,1,.3,1),
+                  transform .7s cubic-bezier(.16,1,.3,1),
+                  filter .7s cubic-bezier(.16,1,.3,1);
+      will-change: transform, opacity, filter;
     }
 
-    .modal-top{
-      padding: 18px 20px 0;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
+    /* Subtle veil behind card for luxury reveal */
+    .auth-veil{
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      opacity: 0;
+      transition: opacity .7s cubic-bezier(.16,1,.3,1);
+      background:
+        radial-gradient(900px 420px at 20% 10%, rgba(242,180,0,.14), transparent 60%),
+        radial-gradient(700px 420px at 80% 30%, rgba(255,255,255,.06), transparent 60%),
+        linear-gradient(to bottom, rgba(0,0,0,.10), rgba(0,0,0,.22));
     }
-    .modal-title{
+
+    .auth-card.is-visible{
+      opacity: 1;
+      transform: translateY(0px) scale(1);
+      filter: blur(0px);
+    }
+    .auth-card.is-visible .auth-veil{
+      opacity: 1;
+    }
+
+    .auth-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 14px;
+      padding: 2px 2px 8px;
+    }
+    .auth-title{
       display:flex;
       flex-direction:column;
       gap: 2px;
     }
-    .modal-title strong{
+    .auth-title strong{
       font-size: 16px;
       letter-spacing:.2px;
     }
-    .modal-title span{
+    .auth-title span{
       font-size: 12px;
       color: rgba(255,255,255,.62);
-    }
-    .xbtn{
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.92);
-      cursor: pointer;
-      display:grid;
-      place-items:center;
-      transition: background .18s ease, transform .18s ease;
-    }
-    .xbtn:hover{ background: rgba(255,255,255,.10); transform: translateY(-1px); }
-    .xbtn:active{ transform: translateY(0px); }
-
-    .modal-body{
-      padding: 16px 20px 22px;
     }
 
     .tabs{
       display:flex;
       gap: 8px;
       padding: 10px 0 14px;
+      max-width: 520px;
+      margin: 0 auto;
     }
     .tab{
       flex:1;
@@ -296,6 +309,13 @@
       background: rgba(242,180,0,.16);
       border-color: rgba(242,180,0,.30);
       opacity:1;
+    }
+
+    /* Form layout inside card */
+    .auth-body{
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 0 2px;
     }
 
     .field{
@@ -353,6 +373,7 @@
       font-size: 12px;
       color: rgba(255,255,255,.60);
       line-height: 1.5;
+      text-align:center;
     }
     .helper a{
       color: rgba(255,255,255,.86);
@@ -361,20 +382,13 @@
     }
     .helper a:hover{ border-bottom-color: rgba(242,180,0,.55); }
 
-    /* Open state animations */
-    body.modal-open .overlay{
-      opacity: 1;
-      pointer-events: auto;
+    /* Smooth mode switch animation (no harsh motion) */
+    .auth-card .auth-body{
+      transition: opacity .22s ease, transform .22s ease;
     }
-    body.modal-open .modal{
-      opacity: 1;
-      transform: translateY(0px) scale(1);
-    }
-    body.modal-open .hero-card{
-      opacity: .22;
-      transform: translateY(6px) scale(.985);
-      filter: blur(2px);
-      pointer-events:none;
+    .auth-card.is-switching .auth-body{
+      opacity: .88;
+      transform: translateY(2px);
     }
 
     /* Small screens */
@@ -384,6 +398,11 @@
       nav{ gap: 10px; }
       nav a{ font-size: 13px; padding: 10px 8px; }
       .hero-card{ padding: 34px 18px 30px; }
+
+      /* new section responsiveness only */
+      .auth-card{ padding: 22px 16px 20px; }
+      .tabs{ max-width: 100%; }
+      .auth-body{ max-width: 100%; }
     }
   </style>
 </head>
@@ -431,29 +450,28 @@
     </section>
   </main>
 
-  <!-- Modal overlay -->
-  <div class="overlay" id="overlay" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal-top">
-        <div class="modal-title" id="modalTitle">
+  <!-- ===== NEW: Sign In / Sign Up Section (Option 1) ===== -->
+  <section class="auth-section" id="auth" aria-label="PrimeX Sign in or Sign up">
+    <div class="auth-card" id="authCard">
+      <div class="auth-veil" aria-hidden="true"></div>
+
+      <div class="auth-top">
+        <div class="auth-title" id="authTitle">
           <strong id="modeTitle">Create your account</strong>
           <span id="modeSub">Join PrimeX in seconds.</span>
         </div>
-        <button class="xbtn" id="closeBtn" type="button" aria-label="Close">
-          ✕
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Sign in or sign up">
+        <button class="tab active" id="tabSignup" type="button" role="tab" aria-selected="true">
+          Sign up
+        </button>
+        <button class="tab" id="tabSignin" type="button" role="tab" aria-selected="false">
+          Sign in
         </button>
       </div>
 
-      <div class="modal-body">
-        <div class="tabs" role="tablist" aria-label="Sign in or sign up">
-          <button class="tab active" id="tabSignup" type="button" role="tab" aria-selected="true">
-            Sign up
-          </button>
-          <button class="tab" id="tabSignin" type="button" role="tab" aria-selected="false">
-            Sign in
-          </button>
-        </div>
-
+      <div class="auth-body" id="authBody">
         <form id="authForm">
           <div class="field">
             <label for="email">Email</label>
@@ -476,12 +494,12 @@
 
           <div class="helper" id="helperText">
             By continuing, you agree to PrimeX terms. Already a member?
-            <a href="#" id="switchToSignin">Sign in</a>
+            <a href="#" id="switchInline">Sign in</a>
           </div>
         </form>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Dummy sections for nav anchors (no visual changes to your current design) -->
   <div id="trading" style="height:1px;"></div>
@@ -490,11 +508,10 @@
   <div id="about" style="height:1px;"></div>
 
   <script>
-    // ===== Modal open/close =====
-    const body = document.body;
+    // ===== Elements =====
     const joinBtn = document.getElementById("joinBtn");
-    const overlay = document.getElementById("overlay");
-    const closeBtn = document.getElementById("closeBtn");
+    const authSection = document.getElementById("auth");
+    const authCard = document.getElementById("authCard");
 
     // ===== Tabs / Mode =====
     const tabSignup = document.getElementById("tabSignup");
@@ -504,37 +521,53 @@
     const modeTitle = document.getElementById("modeTitle");
     const modeSub = document.getElementById("modeSub");
     const helperText = document.getElementById("helperText");
-    const switchToSignin = document.getElementById("switchToSignin");
-
+    const authBody = document.getElementById("authBody");
     const authForm = document.getElementById("authForm");
 
-    function openModal() {
-      body.classList.add("modal-open");
-      overlay.setAttribute("aria-hidden", "false");
-      // focus email
-      setTimeout(() => document.getElementById("email").focus(), 50);
+    // ===== Premium CTA -> smooth scroll + staged reveal =====
+    function primeCTAAndScroll() {
+      // micro-press
+      joinBtn.classList.add("is-priming");
+
+      // let the press be felt, then scroll
+      window.setTimeout(() => {
+        joinBtn.classList.remove("is-priming");
+
+        authSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        // Focus after scroll settles a bit (still works if user scrolls manually)
+        window.setTimeout(() => {
+          const email = document.getElementById("email");
+          if (email) email.focus({ preventScroll: true });
+        }, 650);
+      }, 140);
     }
 
-    function closeModal() {
-      body.classList.remove("modal-open");
-      overlay.setAttribute("aria-hidden", "true");
+    joinBtn.addEventListener("click", primeCTAAndScroll);
+
+    // ===== Cinematic reveal on view (IntersectionObserver) =====
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          authCard.classList.add("is-visible");
+          io.disconnect();
+          break;
+        }
+      }
+    }, { threshold: 0.22 });
+
+    io.observe(authCard);
+
+    // ===== Mode switching with subtle transition =====
+    function setSwitching(on) {
+      authCard.classList.toggle("is-switching", !!on);
     }
-
-    joinBtn.addEventListener("click", openModal);
-    closeBtn.addEventListener("click", closeModal);
-
-    // click outside modal closes
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) closeModal();
-    });
-
-    // ESC closes
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && body.classList.contains("modal-open")) closeModal();
-    });
 
     function setMode(mode) {
       const isSignup = mode === "signup";
+
+      setSwitching(true);
+      window.setTimeout(() => setSwitching(false), 180);
 
       tabSignup.classList.toggle("active", isSignup);
       tabSignin.classList.toggle("active", !isSignup);
@@ -543,7 +576,6 @@
       tabSignin.setAttribute("aria-selected", !isSignup ? "true" : "false");
 
       confirmWrap.style.display = isSignup ? "flex" : "none";
-      // toggle confirm required properly
       document.getElementById("confirm").required = isSignup;
 
       modeTitle.textContent = isSignup ? "Create your account" : "Welcome back";
@@ -555,11 +587,12 @@
         ? `By continuing, you agree to PrimeX terms. Already a member? <a href="#" id="switchInline">Sign in</a>`
         : `New here? <a href="#" id="switchInline">Create an account</a>`;
 
-      // re-bind inline switch (because we replaced innerHTML)
       const switchInline = document.getElementById("switchInline");
       switchInline.addEventListener("click", (ev) => {
         ev.preventDefault();
         setMode(isSignup ? "signin" : "signup");
+        const email = document.getElementById("email");
+        if (email) email.focus({ preventScroll: true });
       });
     }
 
@@ -569,7 +602,7 @@
     // keep initial mode signup
     setMode("signup");
 
-    // Form behavior (front-end only for now)
+    // ===== Form behavior (front-end only) =====
     authForm.addEventListener("submit", (e) => {
       e.preventDefault();
 
@@ -586,12 +619,27 @@
         return;
       }
 
-      // For now: demo success
       alert(isSignup ? "Account created (demo) ✅" : "Signed in (demo) ✅");
-      closeModal();
       authForm.reset();
       setMode("signup");
+
+      // optional: keep focus on email after demo submit
+      window.setTimeout(() => {
+        const emailEl = document.getElementById("email");
+        if (emailEl) emailEl.focus({ preventScroll: true });
+      }, 60);
     });
+
+    // ===== Nice-to-have: respect reduced motion =====
+    (function respectReducedMotion(){
+      const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!prefersReduced) return;
+
+      // Remove cinematic transitions if user requests reduced motion (accessibility)
+      authCard.style.transition = "none";
+      const veil = authCard.querySelector(".auth-veil");
+      if (veil) veil.style.transition = "none";
+    })();
   </script>
 </body>
 </html>
