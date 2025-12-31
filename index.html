@@ -5,17 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prime X</title>
 
-  <!-- Favicon -->
   <link rel="icon" href="favicon.ico" />
   <meta name="theme-color" content="#000000" />
 
   <style>
     :root{
       --bg:#000;
-      --text:#ffffff;
+      --text:#fff;
       --muted:rgba(255,255,255,.72);
       --gold:#f5b400;
-      --glass:rgba(0,0,0,.35);
       --border:rgba(255,255,255,.12);
       --radius:26px;
       --shadow:0 30px 120px rgba(0,0,0,.7);
@@ -25,7 +23,7 @@
     html,body{margin:0;height:100%}
     body{
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background:var(--bg);
+      background:#000;
       color:var(--text);
       overflow-x:hidden;
     }
@@ -42,17 +40,17 @@
       width:100%;
       height:100%;
       object-fit:cover;
-      filter: brightness(.55) contrast(1.1) saturate(1.05);
+      filter: brightness(.6) contrast(1.1);
     }
 
-    /* Soft overlay */
-    .overlay-bg{
+    /* Overlay */
+    .overlay{
       position:fixed;
       inset:0;
       z-index:-1;
       background:
         radial-gradient(900px 500px at 15% 10%, rgba(245,180,0,.18), transparent 60%),
-        linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.75));
+        linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.8));
     }
 
     /* Header */
@@ -75,8 +73,6 @@
     .brand{
       display:flex;
       align-items:center;
-      gap:12px;
-      font-weight:900;
     }
     .brand img{
       height:52px;
@@ -86,16 +82,12 @@
 
     .menu{
       display:flex;
-      gap:22px;
       align-items:center;
+      gap:22px;
       font-weight:800;
     }
-    .menu a{
-      opacity:.9;
-    }
-    .menu a:hover{
-      opacity:1;
-    }
+    .menu a{opacity:.9}
+    .menu a:hover{opacity:1}
 
     .cta{
       padding:10px 16px;
@@ -174,17 +166,16 @@
 
 <body>
 
-  <!-- Background -->
   <div class="bg">
     <video src="montage.mp4" autoplay muted loop playsinline></video>
   </div>
-  <div class="overlay-bg"></div>
+  <div class="overlay"></div>
 
-  <!-- Header -->
   <header>
     <div class="nav">
       <a class="brand" href="./">
-        <img src="primex-full-header-52.png" alt="Prime X Logo">
+        <!-- FIXED LOGO (NO BLACK BACKGROUND) -->
+        <img src="primex-full-header-52-clean.png?v=6" alt="Prime X">
       </a>
 
       <nav class="menu">
@@ -195,7 +186,6 @@
     </div>
   </header>
 
-  <!-- Hero -->
   <main>
     <section class="hero">
       <div class="hero-box">
