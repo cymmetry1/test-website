@@ -2,33 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PrimeX</title>
+
+  <!-- FAVICON (browser tab icon) -->
+  <link rel="icon" type="image/png" href="primex-mark-clean.png">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     body {
-      background: #000;
-      color: #fff;
+      background: black;
+      color: white;
       overflow-x: hidden;
     }
 
-    /* HEADER */
-    header {
+    /* ===== NAVBAR ===== */
+    nav {
       position: fixed;
       top: 0;
       width: 100%;
-      z-index: 100;
-      padding: 18px 60px;
+      height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 60px;
+      z-index: 100;
       background: transparent;
     }
 
@@ -37,105 +43,105 @@
       display: block;
     }
 
-    nav {
+    .nav-links {
       display: flex;
       gap: 28px;
     }
 
-    nav a {
-      color: #fff;
+    .nav-links a {
       text-decoration: none;
+      color: white;
+      font-size: 14px;
       font-weight: 500;
-      font-size: 15px;
       opacity: 0.9;
-      transition: opacity 0.2s ease;
     }
 
-    nav a:hover {
+    .nav-links a:hover {
       opacity: 1;
     }
 
-    /* HERO */
+    /* ===== HERO ===== */
     .hero {
+      position: relative;
       height: 100vh;
       width: 100%;
-      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: url("montage.mp4") center / cover no-repeat;
+      overflow: hidden;
     }
 
-    .hero::before {
-      content: "";
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .hero-overlay {
       position: absolute;
       inset: 0;
       background: rgba(0, 0, 0, 0.55);
+      z-index: 1;
     }
 
     .hero-content {
       position: relative;
       z-index: 2;
-      max-width: 760px;
-      width: 90%;
-      padding: 60px;
+      max-width: 720px;
+      text-align: center;
+      padding: 40px;
       border-radius: 20px;
       background: rgba(0, 0, 0, 0.55);
-      backdrop-filter: blur(12px);
-      text-align: center;
-      box-shadow: 0 0 60px rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
     }
 
     .badge {
       display: inline-block;
+      font-size: 12px;
       padding: 6px 14px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.1);
-      font-size: 13px;
-      margin-bottom: 22px;
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      font-weight: 700;
-      line-height: 1.15;
+      background: rgba(255,255,255,0.12);
       margin-bottom: 18px;
     }
 
-    .hero p {
+    h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    p {
       font-size: 15px;
       line-height: 1.6;
-      color: rgba(255,255,255,0.85);
-      margin-bottom: 32px;
+      opacity: 0.85;
+      margin-bottom: 28px;
     }
 
     .cta {
       display: inline-block;
-      padding: 14px 36px;
+      background: #f0b90b;
+      color: black;
+      padding: 14px 32px;
       border-radius: 999px;
-      background: #f5b301;
-      color: #000;
-      font-weight: 600;
       text-decoration: none;
-      box-shadow: 0 0 25px rgba(245,179,1,0.45);
-      transition: transform 0.15s ease;
+      font-weight: 600;
+      font-size: 14px;
     }
 
     .cta:hover {
-      transform: translateY(-1px);
+      background: #ffd65a;
     }
 
     @media (max-width: 768px) {
-      header {
-        padding: 16px 24px;
+      nav {
+        padding: 0 24px;
       }
 
-      .hero h1 {
+      h1 {
         font-size: 36px;
-      }
-
-      .hero-content {
-        padding: 40px 28px;
       }
     }
   </style>
@@ -143,33 +149,35 @@
 
 <body>
 
-  <!-- HEADER -->
-  <header>
+  <!-- NAV -->
+  <nav>
     <div class="logo">
-      <!-- ✅ FIXED LOGO (transparent, correct filename) -->
       <img src="primex-full-transparent-clean.png" alt="PrimeX Logo">
     </div>
 
-    <nav>
+    <div class="nav-links">
       <a href="#">Trading</a>
       <a href="#">Live Sessions</a>
       <a href="#">Community</a>
       <a href="#">About</a>
-    </nav>
-  </header>
+    </div>
+  </nav>
 
   <!-- HERO -->
   <section class="hero">
+    <video autoplay muted loop playsinline class="hero-video">
+      <source src="montage.mp4" type="video/mp4">
+    </video>
+
+    <div class="hero-overlay"></div>
+
     <div class="hero-content">
       <span class="badge">Beyond Limits</span>
-
       <h1>Welcome to PrimeX</h1>
-
       <p>
         Prime X is a focused environment for people who take improvement seriously.
         Trading, execution, structure, and accountability — no noise.
       </p>
-
       <a href="#" class="cta">Join Prime X</a>
     </div>
   </section>
