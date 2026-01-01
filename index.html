@@ -26,7 +26,6 @@
 
       --blue: #58c7ff;
       --blue2:#2a7bff;
-      --ice: rgba(90, 200, 255, .35);
 
       --shadow: 0 20px 70px rgba(0,0,0,.55);
       --radius: 24px;
@@ -72,7 +71,7 @@
       pointer-events:none;
     }
 
-    /* blank background sections */
+    /* When we want a blank black background for certain app sections */
     body.blank-bg .bg-wrap{ display:none; }
     body.blank-bg{ background:#000; }
 
@@ -276,11 +275,10 @@
       white-space:nowrap;
     }
 
-    /* sections */
     .section{ display:none; }
     .section.active{ display:block; }
 
-    /* ===== Live Sessions (unchanged logic; keep layout) ===== */
+    /* ===== Live Sessions ===== */
     .calendar-wrap{
       border-radius: var(--radius);
       border: 1px solid rgba(255,255,255,.10);
@@ -323,8 +321,11 @@
       color: rgba(255,255,255,.78);
     }
     .weekdays div{ text-align:center; padding: 6px 0; }
-
-    .grid{ display:grid; grid-template-columns: repeat(7, 1fr); min-height: 360px; }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      min-height: 360px;
+    }
     .daycol{
       border-right: 1px solid rgba(255,255,255,.06);
       padding: 12px;
@@ -388,7 +389,185 @@
       user-select:none;
     }
 
-    /* ===== Buttons / shared ===== */
+    /* ===== Subscription page (cosmic style) ===== */
+    .sub-center{
+      display:flex;
+      justify-content:center;
+      padding: 10px 0 4px;
+    }
+    .sub-page-wrap{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      align-items:center;
+      padding-top: 4px;
+    }
+
+    .cosmic-frame{
+      width: min(520px, 100%);
+      border-radius: 28px;
+      position: relative;
+      overflow:hidden;
+      box-shadow:
+        0 30px 90px rgba(0,0,0,.70),
+        0 0 0 1px rgba(255,255,255,.08) inset;
+      background: rgba(8,10,14,.80);
+    }
+    .cosmic-frame::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(1200px 700px at 20% 20%, rgba(88,199,255,.22), transparent 55%),
+        radial-gradient(900px 700px at 80% 20%, rgba(242,180,0,.14), transparent 58%),
+        radial-gradient(700px 700px at 50% 90%, rgba(42,123,255,.16), transparent 60%),
+        radial-gradient(circle at 18% 32%, rgba(255,255,255,.22) 1px, transparent 2px),
+        radial-gradient(circle at 72% 38%, rgba(255,255,255,.18) 1px, transparent 2px),
+        radial-gradient(circle at 40% 64%, rgba(255,255,255,.14) 1px, transparent 2px),
+        radial-gradient(circle at 82% 72%, rgba(255,255,255,.12) 1px, transparent 2px),
+        linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.65));
+      pointer-events:none;
+      z-index: 0;
+    }
+    .cosmic-frame::after{
+      content:"";
+      position:absolute; inset: 10px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow:
+        0 0 0 1px rgba(88,199,255,.12),
+        0 0 40px rgba(88,199,255,.14),
+        0 0 70px rgba(242,180,0,.12);
+      pointer-events:none;
+      z-index: 0;
+    }
+    .cosmic-inner{
+      position:relative;
+      z-index: 1;
+      padding: 18px 18px 16px;
+    }
+    .cosmic-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .cosmic-brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width:0;
+    }
+    .cosmic-brand img{
+      height: 28px;
+      width:auto;
+      display:block;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.65));
+    }
+    .cosmic-brand .t{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
+    }
+    .cosmic-brand .t strong{
+      font-size: 13px;
+      letter-spacing:.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .cosmic-brand .t span{
+      font-size: 11px;
+      color: rgba(255,255,255,.66);
+      font-weight: 800;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .cosmic-price{
+      text-align:right;
+      white-space:nowrap;
+    }
+    .cosmic-price .amt{
+      font-size: 34px;
+      font-weight: 950;
+      letter-spacing: -.6px;
+      color: rgba(255,255,255,.95);
+      text-shadow: 0 10px 28px rgba(0,0,0,.55);
+    }
+    .cosmic-price .dur{
+      margin-top: 2px;
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(255,255,255,.72);
+    }
+
+    .cosmic-box{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.30);
+      padding: 12px 12px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.35);
+    }
+    .feature-list{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style:none;
+    }
+    .feature{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(255,255,255,.90);
+    }
+    .tick{
+      width: 18px; height: 18px;
+      border-radius: 999px;
+      flex: 0 0 auto;
+      display:grid;
+      place-items:center;
+      color: #0b0b0b;
+      background: linear-gradient(180deg, var(--gold), var(--gold2));
+      box-shadow: 0 12px 24px rgba(0,0,0,.35);
+      margin-top: 1px;
+      font-size: 12px;
+      font-weight: 950;
+    }
+    .feature span{
+      color: rgba(255,255,255,.70);
+      font-weight: 850;
+      display:block;
+      margin-top: 2px;
+      line-height: 1.35;
+      font-size: 11px;
+    }
+
+    .warn{
+      margin-top: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(242,180,0,.22);
+      background: rgba(242,180,0,.08);
+      padding: 10px 12px;
+      color: rgba(255,255,255,.88);
+      font-weight: 950;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .warn span{
+      display:block;
+      margin-top: 4px;
+      font-size: 11px;
+      color: rgba(255,255,255,.72);
+      font-weight: 850;
+    }
+
     .btn{
       display:inline-flex;
       align-items:center;
@@ -410,16 +589,44 @@
       background: rgba(255,255,255,.08);
       border: 1px solid rgba(255,255,255,.14);
       color: rgba(255,255,255,.90);
+      box-shadow:none;
     }
-    .tiny{
+
+    .unlock-blue{
+      margin-top: 10px;
+      width:100%;
+      border-radius: 999px;
+      padding: 13px 16px;
+      border: 1px solid rgba(88,199,255,.32);
+      background:
+        radial-gradient(600px 120px at 50% 10%, rgba(88,199,255,.28), transparent 70%),
+        linear-gradient(180deg, rgba(18,38,70,.45), rgba(6,12,22,.60));
+      color: rgba(220,245,255,.95);
+      font-weight: 950;
+      letter-spacing:.2px;
+      cursor:pointer;
+      box-shadow:
+        0 18px 45px rgba(0,0,0,.55),
+        0 0 22px rgba(88,199,255,.14);
+      transition: transform .16s ease, filter .16s ease, border-color .16s ease;
+    }
+    .unlock-blue:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      border-color: rgba(88,199,255,.50);
+    }
+    .unlock-blue:active{ transform: translateY(0px) scale(.99); }
+
+    .cosmic-footer{
       margin-top: 10px;
       font-size: 11px;
-      color: rgba(255,255,255,.55);
-      line-height: 1.45;
+      font-weight: 850;
+      color: rgba(255,255,255,.62);
+      line-height: 1.35;
+      text-align:center;
     }
-    .big-action{ margin-top: 12px; width:100%; padding: 14px 18px; }
 
-    /* ===== Modal overlay ===== */
+    /* ===== Modal overlay (shared) ===== */
     .overlay{
       position: fixed;
       inset: 0;
@@ -492,7 +699,12 @@
       opacity:1;
     }
 
-    .field{ display:flex; flex-direction:column; gap: 8px; margin: 10px 0 14px; }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
     label{
       font-size: 12px;
       color: rgba(255,255,255,.70);
@@ -514,6 +726,7 @@
       border-color: rgba(242,180,0,.55);
       background: rgba(0,0,0,.35);
     }
+
     .row{ display:flex; gap: 10px; flex-wrap:wrap; }
     .row > .field{ flex:1; min-width: 200px; }
 
@@ -534,183 +747,6 @@
     }
     .primary:hover{ transform: translateY(-1px); filter: brightness(1.02); }
     .primary:active{ transform: translateY(0px) scale(.99); }
-
-    /* ===== Cosmic Subscription Card (matches your reference vibe) ===== */
-    .sub-center{
-      display:flex;
-      justify-content:center;
-      padding: 10px 0 4px;
-    }
-
-    .cosmic-frame{
-      width: min(520px, 100%);
-      border-radius: 28px;
-      position: relative;
-      overflow:hidden;
-      box-shadow:
-        0 30px 90px rgba(0,0,0,.70),
-        0 0 0 1px rgba(255,255,255,.08) inset;
-      background: rgba(8,10,14,.80);
-    }
-    /* star field + glow */
-    .cosmic-frame::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(1200px 700px at 20% 20%, rgba(88,199,255,.22), transparent 55%),
-        radial-gradient(900px 700px at 80% 20%, rgba(242,180,0,.14), transparent 58%),
-        radial-gradient(700px 700px at 50% 90%, rgba(42,123,255,.16), transparent 60%),
-        radial-gradient(circle at 18% 32%, rgba(255,255,255,.22) 1px, transparent 2px),
-        radial-gradient(circle at 72% 38%, rgba(255,255,255,.18) 1px, transparent 2px),
-        radial-gradient(circle at 40% 64%, rgba(255,255,255,.14) 1px, transparent 2px),
-        radial-gradient(circle at 82% 72%, rgba(255,255,255,.12) 1px, transparent 2px),
-        linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.65));
-      filter: saturate(1.05);
-      opacity: 1;
-      pointer-events:none;
-      z-index: 0;
-    }
-    .cosmic-frame::after{
-      content:"";
-      position:absolute; inset: 10px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow:
-        0 0 0 1px rgba(88,199,255,.12),
-        0 0 40px rgba(88,199,255,.14),
-        0 0 70px rgba(242,180,0,.12);
-      pointer-events:none;
-      z-index: 0;
-    }
-
-    .cosmic-inner{
-      position:relative;
-      z-index: 1;
-      padding: 18px 18px 16px;
-    }
-
-    .cosmic-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-    .cosmic-brand{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      min-width:0;
-    }
-    .cosmic-brand img{
-      height: 28px;
-      width:auto;
-      display:block;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.65));
-    }
-    .cosmic-brand .t{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      min-width:0;
-    }
-    .cosmic-brand .t strong{
-      font-size: 13px;
-      letter-spacing:.2px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .cosmic-brand .t span{
-      font-size: 11px;
-      color: rgba(255,255,255,.66);
-      font-weight: 800;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .cosmic-price{
-      text-align:right;
-      white-space:nowrap;
-    }
-    .cosmic-price .amt{
-      font-size: 34px;
-      font-weight: 950;
-      letter-spacing: -.6px;
-      color: rgba(255,255,255,.95);
-      text-shadow: 0 10px 28px rgba(0,0,0,.55);
-    }
-    .cosmic-price .dur{
-      margin-top: 2px;
-      font-size: 12px;
-      font-weight: 900;
-      color: rgba(255,255,255,.72);
-    }
-
-    .cosmic-box{
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.30);
-      padding: 12px 12px;
-      box-shadow: 0 18px 55px rgba(0,0,0,.35);
-    }
-
-    .feature-list{
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      margin: 0;
-      padding: 0;
-      list-style:none;
-    }
-    .feature{
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      font-size: 12px;
-      font-weight: 900;
-      color: rgba(255,255,255,.90);
-    }
-    .tick{
-      width: 18px; height: 18px;
-      border-radius: 999px;
-      flex: 0 0 auto;
-      display:grid;
-      place-items:center;
-      color: #0b0b0b;
-      background: linear-gradient(180deg, var(--gold), var(--gold2));
-      box-shadow: 0 12px 24px rgba(0,0,0,.35);
-      margin-top: 1px;
-      font-size: 12px;
-      font-weight: 950;
-    }
-    .feature span{
-      color: rgba(255,255,255,.70);
-      font-weight: 850;
-      display:block;
-      margin-top: 2px;
-      line-height: 1.35;
-      font-size: 11px;
-    }
-
-    .cosmic-step-title{
-      margin: 12px 2px 8px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      font-weight: 950;
-      letter-spacing:.2px;
-      color: rgba(255,255,255,.92);
-      font-size: 12px;
-    }
-    .cosmic-step-title i{
-      font-style: normal;
-      font-weight: 900;
-      color: rgba(255,255,255,.62);
-      font-size: 11px;
-    }
 
     .copyline{
       display:flex;
@@ -754,127 +790,6 @@
       border-color: rgba(88,199,255,.22);
     }
 
-    .steps-mini{
-      display:flex;
-      flex-direction:column;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .step-mini{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.22);
-    }
-    .step-mini .l{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      min-width:0;
-    }
-    .n{
-      width: 22px; height: 22px;
-      border-radius: 999px;
-      display:grid;
-      place-items:center;
-      font-size: 12px;
-      font-weight: 950;
-      color: rgba(255,255,255,.92);
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-      box-shadow: 0 12px 24px rgba(0,0,0,.28);
-      flex: 0 0 auto;
-    }
-    .step-mini .txt{
-      min-width:0;
-      display:flex;
-      flex-direction:column;
-      gap: 1px;
-    }
-    .step-mini .txt strong{
-      font-size: 12px;
-      font-weight: 950;
-      color: rgba(255,255,255,.90);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .step-mini .txt span{
-      font-size: 11px;
-      font-weight: 850;
-      color: rgba(255,255,255,.60);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .warn{
-      margin-top: 10px;
-      border-radius: 16px;
-      border: 1px solid rgba(242,180,0,.22);
-      background: rgba(242,180,0,.08);
-      padding: 10px 12px;
-      color: rgba(255,255,255,.88);
-      font-weight: 950;
-      font-size: 12px;
-      line-height: 1.35;
-    }
-    .warn span{
-      display:block;
-      margin-top: 4px;
-      font-size: 11px;
-      color: rgba(255,255,255,.72);
-      font-weight: 850;
-    }
-
-    .unlock-blue{
-      margin-top: 10px;
-      width:100%;
-      border-radius: 999px;
-      padding: 13px 16px;
-      border: 1px solid rgba(88,199,255,.32);
-      background:
-        radial-gradient(600px 120px at 50% 10%, rgba(88,199,255,.28), transparent 70%),
-        linear-gradient(180deg, rgba(18,38,70,.45), rgba(6,12,22,.60));
-      color: rgba(220,245,255,.95);
-      font-weight: 950;
-      letter-spacing:.2px;
-      cursor:pointer;
-      box-shadow:
-        0 18px 45px rgba(0,0,0,.55),
-        0 0 22px rgba(88,199,255,.14);
-      transition: transform .16s ease, filter .16s ease, border-color .16s ease;
-    }
-    .unlock-blue:hover{
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-      border-color: rgba(88,199,255,.50);
-    }
-    .unlock-blue:active{ transform: translateY(0px) scale(.99); }
-
-    .cosmic-footer{
-      margin-top: 10px;
-      font-size: 11px;
-      font-weight: 850;
-      color: rgba(255,255,255,.62);
-      line-height: 1.35;
-      text-align:center;
-    }
-
-    /* subscription section layout */
-    .sub-page-wrap{
-      display:flex;
-      flex-direction:column;
-      gap: 12px;
-      align-items:center;
-      padding-top: 4px;
-    }
-
-    /* ===== Modal panels ===== */
     body.modal-open .overlay{ opacity: 1; pointer-events: auto; }
     body.modal-open .modal{ opacity: 1; transform: translateY(0px) scale(1); }
     body.modal-open .hero-card{
@@ -882,6 +797,18 @@
       transform: translateY(6px) scale(.985);
       filter: blur(2px);
       pointer-events:none;
+    }
+
+    .tiny{
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(255,255,255,.55);
+      line-height: 1.45;
+    }
+    .big-action{
+      margin-top: 12px;
+      width:100%;
+      padding: 14px 18px;
     }
 
     @media (max-width: 520px){
@@ -894,7 +821,6 @@
       .weekdays{ display:none; }
       .daycol{ border-right:0; border-bottom: 1px solid rgba(255,255,255,.06); }
       .cosmic-price .amt{ font-size: 30px; }
-      .copybtn{ padding: 10px 10px; }
     }
   </style>
 </head>
@@ -923,7 +849,7 @@
         <a href="#about">About</a>
       </nav>
 
-      <!-- Logged-in nav -->
+      <!-- Logged-in nav (hidden until login) -->
       <nav aria-label="Customer" id="navCustomer" style="display:none;">
         <button class="active" data-section="home" type="button">Home</button>
         <button data-section="liveSessions" type="button">Live Sessions</button>
@@ -934,6 +860,7 @@
     </div>
   </header>
 
+  <!-- Main -->
   <main>
     <!-- Logged-out hero -->
     <section class="hero-card" aria-label="PrimeX Hero" id="hero">
@@ -995,7 +922,7 @@
         </div>
       </div>
 
-      <!-- SUBSCRIPTION (now matches your cool reference style) -->
+      <!-- SUBSCRIPTION (NO plans.html, everything is in this single file) -->
       <div class="section" id="section-subscription">
         <div class="sub-page-wrap">
           <div style="text-align:center; max-width:720px;">
@@ -1024,28 +951,11 @@
 
                 <div class="cosmic-box">
                   <ul class="feature-list">
-                    <li class="feature"><div class="tick">✓</div><div>
-                      Forex, Crypto, Futures, Indices
-                      <span>Live sessions across core markets.</span>
-                    </div></li>
-                    <li class="feature"><div class="tick">✓</div><div>
-                      Exclusive Group Signals
-                      <span>Direct access once active.</span>
-                    </div></li>
-                    <li class="feature"><div class="tick">✓</div><div>
-                      Advanced Trading Education
-                      <span>Frameworks + execution system.</span>
-                    </div></li>
-                    <li class="feature"><div class="tick">✓</div><div>
-                      Real-Time Market Analysis
-                      <span>Prep, breakdowns, and reviews.</span>
-                    </div></li>
+                    <li class="feature"><div class="tick">✓</div><div>Forex, Crypto, Futures, Indices</div></li>
+                    <li class="feature"><div class="tick">✓</div><div>Exclusive Group Signals</div></li>
+                    <li class="feature"><div class="tick">✓</div><div>Advanced Trading Education</div></li>
+                    <li class="feature"><div class="tick">✓</div><div>Real-Time Market Analysis</div></li>
                   </ul>
-                </div>
-
-                <div class="cosmic-step-title">
-                  <span>Manual Payment • USDT (TRC20)</span>
-                  <i>Verification within ~24 hours</i>
                 </div>
 
                 <div class="warn">
@@ -1053,9 +963,8 @@
                   <span>Do not send ERC20 / BEP20 — funds may be lost.</span>
                 </div>
 
-                <!-- These buttons KEEP your working flow (open modal) -->
                 <button class="unlock-blue" id="unlockAccessBtn" type="button">Unlock Access</button>
-                <button class="btn btn-ghost" id="viewPlanBtn" type="button" style="width:100%; margin-top:10px; box-shadow:none;">
+                <button class="btn btn-ghost" id="viewPlanBtn" type="button" style="width:100%; margin-top:10px;">
                   View Plan Details
                 </button>
 
@@ -1068,7 +977,7 @@
 
           <div class="card" style="max-width:720px; width:100%; text-align:center;">
             <p style="margin:0; color:rgba(255,255,255,.62); font-size:11px; font-weight:800; line-height:1.5;">
-              Tip: For the smoothest verification, submit your <b>tx hash</b> (recommended). Auto-renew is a reminder setting only.
+              Tip: Submit your <b>tx hash</b> (recommended). Auto-renew is a reminder setting only.
             </p>
           </div>
         </div>
@@ -1126,7 +1035,7 @@
           </form>
         </div>
 
-        <!-- SUBSCRIPTION / PAYMENT PANEL (cool cosmic style inside modal too) -->
+        <!-- SUBSCRIPTION / PAYMENT PANEL -->
         <div id="panel-subscribe" style="display:none;">
           <div class="cosmic-frame" style="width:min(620px,100%); margin:0 auto;">
             <div class="cosmic-inner">
@@ -1144,27 +1053,16 @@
                 </div>
               </div>
 
-              <div class="cosmic-box">
-                <ul class="feature-list">
-                  <li class="feature"><div class="tick">✓</div><div>Forex, Crypto, Futures, Indices</div></li>
-                  <li class="feature"><div class="tick">✓</div><div>Exclusive Group Signals</div></li>
-                  <li class="feature"><div class="tick">✓</div><div>Advanced Trading Education</div></li>
-                  <li class="feature"><div class="tick">✓</div><div>Real-Time Market Analysis</div></li>
-                </ul>
-              </div>
-
               <div class="warn">
                 ⚠️ Send <b>USDT on TRON (TRC20) only</b>.
                 <span>Do not send ERC20 / BEP20 — funds may be lost.</span>
               </div>
 
-              <!-- Wallet + Copy (KEEP IDs) -->
-              <div class="cosmic-step-title" style="margin-top:12px;">
-                <span>1. Copy Wallet Address</span>
-                <i>Recipient: PrimeX</i>
+              <div style="margin-top:12px; font-size:12px; font-weight:950; color:rgba(255,255,255,.92);">
+                1. Copy Wallet Address
               </div>
 
-              <div class="copyline">
+              <div class="copyline" style="margin-top:8px;">
                 <div style="min-width:0;">
                   <div style="font-size:11px; opacity:.72; font-weight:950; margin-bottom:6px;">TRC20 Wallet Address</div>
                   <code id="walletAddr">TRC20_WALLET_ADDRESS_HERE</code>
@@ -1172,28 +1070,17 @@
                 <button class="copybtn" id="copyWalletBtn" type="button">Copy</button>
               </div>
 
-              <div class="steps-mini">
-                <div class="step-mini">
-                  <div class="l">
-                    <div class="n">2</div>
-                    <div class="txt">
-                      <strong>Send USDT (TRC20)</strong>
-                      <span>Amount: $499 • Network: TRON</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="step-mini">
-                  <div class="l">
-                    <div class="n">3</div>
-                    <div class="txt">
-                      <strong>Upload Payment Proof</strong>
-                      <span>Tx hash recommended for faster verification</span>
-                    </div>
-                  </div>
-                </div>
+              <div style="margin-top:10px; font-size:12px; font-weight:950; color:rgba(255,255,255,.92);">
+                2. Send USDT (TRC20)
+              </div>
+              <div style="margin-top:6px; font-size:11px; color:rgba(255,255,255,.62); font-weight:850;">
+                Amount: $499 • Network: TRON
               </div>
 
-              <!-- Auto-renew (KEEP ID) -->
+              <div style="margin-top:10px; font-size:12px; font-weight:950; color:rgba(255,255,255,.92);">
+                3. Upload Payment Proof
+              </div>
+
               <div style="margin-top:10px; padding: 10px 12px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.22);">
                 <div style="display:flex; align-items:flex-start; gap:10px;">
                   <input type="checkbox" id="autoRenew" style="width:18px; height:18px; margin-top:2px;" />
@@ -1224,10 +1111,8 @@
                 <input id="proof" type="file" accept="image/*" />
               </div>
 
-              <!-- Submit (KEEP ID) -->
               <button class="unlock-blue" id="submitProofBtn" type="button">Unlock Access</button>
 
-              <!-- Status line (KEEP ID) -->
               <div class="cosmic-footer" id="paymentTiny" style="margin-top:10px;">
                 Pending verification — Activation within ~24 hours.
               </div>
@@ -1263,14 +1148,11 @@
   <div id="about" style="height:1px;"></div>
 
   <script>
-    /* ===== Basic state (demo)
-      - login stored in sessionStorage
-      - subscription stored in localStorage
-    */
+    /* ===== Basic state (demo) ===== */
     const state = {
       email: sessionStorage.getItem("px_email") || "",
       loggedIn: sessionStorage.getItem("px_loggedIn") === "1",
-      subStatus: localStorage.getItem("px_subStatus") || "none", // "none" | "pending" | "active"
+      subStatus: localStorage.getItem("px_subStatus") || "none",
       subAutoRenew: localStorage.getItem("px_autoRenew") === "1",
       activeSection: "home",
       filter: "All",
@@ -1321,7 +1203,7 @@
     const welcomeEmail = document.getElementById("welcomeEmail");
     const subStatusPill = document.getElementById("subStatusPill");
 
-    // IMPORTANT: these IDs exist (used in your original JS). They remain.
+    // Buttons
     const unlockAccessBtn = document.getElementById("unlockAccessBtn");
     const viewPlanBtn = document.getElementById("viewPlanBtn");
     const joinSignalsBtn = document.getElementById("joinSignalsBtn");
@@ -1329,7 +1211,7 @@
     const calendarGrid = document.getElementById("calendarGrid");
     const chips = document.getElementById("chips");
 
-    /* ===== Demo live sessions data ===== */
+    /* ===== Demo sessions ===== */
     const sessions = [
       { id:"s1", dayIndex:0, time:"3:15 PM", title:"Execution & Structure", host:"PrimeX", category:"Forex", joinUrl:"https://zoom.us/" },
       { id:"s2", dayIndex:1, time:"3:00 AM", title:"Risk Management", host:"PrimeX", category:"Indices", joinUrl:"https://zoom.us/" },
@@ -1338,7 +1220,6 @@
       { id:"s5", dayIndex:5, time:"4:00 PM", title:"Trading Review", host:"PrimeX", category:"Futures", joinUrl:"https://zoom.us/" },
     ];
 
-    /* ===== Helpers ===== */
     function isSubscribedActive(){ return state.subStatus === "active"; }
 
     function setSubscriptionPill(){
@@ -1386,12 +1267,11 @@
       if(el) el.classList.add("active");
       setActiveNavButton(section);
 
-      // per your request: blank background for Live Sessions + Subscription
       const needsBlank = (section === "liveSessions" || section === "subscription");
       body.classList.toggle("blank-bg", needsBlank);
     }
 
-    /* ===== Modal open/close + panels ===== */
+    /* ===== Modal ===== */
     function openModal(){
       body.classList.add("modal-open");
       overlay.setAttribute("aria-hidden","false");
@@ -1401,14 +1281,15 @@
       overlay.setAttribute("aria-hidden","true");
       showModalPanel("auth");
     }
+
     function showModalPanel(which){
       panelAuth.style.display = "none";
       panelSubscribe.style.display = "none";
       panelSession.style.display = "none";
 
       if(which === "auth") panelAuth.style.display = "block";
-      if(which === "subscribe") panelSubscribe.style.display = "block";
-      if(which === "session") panelSession.style.display = "block";
+      else if(which === "subscribe") panelSubscribe.style.display = "block";
+      else if(which === "session") panelSession.style.display = "block";
     }
 
     function openAuthModal(){
@@ -1424,11 +1305,9 @@
       modeSub.textContent = "USDT (TRC20) — manual payment.";
       showModalPanel("subscribe");
 
-      // put your TRC20 wallet here:
       walletAddr.textContent = "TRC20_WALLET_ADDRESS_HERE";
       autoRenew.checked = state.subAutoRenew;
 
-      // reflect current status in helper line
       paymentTiny.textContent =
         state.subStatus === "pending"
           ? "Submitted ✅ Pending verification. Estimated activation: ~24 hours."
@@ -1461,7 +1340,7 @@
       if(e.key === "Escape" && body.classList.contains("modal-open")) closeModal();
     });
 
-    /* ===== Auth tabs + submit ===== */
+    /* Auth tabs */
     function setMode(mode){
       const isSignup = mode === "signup";
       tabSignup.classList.toggle("active", isSignup);
@@ -1495,15 +1374,12 @@
         return;
       }
 
-      // demo login success
       state.email = email;
       state.loggedIn = true;
       sessionStorage.setItem("px_loggedIn","1");
       sessionStorage.setItem("px_email", email);
 
       setLoggedInUI(true);
-
-      // IMPORTANT: don't auto-redirect anywhere
       showSection("home");
 
       closeModal();
@@ -1511,7 +1387,7 @@
       setMode("signup");
     });
 
-    /* ===== Logout ===== */
+    /* Logout */
     logoutBtn.addEventListener("click", () => {
       sessionStorage.removeItem("px_loggedIn");
       sessionStorage.removeItem("px_email");
@@ -1521,14 +1397,14 @@
       location.reload();
     });
 
-    /* ===== Customer nav switching ===== */
+    /* Customer nav section switching */
     navCustomer.addEventListener("click", (e) => {
       const btn = e.target.closest("button[data-section]");
       if(!btn) return;
       showSection(btn.dataset.section);
     });
 
-    /* ===== Calendar build + filtering ===== */
+    /* Calendar */
     function buildCalendar(){
       calendarGrid.innerHTML = "";
       for(let d=0; d<7; d++){
@@ -1597,7 +1473,7 @@
       buildCalendar();
     });
 
-    /* ===== Session join ===== */
+    /* Session join */
     joinLiveBtn.addEventListener("click", () => {
       const session = sessions.find(s => s.id === state.selectedSessionId);
       if(!session) return;
@@ -1611,7 +1487,7 @@
       closeModal();
     });
 
-    /* ===== Subscription actions (IDs preserved) ===== */
+    /* Subscription actions */
     unlockAccessBtn.addEventListener("click", openSubscribeModal);
     viewPlanBtn.addEventListener("click", openSubscribeModal);
 
@@ -1631,14 +1507,13 @@
     });
 
     submitProofBtn.addEventListener("click", () => {
-      // demo: mark as pending
       state.subStatus = "pending";
       localStorage.setItem("px_subStatus", "pending");
       setSubscriptionPill();
       paymentTiny.textContent = "Submitted ✅ Pending verification. Estimated activation: ~24 hours.";
     });
 
-    /* ===== Group signals ===== */
+    /* Group signals */
     joinSignalsBtn.addEventListener("click", () => {
       if(!isSubscribedActive()){
         openSubscribeModal();
@@ -1647,14 +1522,10 @@
       window.open("https://t.me/", "_blank", "noopener,noreferrer");
     });
 
-    /* ===== Init ===== */
+    /* Init */
     function init(){
       setLoggedInUI(state.loggedIn);
-
-      if(state.loggedIn){
-        showSection("home");
-      }
-
+      if(state.loggedIn) showSection("home");
       buildCalendar();
     }
     init();
