@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PrimeX</title>
 
-    <!-- Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="primex-mark-44-clean.png" />
     <link rel="shortcut icon" href="primex-mark-44-clean.png" />
@@ -15,7 +14,6 @@
       :root {
         --bg: #000;
         --glass: rgba(18, 18, 18, 0.72);
-        --glass-strong: rgba(18, 18, 18, 0.86);
         --stroke: rgba(255, 255, 255, 0.14);
         --muted: rgba(255, 255, 255, 0.78);
         --text: rgba(255, 255, 255, 0.96);
@@ -23,37 +21,54 @@
         --gold2: #d79b00;
         --shadow: 0 22px 80px rgba(0, 0, 0, 0.7);
         --radius: 24px;
-
-        /* Glow */
-        --glowGoldA: rgba(242, 180, 0, 0.34);
-        --glowGoldB: rgba(242, 180, 0, 0.16);
-        --glowBlueA: rgba(88, 199, 255, 0.14);
       }
 
       * { box-sizing: border-box; }
       html, body { height: 100%; }
+
       body {
         margin: 0;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-        background: #000; /* ✅ ALWAYS BLACK (no montage on home) */
+        background: #000;
         color: var(--text);
         overflow-x: hidden;
       }
 
-      /* ✅ We keep the bg video markup but never show it */
-      .bg-wrap { display: none !important; }
+      /* ✅ MONTAGE VIDEO BACKGROUND (HOME + WHOLE SITE) */
+      .bg-wrap {
+        position: fixed;
+        inset: 0;
+        z-index: -3;
+        overflow: hidden;
+        background: #000;
+      }
+      .bg-wrap video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.70;
+        filter: contrast(1.05) saturate(1.05);
+      }
 
-      /* ✅ Dust canvas exists, but only turns on inside subscription (gate + subscription section) */
+      /* Optional dark overlay for readability */
+      .bg-dim {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        background: radial-gradient(circle at 50% 40%, rgba(0,0,0,0.35), rgba(0,0,0,0.75));
+        pointer-events: none;
+      }
+
+      /* ✅ DUST CANVAS EXISTS BUT IS INVISIBLE UNLESS ON SUBSCRIPTION */
       #dustCanvas {
         position: fixed;
         inset: 0;
-        z-index: -1; /* above background, below UI */
+        z-index: -1;
         pointer-events: none;
-        opacity: 0;
+        opacity: 0;               /* OFF by default */
         transition: opacity 0.25s ease;
       }
       body.dust-on #dustCanvas { opacity: 0.95; }
-      body.dust-rich #dustCanvas { opacity: 1; }
 
       /* ===== Header ===== */
       header {
@@ -118,10 +133,8 @@
         opacity: 1;
       }
 
-      /* Hide header in gate */
       body.gate header { display: none; }
 
-      /* ===== Layout ===== */
       main {
         min-height: 100vh;
         display: flex;
@@ -130,7 +143,6 @@
         padding: 140px 22px 80px;
       }
 
-      /* ===== Hero ===== */
       .hero-card {
         width: min(900px, 100%);
         border-radius: var(--radius);
@@ -185,10 +197,9 @@
         transition: transform 0.18s ease;
       }
       .cta:hover { transform: translateY(-1px); }
-      .cta:active { transform: translateY(0px) scale(0.99); }
 
       /* ===== Gate ===== */
-      .gate-wrap { width: min(1040px, 100%); display: none; }
+      .gate-wrap { width: min(1040px, 100); display: none; }
       body.gate .gate-wrap { display: flex; }
       body.gate .hero-card { display: none; }
       body.gate .app-wrap { display: none; }
@@ -225,12 +236,6 @@
         color: rgba(255,255,255,0.92);
         font-weight: 980;
         cursor: pointer;
-        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
-      }
-      .gate-btn:hover {
-        transform: translateY(-1px);
-        background: rgba(255,255,255,0.10);
-        border-color: rgba(242,180,0,0.20);
       }
 
       .plan-grid {
@@ -251,19 +256,6 @@
       .price { text-align: right; white-space: nowrap; }
       .price .amt { font-size: 44px; font-weight: 990; letter-spacing: -0.8px; }
       .price .dur { margin-top: 2px; font-size: 12px; font-weight: 980; color: rgba(255,255,255,0.78); }
-
-      .feat { margin-top: 12px; display: grid; gap: 10px; }
-      .feat .row { display:flex; gap:10px; align-items:flex-start; font-size: 12px; font-weight: 920; color: rgba(255,255,255,0.95); }
-      .tick {
-        width: 18px; height: 18px; border-radius: 999px;
-        display:grid; place-items:center;
-        background: linear-gradient(180deg, var(--gold), var(--gold2));
-        color:#0b0b0b;
-        font-size: 12px; font-weight: 990;
-        box-shadow: 0 12px 24px rgba(0,0,0,0.45);
-        flex:0 0 auto;
-        margin-top:1px;
-      }
 
       .warn {
         margin-top: 12px;
@@ -295,9 +287,8 @@
         font-weight: 990;
         cursor: pointer;
         box-shadow: 0 22px 70px rgba(242,180,0,0.18), 0 18px 45px rgba(0,0,0,0.55);
-        transition: transform 0.16s ease;
       }
-      .gate-cta:hover { transform: translateY(-1px); }
+
       .gate-note {
         margin-top: 10px;
         font-size: 11px;
@@ -361,7 +352,6 @@
       .section { display: none; }
       .section.active { display: block; }
 
-      /* Dashboard */
       .dash-title { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:14px; }
       .dash-title h2 { margin:0; font-size: 16px; font-weight: 990; }
       .dash-title p { margin:6px 0 0; font-size: 12px; color: rgba(255,255,255,0.82); font-weight: 860; line-height: 1.5; max-width: 640px; }
@@ -437,13 +427,10 @@
         padding: 16px;
         min-height: 150px;
         position: relative;
-        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
       }
-      .mod:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); border-color: rgba(242,180,0,0.22); }
       .mod h3 { margin: 0; font-size: 13px; font-weight: 990; }
       .mod p { margin: 8px 0 0; font-size: 11.5px; font-weight: 860; color: rgba(255,255,255,0.82); line-height: 1.5; }
 
-      /* ✅ Better placement for Active/Locked pill (no weird floating) */
       .mod .pillx {
         position: absolute;
         top: 12px;
@@ -455,12 +442,8 @@
         font-size: 11px;
         font-weight: 990;
         color: rgba(255,255,255,0.92);
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
       }
-      .mod.locked { cursor: pointer; border-color: rgba(255,255,255,0.10); background: rgba(0,0,0,0.26); }
-      .mod.locked:hover { border-color: rgba(242,180,0,0.24); }
+      .mod.locked { cursor: pointer; }
       .mod .cta-mini {
         margin-top: 14px;
         width: fit-content;
@@ -488,7 +471,7 @@
       }
       .sub-inner { padding: 20px 22px 18px; }
 
-      /* Modal */
+      /* Modal overlay */
       .overlay {
         position: fixed;
         inset: 0;
@@ -577,17 +560,13 @@
         font-weight: 990;
         cursor: pointer;
         box-shadow: 0 14px 40px rgba(242, 180, 0, 0.18), 0 10px 26px rgba(0,0,0,0.42);
-        transition: transform 0.18s ease;
       }
-      .primary:hover { transform: translateY(-1px); }
-      .primary:active { transform: translateY(0px) scale(0.99); }
 
       .tiny { margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.78); line-height: 1.45; font-weight: 850; }
 
       body.modal-open .overlay { opacity: 1; pointer-events: auto; }
       body.modal-open .modal { opacity: 1; transform: translateY(0px) scale(1); }
 
-      /* Responsive */
       @media (max-width: 980px) {
         .plan-grid { grid-template-columns: 1fr; }
         .grid3 { grid-template-columns: 1fr; }
@@ -603,24 +582,23 @@
   </head>
 
   <body>
-    <!-- (Hidden background video wrapper kept, but not shown) -->
+    <!-- ✅ Montage stays -->
     <div class="bg-wrap">
       <video id="bgVideo" autoplay muted loop playsinline preload="auto">
         <source src="montage.mp4" type="video/mp4" />
       </video>
     </div>
+    <div class="bg-dim" aria-hidden="true"></div>
 
-    <!-- Dust (only used in subscription areas) -->
+    <!-- ✅ Dust exists but OFF unless subscription section -->
     <canvas id="dustCanvas" aria-hidden="true"></canvas>
 
-    <!-- Header -->
     <header>
       <div class="nav-inner">
         <a class="brand" href="index.html" aria-label="PrimeX Home">
           <img src="primex-full-transparent-clean.png" alt="PrimeX Logo" />
         </a>
 
-        <!-- Visitor nav -->
         <nav aria-label="Primary" id="navVisitor">
           <a href="#trading">Trading</a>
           <a href="#live">Live Sessions</a>
@@ -628,18 +606,15 @@
           <a href="#about">About</a>
         </nav>
 
-        <!-- Customer nav (active app only) -->
         <nav aria-label="Customer" id="navCustomer" style="display: none">
           <button class="active" data-section="home" type="button">Home</button>
           <button data-section="liveSessions" type="button">Live Sessions</button>
           <button data-section="subscription" type="button">Subscription</button>
-          <!-- ✅ Removed Group Signals from nav -->
         </nav>
       </div>
     </header>
 
     <main>
-      <!-- Hero -->
       <section class="hero-card" aria-label="PrimeX Hero" id="hero">
         <div class="pill">Beyond Limits</div>
         <h1>Welcome to PrimeX</h1>
@@ -647,7 +622,6 @@
         <button class="cta" id="joinBtn" type="button">Join Now</button>
       </section>
 
-      <!-- Subscription Gate -->
       <section class="gate-wrap" id="gate">
         <div class="gate-card" aria-label="PrimeX Access Gate">
           <div class="gate-inner">
@@ -661,7 +635,6 @@
               </div>
 
               <div class="gate-actions">
-                <!-- ✅ Dev Access is back -->
                 <button class="gate-btn" id="devAccessBtn" type="button">Dev Access</button>
                 <button class="gate-btn" id="gateLogoutBtn" type="button">Logout</button>
               </div>
@@ -717,9 +690,7 @@
         </div>
       </section>
 
-      <!-- Active App -->
       <section class="app-wrap" id="app">
-        <!-- HOME -->
         <div class="section active" id="section-home">
           <div class="card">
             <div class="dash-title">
@@ -733,7 +704,6 @@
               </div>
             </div>
 
-            <!-- ✅ cleaner layout: removed Group Signals tile from here too -->
             <div class="grid3">
               <div class="qa" id="qaLive" role="button" tabindex="0">
                 <div>
@@ -783,7 +753,6 @@
           </div>
         </div>
 
-        <!-- LIVE SESSIONS (simple placeholder for now) -->
         <div class="section" id="section-liveSessions">
           <div class="card">
             <strong style="font-size:14px; font-weight:990">Live Sessions</strong>
@@ -791,7 +760,6 @@
           </div>
         </div>
 
-        <!-- SUBSCRIPTION -->
         <div class="section" id="section-subscription">
           <div class="sub-wrap">
             <div class="sub-card" aria-label="PrimeX Subscription">
@@ -815,13 +783,6 @@
                   <span>Do not send ERC20 / BEP20 — funds may be lost.</span>
                 </div>
 
-                <div class="feat">
-                  <div class="row"><div class="tick">✓</div><div>Live Sessions access</div></div>
-                  <div class="row"><div class="tick">✓</div><div>Group Signals access</div></div>
-                  <div class="row"><div class="tick">✓</div><div>Education + analysis</div></div>
-                  <div class="row"><div class="tick">✓</div><div>Premium platform access</div></div>
-                </div>
-
                 <button class="gate-cta" id="subOpenPaymentBtn" type="button">Open Payment Steps</button>
                 <div class="gate-note" id="subStatusLine">Status: Active</div>
               </div>
@@ -831,7 +792,6 @@
       </section>
     </main>
 
-    <!-- Modal overlay -->
     <div class="overlay" id="overlay" aria-hidden="true">
       <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-top">
@@ -843,7 +803,6 @@
         </div>
 
         <div class="modal-body">
-          <!-- AUTH PANEL -->
           <div id="panel-auth">
             <div class="tabs" role="tablist" aria-label="Sign in or sign up">
               <button class="tab active" id="tabSignup" type="button" role="tab" aria-selected="true">Sign up</button>
@@ -870,11 +829,10 @@
             </form>
           </div>
 
-          <!-- PAYMENT PANEL -->
           <div id="panel-pay" style="display:none;">
             <div class="warn" style="margin-top:0;">
-              Payment modal placeholder. If you want, I’ll paste your full payment UI back in here (unchanged).
-              <span>Right now your “Unlock Access” button will just set Pending like before.</span>
+              Payment modal placeholder (demo).
+              <span>Submitting sets status to Pending.</span>
             </div>
             <button class="primary" id="submitProofBtn" type="button" style="margin-top:12px;">Submit Proof (Demo)</button>
             <div class="tiny" id="paymentTiny">Pending verification — Activation within ~24 hours.</div>
@@ -883,7 +841,6 @@
       </div>
     </div>
 
-    <!-- Dummy anchors -->
     <div id="trading" style="height:1px"></div>
     <div id="live" style="height:1px"></div>
     <div id="community" style="height:1px"></div>
@@ -891,16 +848,13 @@
 
     <script>
       /* =========================================================
-        PrimeX (single-file demo)
-        - Auth: sessionStorage px_loggedIn, px_email
-        - Subscription: localStorage px_subStatus (none|pending|active)
-        - Business module: localStorage px_businessStatus (none|pending|active)
-
-        ✅ IMPORTANT CHANGE YOU REQUESTED:
-        - NO dust on home or anywhere else
-        - Dust ONLY in subscription areas:
-            1) Gate screen (locked/pending)
-            2) Subscription section inside the app
+        ✅ Correct logic now:
+        - Montage video stays on home.
+        - Dust is OFF everywhere.
+        - Dust is ONLY ON when:
+            1) you're on Subscription section inside the app
+            (optional: you can also enable it on the gate if you want,
+             but per your last instruction, we're keeping it ONLY subscription)
       ========================================================== */
 
       const state = {
@@ -909,16 +863,14 @@
         subStatus: localStorage.getItem("px_subStatus") || "none",
         businessStatus: localStorage.getItem("px_businessStatus") || "none",
         activeSection: "home",
-        payMode: "sub",
       };
 
-      /* Elements */
       const body = document.body;
 
       const navVisitor = document.getElementById("navVisitor");
       const navCustomer = document.getElementById("navCustomer");
 
-      const heroJoinBtn = document.getElementById("joinBtn");
+      const joinBtn = document.getElementById("joinBtn");
 
       const gateLogoutBtn = document.getElementById("gateLogoutBtn");
       const devAccessBtn = document.getElementById("devAccessBtn");
@@ -963,97 +915,70 @@
       const submitProofBtn = document.getElementById("submitProofBtn");
       const paymentTiny = document.getElementById("paymentTiny");
 
-      /* ===== Dust Canvas (ONLY for subscription areas) ===== */
+      /* ===== Dust Canvas (ONLY subscription section) ===== */
       const dustCanvas = document.getElementById("dustCanvas");
       const dustCtx = dustCanvas.getContext("2d", { alpha: true });
 
-      let dustW = 0, dustH = 0, dpr = 1;
-      let dustParticles = [];
-      let dustMode = "off";
-      let dustRunning = false;
-      let rafId = null;
+      let W = 0, H = 0, DPR = 1;
+      let particles = [];
+      let running = false;
+      let raf = null;
 
       function resizeDust() {
-        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-        dustW = Math.floor(window.innerWidth);
-        dustH = Math.floor(window.innerHeight);
-        dustCanvas.width = Math.floor(dustW * dpr);
-        dustCanvas.height = Math.floor(dustH * dpr);
-        dustCanvas.style.width = dustW + "px";
-        dustCanvas.style.height = dustH + "px";
-        dustCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        W = window.innerWidth;
+        H = window.innerHeight;
+        dustCanvas.width = Math.floor(W * DPR);
+        dustCanvas.height = Math.floor(H * DPR);
+        dustCanvas.style.width = W + "px";
+        dustCanvas.style.height = H + "px";
+        dustCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
       }
+
       function rand(min, max) { return min + Math.random() * (max - min); }
 
-      // ✅ Bigger particles (your request: too small before)
-      function makeDust(count) {
-        const arr = [];
+      function buildDust() {
+        // bigger + more visible
+        const count = Math.min(240, Math.floor(120 + (W * H) / 26000));
+        particles = [];
         for (let i = 0; i < count; i++) {
-          arr.push({
-            x: rand(0, dustW),
-            y: rand(0, dustH),
-            r: rand(1.2, 3.2),          // BIGGER
-            a: rand(0.16, 0.42),        // MORE VISIBLE
+          particles.push({
+            x: rand(0, W),
+            y: rand(0, H),
+            r: rand(1.2, 3.2),
+            a: rand(0.16, 0.42),
             vx: rand(-0.18, 0.28),
             vy: rand(0.05, 0.22),
             tw: rand(0.002, 0.010),
             t: rand(0, 1000),
-            hue: Math.random() < 0.78 ? rand(38, 52) : rand(195, 210),
+            hue: Math.random() < 0.82 ? rand(38, 52) : rand(195, 210), // mostly gold
           });
         }
-        return arr;
-      }
-
-      function startDust() {
-        if (dustRunning) return;
-        dustRunning = true;
-        tickDust();
-      }
-      function stopDust() {
-        dustRunning = false;
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = null;
-        dustCtx.clearRect(0, 0, dustW, dustH);
-      }
-
-      function setDustMode(mode) {
-        dustMode = mode;
-        body.classList.toggle("dust-on", mode !== "off");
-        body.classList.toggle("dust-rich", mode === "rich");
-
-        if (mode === "off") { stopDust(); return; }
-
-        resizeDust();
-        const base = mode === "rich" ? 140 : 110;
-        const count = Math.min(220, Math.floor(base + (dustW * dustH) / 26000));
-        dustParticles = makeDust(count);
-        startDust();
       }
 
       function tickDust() {
-        if (!dustRunning) return;
+        if (!running) return;
+        dustCtx.clearRect(0, 0, W, H);
 
-        dustCtx.clearRect(0, 0, dustW, dustH);
-
-        for (const p of dustParticles) {
+        for (const p of particles) {
           p.t += 1;
           p.x += p.vx;
           p.y += p.vy;
 
-          if (p.x < -30) p.x = dustW + 30;
-          if (p.x > dustW + 30) p.x = -30;
-          if (p.y < -30) p.y = dustH + 30;
-          if (p.y > dustH + 30) p.y = -30;
+          if (p.x < -30) p.x = W + 30;
+          if (p.x > W + 30) p.x = -30;
+          if (p.y < -30) p.y = H + 30;
+          if (p.y > H + 30) p.y = -30;
 
-          const twinkle = 0.55 + 0.45 * Math.sin(p.t * p.tw);
-          const alpha = (dustMode === "rich" ? p.a + 0.08 : p.a) * twinkle;
+          const tw = 0.55 + 0.45 * Math.sin(p.t * p.tw);
+          const alpha = p.a * tw;
 
           dustCtx.beginPath();
           dustCtx.fillStyle = `hsla(${p.hue}, 95%, 62%, ${alpha})`;
           dustCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
           dustCtx.fill();
 
-          if (dustMode === "rich" && Math.random() < 0.015) {
+          if (Math.random() < 0.015) {
             dustCtx.beginPath();
             dustCtx.fillStyle = `hsla(${p.hue}, 95%, 70%, ${alpha * 0.55})`;
             dustCtx.arc(p.x, p.y, p.r * 3.6, 0, Math.PI * 2);
@@ -1061,15 +986,42 @@
           }
         }
 
-        rafId = requestAnimationFrame(tickDust);
+        raf = requestAnimationFrame(tickDust);
+      }
+
+      function dustOn() {
+        body.classList.add("dust-on");
+        if (running) return;
+        running = true;
+        resizeDust();
+        buildDust();
+        tickDust();
+      }
+
+      function dustOff() {
+        body.classList.remove("dust-on");
+        running = false;
+        if (raf) cancelAnimationFrame(raf);
+        raf = null;
+        dustCtx.clearRect(0, 0, W, H);
       }
 
       window.addEventListener("resize", () => {
-        if (dustMode !== "off") resizeDust();
+        if (!running) return;
+        resizeDust();
+        buildDust();
       });
+
       document.addEventListener("visibilitychange", () => {
-        if (document.hidden) stopDust();
-        else if (dustMode !== "off") startDust();
+        if (!running) return;
+        if (document.hidden) {
+          running = false;
+          if (raf) cancelAnimationFrame(raf);
+          raf = null;
+        } else {
+          running = true;
+          tickDust();
+        }
       });
 
       /* Helpers */
@@ -1097,7 +1049,7 @@
           btn.classList.toggle("active", btn.dataset.section === section);
         });
 
-        applyDustForState(); // ✅ dust rules
+        applyDustRule();
       }
 
       function setPills() {
@@ -1136,26 +1088,22 @@
         }
       }
 
-      /* ✅ Dust Rules (YOUR REQUEST)
-         - OFF everywhere by default
-         - ON ONLY for:
-            A) Gate screen (subscription not active)
-            B) Subscription section inside the app
+      /* ✅ YOUR RULE:
+         Dust ONLY on subscription section.
+         Not on home. Not on gate. Not anywhere else.
       */
-      function applyDustForState() {
-        const inGate = state.loggedIn && !isSubActive();                 // gate visible
-        const inSubSection = state.loggedIn && isSubActive() && state.activeSection === "subscription";
-
-        if (inGate || inSubSection) setDustMode("rich");
-        else setDustMode("off");
+      function applyDustRule() {
+        const shouldDust = state.loggedIn && isSubActive() && state.activeSection === "subscription";
+        if (shouldDust) dustOn();
+        else dustOff();
       }
 
       function setModeClasses() {
-        body.classList.remove("gate", "active-app", "dust-on", "dust-rich");
+        body.classList.remove("gate", "active-app");
 
         if (!state.loggedIn) {
           showVisitorNav();
-          applyDustForState();
+          dustOff();
           return;
         }
 
@@ -1163,7 +1111,7 @@
           body.classList.add("gate");
           showVisitorNav();
           setGateUI();
-          applyDustForState();
+          dustOff(); // ✅ no dust on gate
           return;
         }
 
@@ -1171,7 +1119,7 @@
         showCustomerNav();
         setPills();
         showSection(state.activeSection || "home");
-        applyDustForState();
+        applyDustRule();
       }
 
       /* Modal helpers */
@@ -1206,7 +1154,7 @@
       }
 
       /* UI Events */
-      heroJoinBtn.addEventListener("click", openAuthModal);
+      joinBtn.addEventListener("click", openAuthModal);
       closeBtn.addEventListener("click", closeModal);
       overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
       window.addEventListener("keydown", (e) => { if (e.key === "Escape" && body.classList.contains("modal-open")) closeModal(); });
@@ -1218,10 +1166,9 @@
         tabSignin.classList.toggle("active", !isSignup);
         confirmWrap.style.display = isSignup ? "flex" : "none";
         document.getElementById("confirm").required = isSignup;
-
+        submitBtn.textContent = isSignup ? "Create account" : "Sign in";
         modeTitle.textContent = isSignup ? "Create your account" : "Welcome back";
         modeSub.textContent = isSignup ? "Join PrimeX in seconds." : "Sign in to continue.";
-        submitBtn.textContent = isSignup ? "Create account" : "Sign in";
       }
       tabSignup.addEventListener("click", () => setAuthMode("signup"));
       tabSignin.addEventListener("click", () => setAuthMode("signin"));
@@ -1233,7 +1180,6 @@
         const pass = document.getElementById("password").value;
         const confirm = document.getElementById("confirm").value;
         const isSignup = tabSignup.classList.contains("active");
-
         if (!email || !pass) return;
         if (isSignup && pass !== confirm) { alert("Passwords do not match."); return; }
 
@@ -1249,7 +1195,6 @@
         setAuthMode("signup");
       });
 
-      /* Logout */
       function doLogout() {
         sessionStorage.removeItem("px_loggedIn");
         sessionStorage.removeItem("px_email");
@@ -1259,20 +1204,15 @@
       }
       gateLogoutBtn.addEventListener("click", doLogout);
 
-      /* ✅ Dev Access (back) */
       devAccessBtn.addEventListener("click", () => {
         state.subStatus = "active";
         localStorage.setItem("px_subStatus", "active");
         setModeClasses();
       });
 
-      /* Gate unlock -> opens payment */
       gateUnlockBtn.addEventListener("click", () => openPaymentModal());
-
-      /* Subscription section open payment */
       subOpenPaymentBtn?.addEventListener("click", () => openPaymentModal());
 
-      /* Submit Proof (demo) -> pending */
       submitProofBtn?.addEventListener("click", () => {
         state.subStatus = "pending";
         localStorage.setItem("px_subStatus", "pending");
@@ -1282,14 +1222,12 @@
         setModeClasses();
       });
 
-      /* Customer nav switching */
       navCustomer.addEventListener("click", (e) => {
         const btn = e.target.closest("button[data-section]");
         if (!btn) return;
         showSection(btn.dataset.section);
       });
 
-      /* Quick actions */
       qaLive?.addEventListener("click", () => showSection("liveSessions"));
       qaSub?.addEventListener("click", () => showSection("subscription"));
 
@@ -1298,22 +1236,17 @@
       }
       qaBusiness?.addEventListener("click", () => openBizPayment());
       bizUnlockBtn?.addEventListener("click", (e) => { e.stopPropagation(); openBizPayment(); });
-      businessModule?.addEventListener("click", () => openBizPayment());
 
-      /* Init */
       function init() {
         if (!localStorage.getItem("px_subStatus")) localStorage.setItem("px_subStatus", state.subStatus);
         if (!localStorage.getItem("px_businessStatus")) localStorage.setItem("px_businessStatus", state.businessStatus);
-
-        if (state.loggedIn && !state.email) {
-          state.email = sessionStorage.getItem("px_email") || "";
-        }
+        if (state.loggedIn && !state.email) state.email = sessionStorage.getItem("px_email") || "";
 
         resizeDust();
         setModeClasses();
         setPills();
         setGateUI();
-        applyDustForState();
+        applyDustRule(); // ✅ enforce immediately
       }
 
       init();
