@@ -1,237 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>PrimeX</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrimeX</title>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="primex-mark-44-clean.png">
-  <link rel="shortcut icon" href="primex-mark-44-clean.png">
+<!-- FIXED FAVICON -->
+<link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png">
+<link rel="icon" type="image/png" sizes="16x16" href="primex-mark-44-clean.png">
+<link rel="shortcut icon" href="primex-mark-44-clean.png">
+<meta name="theme-color" content="#0b0b0b">
 
-  <style>
-    /* ===========================
-       BASE RESET
-    ============================ */
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:#000;
-      color:#d2d2d2;
-      overflow-x:hidden;
-    }
+<style>
+/* =========================================================
+   PRIME X CORE
+========================================================= */
+:root{
+  --bg:#050505;
+  --glass:rgba(18,18,18,.62);
+  --stroke:rgba(255,255,255,.14);
+  --text:rgba(255,255,255,.92);
+  --muted:rgba(255,255,255,.72);
 
-    /* ===========================
-       PRIME X VARIABLES
-    ============================ */
-    :root{
-      --px-gold:#f2b705;
-      --px-gold-soft:rgba(242,183,5,.35);
-      --px-gold-faint:rgba(242,183,5,.18);
+  --gold:#f2b400;
+  --gold2:#d79b00;
+  --gold-soft:rgba(242,180,0,.35);
+  --gold-faint:rgba(242,180,0,.18);
+}
 
-      --text-main:#f4f4f4;
-      --text-body:#d2d2d2;
-      --text-muted:#a8a8a8;
-    }
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+  background:#000;
+  color:var(--text);
+  overflow-x:hidden;
+}
 
-    h1,h2,h3,h4{color:var(--text-main)}
-    p,span{color:var(--text-body)}
+/* =========================================================
+   BACKGROUND
+========================================================= */
+.bg-wrap{
+  position:fixed;
+  inset:0;
+  z-index:-3;
+}
+#bgVideo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:grayscale(1) brightness(.45);
+}
+.vignette{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.8));
+}
 
-    /* ===========================
-       BACKGROUND (montage)
-    ============================ */
-    .bg-video{
-      position:fixed;
-      inset:0;
-      z-index:-2;
-      opacity:.25;
-    }
-    .bg-video video{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      filter:blur(6px) grayscale(1);
-    }
+body.blank-bg .bg-wrap{display:none}
+body.blank-bg{background:#000}
 
-    /* ===========================
-       DASHBOARD WRAPPER
-    ============================ */
-    .dashboard{
-      max-width:1200px;
-      margin:80px auto;
-      padding:32px;
-      border-radius:22px;
-      background:rgba(0,0,0,.55);
-      backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,.08);
-    }
+/* =========================================================
+   HEADER / NAV
+========================================================= */
+header{
+  position:fixed;
+  top:0;left:0;right:0;
+  padding:18px 28px;
+  z-index:30;
+}
+.nav-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.brand img{height:42px}
 
-    /* ===========================
-       CARD GRID
-    ============================ */
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:18px;
-    }
+nav{
+  display:flex;
+  gap:12px;
+}
+nav button{
+  background:transparent;
+  border:1px solid transparent;
+  color:rgba(255,255,255,.9);
+  font-weight:900;
+  padding:10px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+nav button::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:radial-gradient(220px circle at 50% 50%, var(--gold-faint), transparent 60%);
+  opacity:0;
+  transition:.2s;
+}
+nav button:hover::before{opacity:.7}
+nav button.active::before{opacity:1}
+nav button.active{
+  border-color:rgba(242,180,0,.28);
+}
 
-    /* ===========================
-       CARD (POLISHED)
-    ============================ */
-    .card{
-      position:relative;
-      overflow:hidden;
-      padding:22px;
-      border-radius:18px;
-      background:linear-gradient(
-        180deg,
-        rgba(22,22,22,.88),
-        rgba(14,14,14,.92)
-      );
-      border:1px solid rgba(255,255,255,.08);
-      transition:
-        transform .35s ease,
-        box-shadow .35s ease,
-        border-color .35s ease;
-    }
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+main{
+  padding:140px 22px 80px;
+  display:flex;
+  justify-content:center;
+}
 
-    /* Cursor-follow glow */
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      background:radial-gradient(
-        420px circle at var(--mx,50%) var(--my,50%),
-        var(--px-gold-faint),
-        transparent 60%
-      );
-      opacity:0;
-      transition:opacity .3s ease;
-      pointer-events:none;
-    }
+/* =========================================================
+   DASHBOARD CARD (UNCHANGED STRUCTURE)
+========================================================= */
+.card{
+  width:min(1100px,100%);
+  border-radius:28px;
+  background:rgba(15,15,15,.78);
+  border:1px solid rgba(255,255,255,.12);
+  padding:26px;
+  backdrop-filter:blur(8px);
+  position:relative;
+  overflow:hidden;
+}
 
-    .card:hover{
-      transform:translateY(-3px);
-      border-color:var(--px-gold-soft);
-      box-shadow:
-        0 16px 40px rgba(0,0,0,.55),
-        inset 0 0 0 1px rgba(242,183,5,.15);
-    }
+/* GOLD MOUSE GLOW */
+.card::before,
+.qa::before,
+.mod::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:radial-gradient(
+    420px circle at var(--mx,50%) var(--my,50%),
+    var(--gold-faint),
+    transparent 60%
+  );
+  opacity:0;
+  transition:.25s;
+  pointer-events:none;
+}
+.card:hover::before,
+.qa:hover::before,
+.mod:hover::before{opacity:1}
 
-    .card:hover::before{opacity:1}
+.card > *{position:relative;z-index:1}
 
-    /* ===========================
-       BUTTONS
-    ============================ */
-    .btn{
-      position:relative;
-      display:inline-block;
-      margin-top:14px;
-      padding:12px 18px;
-      border-radius:999px;
-      background:var(--px-gold);
-      color:#000;
-      font-weight:600;
-      border:none;
-      cursor:pointer;
-      overflow:hidden;
-      transition:transform .25s ease, box-shadow .25s ease;
-    }
+/* =========================================================
+   DASHBOARD CONTENT
+========================================================= */
+.dash-title h2{
+  margin:0;
+  font-size:20px;
+}
+.dash-title p{
+  color:var(--muted);
+  font-size:13px;
+}
 
-    .btn::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(
-        120deg,
-        transparent 30%,
-        rgba(255,255,255,.35),
-        transparent 70%
-      );
-      transform:translateX(-120%);
-      transition:transform .6s ease;
-    }
+.grid4{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-top:18px;
+}
 
-    .btn:hover{
-      transform:translateY(-1px);
-      box-shadow:0 10px 30px rgba(242,183,5,.45);
-    }
+.qa{
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.12);
+  padding:16px;
+  background:rgba(0,0,0,.35);
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+.qa strong{font-size:13px}
+.qa span{font-size:11px;color:var(--muted)}
 
-    .btn:hover::after{
-      transform:translateX(120%);
-    }
+.tag{
+  display:inline-block;
+  margin-top:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  border:1px solid rgba(255,255,255,.12);
+}
+.tag.gold{
+  background:rgba(242,180,0,.14);
+  border-color:rgba(242,180,0,.28);
+}
 
-    /* ===========================
-       BADGES
-    ============================ */
-    .badge{
-      display:inline-block;
-      padding:6px 12px;
-      border-radius:999px;
-      font-size:12px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.06);
-    }
+/* =========================================================
+   BUTTONS
+========================================================= */
+.btn,
+.cta,
+.primary{
+  border:none;
+  border-radius:999px;
+  padding:12px 18px;
+  font-weight:900;
+  cursor:pointer;
+  background:linear-gradient(180deg,var(--gold),var(--gold2));
+  color:#0b0b0b;
+  position:relative;
+  overflow:hidden;
+}
+.btn::after,
+.cta::after,
+.primary::after{
+  content:"";
+  position:absolute;
+  top:-40%;
+  left:-30%;
+  width:40%;
+  height:200%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+  transform:rotate(18deg) translateX(-140%);
+  transition:.9s;
+}
+.btn:hover::after,
+.cta:hover::after,
+.primary:hover::after{
+  transform:rotate(18deg) translateX(360%);
+}
 
-    .badge.active{
-      color:var(--px-gold);
-      border-color:var(--px-gold);
-      background:rgba(242,183,5,.14);
-    }
-  </style>
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media(max-width:900px){
+  .grid4{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+  .grid4{grid-template-columns:1fr}
+}
+</style>
 </head>
 
 <body>
 
-  <!-- Background -->
-  <div class="bg-video">
-    <video src="montage.mp4" autoplay muted loop></video>
+<div class="bg-wrap">
+  <video id="bgVideo" autoplay muted loop playsinline>
+    <source src="montage.mp4" type="video/mp4">
+  </video>
+  <div class="vignette"></div>
+</div>
+
+<header>
+  <div class="nav-inner">
+    <a class="brand">
+      <img src="primex-full-transparent-clean.png">
+    </a>
+    <nav id="navCustomer">
+      <button class="active">Home</button>
+      <button>Live Sessions</button>
+      <button>Subscription</button>
+      <button>Group Signals</button>
+    </nav>
   </div>
+</header>
 
-  <!-- Dashboard -->
-  <div class="dashboard">
-    <h2>Dashboard</h2>
-    <p>Quick access to sessions, signals, and your modules.</p>
+<main>
+  <div class="card">
+    <div class="dash-title">
+      <h2>Dashboard</h2>
+      <p>Quick access to sessions, signals, and your modules.</p>
+    </div>
 
-    <div class="grid">
-      <div class="card">
-        <h4>Live Sessions</h4>
-        <p>Open the calendar and join scheduled sessions.</p>
-        <button class="btn">Calendar</button>
+    <div class="grid4">
+      <div class="qa">
+        <strong>Live Sessions</strong>
+        <span>Open the calendar and join scheduled sessions.</span>
+        <div class="tag">Calendar</div>
       </div>
-
-      <div class="card">
-        <h4>Signals</h4>
-        <p>Private Telegram access. No public invite.</p>
-        <span class="badge active">Active</span>
+      <div class="qa">
+        <strong>Signals</strong>
+        <span>Private Telegram access.</span>
+        <div class="tag gold">Active</div>
       </div>
-
-      <div class="card">
-        <h4>Trading</h4>
-        <p>Frameworks and structured learning.</p>
-        <span class="badge active">Active</span>
+      <div class="qa">
+        <strong>Trading</strong>
+        <span>Frameworks and structured learning.</span>
+        <div class="tag gold">Active</div>
       </div>
-
-      <div class="card">
-        <h4>Business</h4>
-        <p>Unlock advanced tools and dashboard.</p>
-        <button class="btn">Unlock</button>
+      <div class="qa">
+        <strong>Business</strong>
+        <span>Unlock advanced tools.</span>
+        <div class="tag">Locked · $50</div>
       </div>
     </div>
   </div>
+</main>
 
-  <!-- Cursor tracking -->
-  <script>
-    document.querySelectorAll('.card').forEach(card=>{
-      card.addEventListener('mousemove',e=>{
-        const r=card.getBoundingClientRect();
-        card.style.setProperty('--mx',((e.clientX-r.left)/r.width)*100+'%');
-        card.style.setProperty('--my',((e.clientY-r.top)/r.height)*100+'%');
-      });
-    });
-  </script>
+<script>
+/* GOLD MOUSE FOLLOW */
+document.querySelectorAll(".card,.qa,.mod").forEach(el=>{
+  el.addEventListener("mousemove",e=>{
+    const r=el.getBoundingClientRect();
+    el.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");
+    el.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%");
+  });
+});
+</script>
 
 </body>
 </html>
