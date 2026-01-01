@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PrimeX</title>
 
-  <!-- Favicon / Tab icon -->
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="logo-192.png" />
@@ -15,7 +14,7 @@
   <style>
     :root{
       --bg: #050505;
-      --glass: rgba(18,18,18,.62);
+      --glass: rgba(18,18,18,.78); /* ✅ lighter */
       --glass-strong: rgba(18,18,18,.78);
       --stroke: rgba(255,255,255,.14);
       --muted: rgba(255,255,255,.68);
@@ -36,15 +35,13 @@
       overflow-x:hidden;
     }
 
-    /* Background video */
     .bg-wrap{
       position: fixed;
       inset: 0;
       z-index: -2;
-      background: #000;
       overflow:hidden;
     }
-    video#bgVideo{
+    video{
       position:absolute;
       inset:0;
       width:100%;
@@ -55,33 +52,24 @@
     }
     .vignette{
       position:absolute;
-      inset:-2px;
+      inset:0;
       background:
         radial-gradient(1200px 700px at 20% 10%, rgba(242,180,0,.22), transparent 55%),
-        radial-gradient(900px 600px at 80% 20%, rgba(255,255,255,.06), transparent 60%),
-        radial-gradient(1100px 800px at 50% 80%, rgba(0,0,0,.50), transparent 55%),
         linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.65));
-      z-index: -1;
-      pointer-events:none;
     }
 
-    /* Header */
     header{
       position: fixed;
       top:0; left:0; right:0;
       z-index: 30;
       padding: 18px 28px;
-      display:flex;
-      justify-content:space-between;
       pointer-events:none;
     }
     .nav-inner{
-      width:100%;
       display:flex;
       justify-content:space-between;
       pointer-events:auto;
     }
-
     nav{
       display:flex;
       gap:22px;
@@ -92,7 +80,6 @@
       font-weight:600;
       font-size:14px;
       padding:10px;
-      border-radius:999px;
     }
 
     main{
@@ -103,22 +90,20 @@
       padding:140px 22px 80px;
     }
 
-    /* Hero card */
     .hero-card{
       width:min(900px,100%);
-      border-radius: var(--radius);
       background: var(--glass);
       border:1px solid var(--stroke);
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(6px);                 /* ✅ CHANGED */
-      -webkit-backdrop-filter: blur(6px);         /* ✅ CHANGED */
+      backdrop-filter: blur(6px);               /* ✅ reduced blur */
+      -webkit-backdrop-filter: blur(6px);
       padding:42px 36px 40px;
       text-align:center;
-      transition:.28s;
     }
 
     .pill{
-      display:inline-flex;
+      display:inline-block;
       padding:7px 14px;
       border-radius:999px;
       background: rgba(255,255,255,.08);
@@ -129,9 +114,9 @@
     }
 
     h1{
-      margin:0 0 14px;
       font-size: clamp(34px, 5.4vw, 62px);
       font-weight:900;
+      margin:0 0 14px;
     }
 
     .sub{
@@ -152,33 +137,35 @@
       cursor:pointer;
     }
 
-    /* Modal (unchanged) */
     .overlay{
-      position:fixed;
-      inset:0;
-      display:grid;
-      place-items:center;
-      opacity:0;
-      pointer-events:none;
-      background:rgba(0,0,0,.38);
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      pointer-events: none;
+      background: rgba(0,0,0,.38);
       backdrop-filter: blur(4px);
     }
-    body.modal-open .overlay{opacity:1;pointer-events:auto;}
+    body.modal-open .overlay{
+      opacity:1;
+      pointer-events:auto;
+    }
   </style>
 </head>
 
 <body>
 
 <div class="bg-wrap">
-  <video id="bgVideo" autoplay muted loop playsinline>
-    <source src="montage.mp4" type="video/mp4" />
+  <video autoplay muted loop playsinline>
+    <source src="montage.mp4" type="video/mp4">
   </video>
   <div class="vignette"></div>
 </div>
 
 <header>
   <div class="nav-inner">
-    <img src="primex-full-transparent-clean.png" height="44" />
+    <img src="primex-full-transparent-clean.png" height="44">
     <nav>
       <a href="#trading">Trading</a>
       <a href="#live">Live Sessions</a>
@@ -200,9 +187,26 @@
   </section>
 </main>
 
+<div class="overlay" id="overlay" aria-hidden="true"></div>
+
 <script>
-  document.getElementById("joinBtn").onclick = () =>
-    document.body.classList.toggle("modal-open");
+  const body = document.body;
+  const joinBtn = document.getElementById("joinBtn");
+  const overlay = document.getElementById("overlay");
+
+  joinBtn.addEventListener("click", () => {
+    body.classList.add("modal-open");
+    overlay.setAttribute("aria-hidden","false");
+  });
+
+  overlay.addEventListener("click", () => {
+    body.classList.remove("modal-open");
+    overlay.setAttribute("aria-hidden","true");
+  });
+
+  window.addEventListener("keydown", e => {
+    if(e.key === "Escape") body.classList.remove("modal-open");
+  });
 </script>
 
 </body>
