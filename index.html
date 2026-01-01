@@ -1996,6 +1996,7 @@
       - Gold dust overlay: canvas, toggled per section/state
 
       ✅ Added: lightweight mouse-follow glow for existing UI (no feature removal)
+      ✅ Added: DEV MODE override to NEVER skip subscription flow (see below)
     ========================================================== */
 
     /* ===== Basic state (demo) ===== */
@@ -2764,6 +2765,58 @@
         bindGlow(item);
       });
     }
+
+    /* =========================================================
+      ✅ DEV MODE — NEVER SKIP SUBSCRIPTION FLOW
+      Turn ON:
+        - add ?dev=1 to your URL  (recommended)
+          example: index.html?dev=1
+        OR run in console once:
+          localStorage.setItem("px_dev_mode","1"); location.reload();
+
+      Turn OFF:
+        - remove ?dev=1
+        - and/or run:
+          localStorage.removeItem("px_dev_mode"); location.reload();
+
+      Behavior when ON:
+        - Forces subStatus to "none" on every load (so it never jumps to dashboard)
+        - Leaves auth alone
+        - Does NOT break your payment submit -> pending flow (pending still works)
+        - Disables the "Dev: Preview Dashboard" button so it can’t bypass
+    ========================================================== */
+    (function PRIME_X_DEV_MODE_NEVER_SKIP(){
+      try{
+        const params = new URLSearchParams(location.search);
+        const devParamOn = params.has("dev") && params.get("dev") !== "0";
+        const devStoredOn = localStorage.getItem("px_dev_mode") === "1";
+        const DEV_MODE = devParamOn || devStoredOn;
+
+        // optional: expose flag for debugging
+        window.__PRIMEX_DEV__ = DEV_MODE;
+
+        if(!DEV_MODE) return;
+
+        // Force subscription flow every load
+        state.subStatus = "none";
+        localStorage.setItem("px_subStatus", "none");
+
+        // Optional: keep business clean in dev tests too
+        state.businessStatus = "none";
+        localStorage.setItem("px_businessStatus", "none");
+
+        // Disable the preview dashboard bypass while dev mode is on
+        if (devPreviewBtn){
+          devPreviewBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            alert("Dev mode is ON: Dashboard preview is disabled so the subscription flow never gets skipped.");
+          }, true);
+        }
+      }catch(err){
+        // dev-only: fail silently
+      }
+    })();
 
     /* ===== Init ===== */
     function init(){
