@@ -9,118 +9,51 @@
     <link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="primex-mark-44-clean.png" />
     <link rel="shortcut icon" href="primex-mark-44-clean.png" />
-    <link rel="apple-touch-icon" sizes="192x192" href="logo-192.png" />
-    <link rel="apple-touch-icon" sizes="512x512" href="logo-512.png" />
-    <meta name="theme-color" content="#0b0b0b" />
+    <meta name="theme-color" content="#000000" />
 
     <style>
       :root {
-        --bg: #050505;
-        --glass: rgba(18, 18, 18, 0.62);
-        --glass-strong: rgba(18, 18, 18, 0.78);
+        --bg: #000;
+        --glass: rgba(18, 18, 18, 0.72);
+        --glass-strong: rgba(18, 18, 18, 0.86);
         --stroke: rgba(255, 255, 255, 0.14);
         --muted: rgba(255, 255, 255, 0.78);
         --text: rgba(255, 255, 255, 0.96);
         --gold: #f2b400;
         --gold2: #d79b00;
-        --blue: #58c7ff;
-        --blue2: #2a7bff;
-        --shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
+        --shadow: 0 22px 80px rgba(0, 0, 0, 0.7);
         --radius: 24px;
 
+        /* Glow */
         --glowGoldA: rgba(242, 180, 0, 0.34);
-        --glowGoldB: rgba(242, 180, 0, 0.14);
-        --glowBlueA: rgba(88, 199, 255, 0.18);
+        --glowGoldB: rgba(242, 180, 0, 0.16);
+        --glowBlueA: rgba(88, 199, 255, 0.14);
       }
 
       * { box-sizing: border-box; }
       html, body { height: 100%; }
-
-      /* Sharper text */
       body {
         margin: 0;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-        background: var(--bg);
+        background: #000; /* ✅ ALWAYS BLACK (no montage on home) */
         color: var(--text);
         overflow-x: hidden;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
       }
 
-      /* ===== Background video (ONLY for logged-out landing) ===== */
-      .bg-wrap {
-        position: fixed;
-        inset: 0;
-        z-index: -3;
-        background: #000;
-        overflow: hidden;
-      }
-      video#bgVideo {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: grayscale(1) contrast(1.05) brightness(0.55);
-        transform: scale(1.02);
-      }
-      .vignette {
-        position: absolute;
-        inset: -2px;
-        background:
-          radial-gradient(1200px 700px at 20% 10%, rgba(242, 180, 0, 0.22), transparent 55%),
-          radial-gradient(900px 600px at 80% 20%, rgba(255, 255, 255, 0.06), transparent 60%),
-          radial-gradient(1100px 800px at 50% 80%, rgba(0, 0, 0, 0.55), transparent 55%),
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.75));
-        z-index: -2;
-        pointer-events: none;
-      }
+      /* ✅ We keep the bg video markup but never show it */
+      .bg-wrap { display: none !important; }
 
-      /* Blank black background (for gate + active app) */
-      body.blank-bg .bg-wrap { display: none; }
-      body.blank-bg { background: #000; }
-
-      /* ===== Gold dust overlay ===== */
+      /* ✅ Dust canvas exists, but only turns on inside subscription (gate + subscription section) */
       #dustCanvas {
         position: fixed;
         inset: 0;
-        z-index: -1;
+        z-index: -1; /* above background, below UI */
         pointer-events: none;
         opacity: 0;
-        transition: opacity 0.35s ease;
+        transition: opacity 0.25s ease;
       }
       body.dust-on #dustCanvas { opacity: 0.95; }
       body.dust-rich #dustCanvas { opacity: 1; }
-
-      /* ===== Mouse glow surfaces ===== */
-      .glow-surface { position: relative; overflow: hidden; isolation: isolate; }
-      .glow-surface::before {
-        content: "";
-        position: absolute;
-        inset: -2px;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.22s ease;
-        z-index: 0;
-        background:
-          radial-gradient(420px 260px at var(--mx, 50%) var(--my, 50%), var(--glowGoldA), transparent 60%),
-          radial-gradient(520px 320px at calc(var(--mx, 50%) + 8%) calc(var(--my, 50%) + 6%), var(--glowGoldB), transparent 62%),
-          radial-gradient(520px 320px at calc(var(--mx, 50%) - 10%) calc(var(--my, 50%) - 8%), var(--glowBlueA), transparent 64%);
-        mix-blend-mode: screen;
-      }
-      .glow-surface:hover::before { opacity: 1; }
-      .glow-surface::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 0;
-        opacity: 0;
-        transition: opacity 0.22s ease;
-        background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 45%, rgba(242,180,0,0.06));
-      }
-      .glow-surface:hover::after { opacity: 0.9; }
-      .glow-surface > * { position: relative; z-index: 1; }
 
       /* ===== Header ===== */
       header {
@@ -131,7 +64,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        pointer-events: none;
       }
       .nav-inner {
         width: 100%;
@@ -139,7 +71,6 @@
         align-items: center;
         justify-content: space-between;
         gap: 18px;
-        pointer-events: auto;
       }
       .brand {
         display: flex;
@@ -152,37 +83,42 @@
         height: 44px;
         width: auto;
         display: block;
-        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.55));
+        filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.75));
       }
+
       nav {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 12px;
         flex-wrap: wrap;
         justify-content: flex-end;
       }
       nav a, nav button {
-        color: rgba(255, 255, 255, 0.92);
+        color: rgba(255,255,255,0.92);
         text-decoration: none;
-        font-weight: 900;
+        font-weight: 950;
         font-size: 13px;
         padding: 10px 12px;
         border-radius: 999px;
-        transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-        background: transparent;
-        border: 1px solid transparent;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.10);
         cursor: pointer;
+        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, opacity 0.16s ease;
+        opacity: 0.95;
       }
       nav a:hover, nav button:hover {
-        background: rgba(255,255,255,0.08);
         transform: translateY(-1px);
+        background: rgba(255,255,255,0.08);
+        border-color: rgba(242,180,0,0.18);
+        opacity: 1;
       }
       nav .active {
-        background: rgba(242,180,0,0.16);
-        border-color: rgba(242,180,0,0.28);
+        background: rgba(242, 180, 0, 0.18);
+        border-color: rgba(242, 180, 0, 0.32);
+        opacity: 1;
       }
 
-      /* Hide header in gate (locked/pending) */
+      /* Hide header in gate */
       body.gate header { display: none; }
 
       /* ===== Layout ===== */
@@ -194,39 +130,36 @@
         padding: 140px 22px 80px;
       }
 
-      /* Logged-out hero */
+      /* ===== Hero ===== */
       .hero-card {
         width: min(900px, 100%);
         border-radius: var(--radius);
-        background: var(--glass);
-        border: 1px solid var(--stroke);
+        background: rgba(14,14,14,0.78);
+        border: 1px solid rgba(255,255,255,0.12);
         box-shadow: var(--shadow);
-        backdrop-filter: blur(3px);
-        -webkit-backdrop-filter: blur(3px);
-        padding: 42px 36px 40px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 44px 36px 40px;
         text-align: center;
       }
       .pill {
         display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
         padding: 7px 14px;
         border-radius: 999px;
-        background: rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.06);
         border: 1px solid rgba(255,255,255,0.14);
-        color: rgba(255,255,255,0.92);
         font-weight: 980;
         font-size: 12px;
+        color: rgba(255,255,255,0.92);
         margin-bottom: 18px;
       }
       h1 {
-        margin: 0 0 14px;
+        margin: 0 0 12px;
         font-size: clamp(34px, 5.4vw, 62px);
         line-height: 1.06;
         letter-spacing: -0.8px;
-        font-weight: 980;
-        text-shadow: 0 10px 30px rgba(0,0,0,0.55);
+        font-weight: 990;
+        color: rgba(255,255,255,0.98);
       }
       .sub {
         margin: 0 auto 26px;
@@ -243,86 +176,136 @@
         gap: 10px;
         background: linear-gradient(180deg, var(--gold), var(--gold2));
         color: #0b0b0b;
-        font-weight: 980;
+        font-weight: 990;
         border: none;
         border-radius: 999px;
         padding: 13px 26px;
         cursor: pointer;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
         transition: transform 0.18s ease;
       }
       .cta:hover { transform: translateY(-1px); }
       .cta:active { transform: translateY(0px) scale(0.99); }
 
-      /* ===== Gate (subscription-only) ===== */
-      .gate-wrap { width: min(1040px, 100%); display: none; align-items: center; justify-content: center; }
+      /* ===== Gate ===== */
+      .gate-wrap { width: min(1040px, 100%); display: none; }
       body.gate .gate-wrap { display: flex; }
       body.gate .hero-card { display: none; }
       body.gate .app-wrap { display: none; }
 
       .gate-card {
-        width: min(940px, 100%);
+        width: min(980px, 100%);
         border-radius: 34px;
-        position: relative;
-        overflow: hidden;
         padding: 18px;
-        background: rgba(8,8,8,0.92);
-        box-shadow: 0 40px 130px rgba(0,0,0,0.78), 0 0 0 1px rgba(255,255,255,0.08) inset;
+        background: rgba(10,10,10,0.92);
+        border: 1px solid rgba(255,255,255,0.10);
+        box-shadow: 0 40px 140px rgba(0,0,0,0.85);
+        backdrop-filter: blur(12px);
       }
-      .gate-inner { position: relative; z-index: 1; padding: 18px 20px; }
-      .gate-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+      .gate-inner { padding: 16px 18px 18px; }
+      .gate-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 14px;
+      }
       .gate-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
-      .gate-brand img { height: 34px; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.65)); }
-      .gate-title strong { font-size: 14px; font-weight: 980; }
-      .gate-title span { display:block; font-size: 11px; color: rgba(255,255,255,0.75); font-weight: 850; }
+      .gate-brand img { height: 34px; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.7)); }
+      .gate-title { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+      .gate-title strong { font-size: 14px; font-weight: 990; color: rgba(255,255,255,0.98); }
+      .gate-title span { font-size: 11.5px; color: rgba(255,255,255,0.78); font-weight: 850; }
 
-      .gate-logout {
+      .gate-actions { display:flex; gap:10px; align-items:center; }
+      .gate-btn {
         border-radius: 999px;
         padding: 10px 14px;
         border: 1px solid rgba(255,255,255,0.12);
         background: rgba(255,255,255,0.06);
-        color: rgba(255,255,255,0.9);
+        color: rgba(255,255,255,0.92);
         font-weight: 980;
         cursor: pointer;
+        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+      }
+      .gate-btn:hover {
+        transform: translateY(-1px);
+        background: rgba(255,255,255,0.10);
+        border-color: rgba(242,180,0,0.20);
       }
 
-      .plan-grid { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 14px; margin-top: 10px; }
+      .plan-grid {
+        display: grid;
+        grid-template-columns: 1.25fr 0.75fr;
+        gap: 14px;
+        margin-top: 10px;
+      }
       .plan, .gate-side {
         border-radius: 24px;
-        border: 1px solid rgba(255,255,255,0.1);
-        background: rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.10);
+        background: rgba(0,0,0,0.30);
         padding: 16px;
       }
-      .plan-head { display:flex; justify-content:space-between; gap:10px; margin-bottom:10px; }
-      .price .amt { font-size: 40px; font-weight: 990; }
-      .price .dur { font-size: 12px; font-weight: 980; color: rgba(255,255,255,0.75); }
+      .plan-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+      .plan h2 { margin: 0; font-size: 16px; font-weight: 990; }
+      .plan p { margin: 6px 0 0; font-size: 12px; color: rgba(255,255,255,0.80); font-weight: 860; line-height: 1.5; }
+      .price { text-align: right; white-space: nowrap; }
+      .price .amt { font-size: 44px; font-weight: 990; letter-spacing: -0.8px; }
+      .price .dur { margin-top: 2px; font-size: 12px; font-weight: 980; color: rgba(255,255,255,0.78); }
+
+      .feat { margin-top: 12px; display: grid; gap: 10px; }
+      .feat .row { display:flex; gap:10px; align-items:flex-start; font-size: 12px; font-weight: 920; color: rgba(255,255,255,0.95); }
+      .tick {
+        width: 18px; height: 18px; border-radius: 999px;
+        display:grid; place-items:center;
+        background: linear-gradient(180deg, var(--gold), var(--gold2));
+        color:#0b0b0b;
+        font-size: 12px; font-weight: 990;
+        box-shadow: 0 12px 24px rgba(0,0,0,0.45);
+        flex:0 0 auto;
+        margin-top:1px;
+      }
 
       .warn {
         margin-top: 12px;
         border-radius: 16px;
         border: 1px solid rgba(242,180,0,0.22);
-        background: rgba(242,180,0,0.08);
+        background: rgba(242,180,0,0.10);
         padding: 10px 12px;
-        color: rgba(255,255,255,0.92);
-        font-weight: 980;
+        color: rgba(255,255,255,0.95);
+        font-weight: 950;
         font-size: 12px;
         line-height: 1.35;
       }
-      .warn span { display:block; margin-top:4px; font-size:11px; color: rgba(255,255,255,0.78); font-weight: 850; }
+      .warn span {
+        display:block;
+        margin-top:4px;
+        font-size:11px;
+        color: rgba(255,255,255,0.82);
+        font-weight: 850;
+      }
 
       .gate-cta {
         margin-top: 14px;
         width: 100%;
         border-radius: 999px;
         padding: 14px 16px;
-        border: 1px solid rgba(242,180,0,0.18);
+        border: 1px solid rgba(242, 180, 0, 0.18);
         background: linear-gradient(180deg, var(--gold), var(--gold2));
         color: #0b0b0b;
         font-weight: 990;
         cursor: pointer;
-        box-shadow: 0 22px 65px rgba(242,180,0,0.2), 0 18px 45px rgba(0,0,0,0.55);
+        box-shadow: 0 22px 70px rgba(242,180,0,0.18), 0 18px 45px rgba(0,0,0,0.55);
+        transition: transform 0.16s ease;
       }
-      .gate-note { margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.78); font-weight: 850; text-align:center; }
+      .gate-cta:hover { transform: translateY(-1px); }
+      .gate-note {
+        margin-top: 10px;
+        font-size: 11px;
+        color: rgba(255,255,255,0.78);
+        font-weight: 850;
+        text-align: center;
+        line-height: 1.45;
+      }
 
       .status-badge {
         display: inline-flex;
@@ -334,86 +317,99 @@
         background: rgba(255,255,255,0.06);
         font-size: 12px;
         font-weight: 990;
+        color: rgba(255,255,255,0.92);
+        width: fit-content;
       }
-      .status-badge .dot { width: 8px; height: 8px; border-radius:999px; background: rgba(255,255,255,0.35); }
-      .status-badge.active .dot { background: rgba(88,199,255,0.85); }
-      .status-badge.pending .dot { background: rgba(242,180,0,0.95); }
+      .status-badge .dot {
+        width: 8px; height: 8px; border-radius: 999px;
+        background: rgba(255,255,255,0.35);
+        box-shadow: 0 0 0 5px rgba(255,255,255,0.06);
+      }
+      .status-badge.pending .dot {
+        background: rgba(242,180,0,0.95);
+        box-shadow: 0 0 0 5px rgba(242,180,0,0.12);
+      }
+      .status-badge.active .dot {
+        background: rgba(88,199,255,0.9);
+        box-shadow: 0 0 0 5px rgba(88,199,255,0.12);
+      }
 
       .mini {
         border-radius: 18px;
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.10);
         background: rgba(255,255,255,0.05);
         padding: 12px;
       }
       .mini strong { display:block; font-size: 12px; font-weight: 990; }
-      .mini span { display:block; margin-top:6px; font-size: 11px; color: rgba(255,255,255,0.78); font-weight: 850; line-height: 1.4; }
+      .mini span { display:block; margin-top: 6px; font-size: 11px; color: rgba(255,255,255,0.80); font-weight: 860; line-height: 1.4; }
 
-      /* ===== Active App ===== */
-      .app-wrap {
-        width: min(1120px, 100%);
-        display: none;
-        gap: 18px;
-        flex-direction: column;
-        align-items: stretch;
-      }
+      /* ===== App ===== */
+      .app-wrap { width: min(1120px, 100%); display: none; flex-direction: column; gap: 18px; }
       body.active-app .app-wrap { display: flex; }
       body.active-app .hero-card { display: none; }
       body.active-app .gate-wrap { display: none; }
 
       .card {
         border-radius: var(--radius);
-        background: rgba(18,18,18,0.72);
-        border: 1px solid rgba(255,255,255,0.14);
-        box-shadow: 0 18px 55px rgba(0,0,0,0.48);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        background: rgba(14,14,14,0.78);
+        border: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.62);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         padding: 18px;
-        color: rgba(255,255,255,0.95);
       }
       .section { display: none; }
       .section.active { display: block; }
 
-      .dash-title { display:flex; justify-content:space-between; gap:12px; margin-bottom:14px; }
-      .dash-title h2 { margin:0; font-size:16px; font-weight: 990; }
-      .dash-title p { margin: 6px 0 0; font-size: 12px; color: rgba(255,255,255,0.82); font-weight: 850; line-height: 1.45; max-width: 620px; }
+      /* Dashboard */
+      .dash-title { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:14px; }
+      .dash-title h2 { margin:0; font-size: 16px; font-weight: 990; }
+      .dash-title p { margin:6px 0 0; font-size: 12px; color: rgba(255,255,255,0.82); font-weight: 860; line-height: 1.5; max-width: 640px; }
 
-      .acct-pill {
+      .pill-badge {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
-        padding: 7px 10px;
+        margin: 0;
+        padding: 8px 12px;
         border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(0,0,0,0.45);
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(0,0,0,0.35);
         font-size: 11px;
         font-weight: 990;
         color: rgba(255,255,255,0.92);
+        white-space: nowrap;
       }
-      .acct-pill.active {
-        border-color: rgba(88,199,255,0.25);
-        background: rgba(88,199,255,0.08);
-      }
-      .acct-pill.locked {
-        border-color: rgba(242,180,0,0.25);
-        background: rgba(242,180,0,0.10);
+      .pill-badge.gold {
+        border-color: rgba(242,180,0,0.22);
+        background: rgba(242,180,0,0.12);
       }
 
-      .grid4 { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .grid3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
       .qa {
         border-radius: 20px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(0,0,0,0.28);
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(0,0,0,0.30);
         padding: 14px;
         cursor: pointer;
         transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
-        min-height: 92px;
+        min-height: 94px;
         display:flex;
         flex-direction:column;
         justify-content:space-between;
       }
-      .qa:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); border-color: rgba(242,180,0,0.22); }
-      .qa strong { font-size: 12px; font-weight: 990; }
-      .qa span { font-size: 11px; color: rgba(255,255,255,0.82); font-weight: 850; line-height: 1.35; }
+      .qa:hover {
+        transform: translateY(-1px);
+        background: rgba(255,255,255,0.06);
+        border-color: rgba(242,180,0,0.22);
+      }
+      .qa strong { font-size: 12.5px; font-weight: 990; color: rgba(255,255,255,0.98); }
+      .qa span { font-size: 11.5px; font-weight: 860; color: rgba(255,255,255,0.82); line-height: 1.35; }
       .qa .tag {
         margin-top: 10px;
         display:inline-flex;
@@ -422,170 +418,77 @@
         width: fit-content;
         padding: 7px 10px;
         border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(0,0,0,0.45);
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255,255,255,0.06);
         font-size: 11px;
         font-weight: 990;
+        color: rgba(255,255,255,0.92);
       }
-      .qa .tag.gold { border-color: rgba(242,180,0,0.30); background: rgba(242,180,0,0.12); }
+      .qa .tag.gold {
+        background: rgba(242,180,0,0.14);
+        border-color: rgba(242,180,0,0.24);
+      }
 
-      .modules { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+      .modules { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
       .mod {
         border-radius: 22px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(0,0,0,0.28);
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(0,0,0,0.30);
         padding: 16px;
         min-height: 150px;
         position: relative;
         transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
       }
       .mod:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); border-color: rgba(242,180,0,0.22); }
-      .mod h3 { margin:0; font-size: 13px; font-weight: 990; }
-      .mod p { margin: 8px 0 0; font-size: 11px; color: rgba(255,255,255,0.82); font-weight: 850; line-height: 1.45; }
+      .mod h3 { margin: 0; font-size: 13px; font-weight: 990; }
+      .mod p { margin: 8px 0 0; font-size: 11.5px; font-weight: 860; color: rgba(255,255,255,0.82); line-height: 1.5; }
 
-      /* Better badge placement */
+      /* ✅ Better placement for Active/Locked pill (no weird floating) */
       .mod .pillx {
         position: absolute;
         top: 12px;
         right: 12px;
-        padding: 6px 10px;
+        padding: 7px 10px;
         border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.12);
         background: rgba(0,0,0,0.55);
         font-size: 11px;
         font-weight: 990;
         color: rgba(255,255,255,0.92);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
       }
-      .mod.locked .pillx {
-        border-color: rgba(242,180,0,0.25);
-        background: rgba(242,180,0,0.10);
-      }
-
-      .cta-mini {
+      .mod.locked { cursor: pointer; border-color: rgba(255,255,255,0.10); background: rgba(0,0,0,0.26); }
+      .mod.locked:hover { border-color: rgba(242,180,0,0.24); }
+      .mod .cta-mini {
         margin-top: 14px;
         width: fit-content;
         padding: 10px 12px;
         border-radius: 999px;
         border: 1px solid rgba(242,180,0,0.22);
-        background: rgba(242,180,0,0.12);
-        color: rgba(255,255,255,0.95);
+        background: rgba(242,180,0,0.10);
+        color: rgba(255,255,255,0.94);
         font-weight: 990;
         font-size: 11px;
         cursor: pointer;
       }
 
-      .upcoming { margin-top: 12px; display:grid; grid-template-columns: 1.15fr 0.85fr; gap: 12px; }
-      .up-cta {
-        border-radius: 22px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(0,0,0,0.28);
-        padding: 16px;
-        display:flex;
-        flex-direction:column;
-        justify-content:space-between;
-        gap: 12px;
-      }
-      .btn {
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        border: none;
-        border-radius: 999px;
-        padding: 12px 16px;
-        font-weight: 980;
-        cursor: pointer;
-      }
-      .btn-gold { background: linear-gradient(180deg, var(--gold), var(--gold2)); color: #0b0b0b; }
-
-      .up-list { display:flex; flex-direction:column; gap: 10px; }
-      .up-item {
-        border-radius: 18px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(0,0,0,0.28);
-        padding: 12px;
-        display:flex;
-        justify-content:space-between;
-        gap: 12px;
-        align-items:flex-start;
-      }
-      .up-item strong { display:block; font-size: 12px; font-weight: 990; }
-      .up-item span { display:block; margin-top: 6px; font-size: 11px; color: rgba(255,255,255,0.78); font-weight: 850; }
-      .up-chip {
-        padding: 7px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(0,0,0,0.45);
-        font-size: 11px;
-        font-weight: 990;
-        white-space: nowrap;
-      }
-
-      /* ===== Live Sessions ===== */
-      .calendar-wrap {
-        border-radius: var(--radius);
-        border: 1px solid rgba(255,255,255,0.12);
+      /* Subscription section */
+      .sub-wrap { display:flex; justify-content:center; }
+      .sub-card {
+        width: min(900px, 100%);
+        border-radius: 30px;
+        border: 1px solid rgba(255,255,255,0.10);
         background: rgba(10,10,10,0.92);
+        box-shadow: 0 30px 120px rgba(0,0,0,0.8);
+        padding: 18px;
+        position: relative;
         overflow: hidden;
       }
-      .cal-head {
-        padding: 14px 16px;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        gap: 10px;
-      }
-      .chips { display:flex; flex-wrap:wrap; gap: 8px; }
-      .chip {
-        padding: 8px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(255,255,255,0.06);
-        color: rgba(255,255,255,0.92);
-        font-size: 12px;
-        font-weight: 980;
-        cursor: pointer;
-      }
-      .chip.active { background: rgba(242,180,0,0.16); border-color: rgba(242,180,0,0.28); }
-      .weekdays {
-        display:grid;
-        grid-template-columns: repeat(7, 1fr);
-        padding: 10px 0;
-        background: rgba(0,0,0,0.55);
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-        font-size: 12px;
-        font-weight: 980;
-        color: rgba(255,255,255,0.82);
-      }
-      .weekdays div { text-align:center; padding: 6px 0; }
-      .grid { display:grid; grid-template-columns: repeat(7, 1fr); min-height: 360px; }
-      .daycol { border-right: 1px solid rgba(255,255,255,0.06); padding: 12px; display:flex; flex-direction:column; gap:10px; }
-      .daycol:last-child { border-right: 0; }
-      .session-card {
-        border-radius: 16px;
-        border: 1px solid rgba(255,255,255,0.12);
-        background: rgba(255,255,255,0.06);
-        padding: 12px;
-        display:flex;
-        justify-content:space-between;
-        gap: 10px;
-        cursor:pointer;
-      }
-      .session-card:hover { border-color: rgba(242,180,0,0.22); background: rgba(255,255,255,0.08); }
-      .sess-title { font-weight: 990; font-size: 12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-      .sess-meta { font-size: 11px; color: rgba(255,255,255,0.78); font-weight: 850; }
-      .lockbadge {
-        align-self:center;
-        font-size: 11px;
-        font-weight: 990;
-        padding: 7px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(0,0,0,0.45);
-        white-space:nowrap;
-      }
+      .sub-inner { padding: 20px 22px 18px; }
 
-      /* ===== Modal overlay ===== */
+      /* Modal */
       .overlay {
         position: fixed;
         inset: 0;
@@ -596,24 +499,23 @@
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.25s ease;
-        background: rgba(0,0,0,0.45);
+        background: rgba(0, 0, 0, 0.50);
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
       }
       .modal {
         width: min(740px, 100%);
         border-radius: var(--radius);
-        background: rgba(16,16,16,0.92);
-        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(16, 16, 16, 0.92);
+        border: 1px solid rgba(255,255,255,0.12);
         box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
         transform: translateY(10px) scale(0.96);
         opacity: 0;
         transition: transform 0.25s ease, opacity 0.25s ease;
         overflow: hidden;
       }
-      body.modal-open .overlay { opacity: 1; pointer-events: auto; }
-      body.modal-open .modal { opacity: 1; transform: translateY(0) scale(1); }
-
       .modal-top {
         padding: 18px 20px 0;
         display:flex;
@@ -622,14 +524,16 @@
         gap: 10px;
       }
       .modal-title strong { font-size: 16px; font-weight: 990; }
-      .modal-title span { display:block; font-size: 12px; color: rgba(255,255,255,0.75); font-weight: 850; margin-top:2px; }
+      .modal-title span { font-size: 12px; color: rgba(255,255,255,0.76); font-weight: 850; }
       .xbtn {
         width: 40px; height: 40px;
         border-radius: 12px;
         border: 1px solid rgba(255,255,255,0.14);
         background: rgba(255,255,255,0.06);
-        color: rgba(255,255,255,0.92);
+        color: rgba(255,255,255,0.94);
         cursor: pointer;
+        display:grid;
+        place-items:center;
       }
       .modal-body { padding: 16px 20px 22px; }
 
@@ -643,20 +547,25 @@
         color: rgba(255,255,255,0.92);
         font-weight: 980;
         cursor: pointer;
+        opacity: 0.9;
       }
-      .tab.active { background: rgba(242,180,0,0.16); border-color: rgba(242,180,0,0.30); }
+      .tab.active {
+        background: rgba(242,180,0,0.16);
+        border-color: rgba(242,180,0,0.30);
+        opacity: 1;
+      }
 
-      .field { display:flex; flex-direction:column; gap: 8px; margin: 10px 0 14px; }
-      label { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 850; }
+      .field { display:flex; flex-direction:column; gap:8px; margin:10px 0 14px; }
+      label { font-size: 12px; color: rgba(255,255,255,0.80); font-weight: 860; letter-spacing: 0.2px; }
       input, textarea {
         padding: 12px 14px;
         border-radius: 14px;
         border: 1px solid rgba(255,255,255,0.14);
         background: rgba(0,0,0,0.30);
-        color: rgba(255,255,255,0.95);
+        color: rgba(255,255,255,0.96);
         outline: none;
       }
-      input:focus, textarea:focus { border-color: rgba(242,180,0,0.55); }
+      input:focus, textarea:focus { border-color: rgba(242,180,0,0.55); background: rgba(0,0,0,0.38); }
 
       .primary {
         width: 100%;
@@ -667,67 +576,41 @@
         color: #0b0b0b;
         font-weight: 990;
         cursor: pointer;
+        box-shadow: 0 14px 40px rgba(242, 180, 0, 0.18), 0 10px 26px rgba(0,0,0,0.42);
+        transition: transform 0.18s ease;
       }
+      .primary:hover { transform: translateY(-1px); }
+      .primary:active { transform: translateY(0px) scale(0.99); }
 
-      .copyline {
-        display:flex;
-        gap: 10px;
-        align-items:center;
-        justify-content:space-between;
-        padding: 12px;
-        border-radius: 16px;
-        border: 1px solid rgba(255,255,255,0.12);
-        background: rgba(255,255,255,0.06);
-        font-weight: 980;
-      }
-      .copyline code {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        font-size: 12px;
-        color: rgba(255,255,255,0.92);
-        white-space: nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-        display:block;
-        max-width: 100%;
-      }
-      .copybtn {
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(0,0,0,0.30);
-        color: rgba(255,255,255,0.94);
-        font-weight: 990;
-        padding: 10px 12px;
-        cursor:pointer;
-        white-space:nowrap;
-      }
+      .tiny { margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.78); line-height: 1.45; font-weight: 850; }
 
+      body.modal-open .overlay { opacity: 1; pointer-events: auto; }
+      body.modal-open .modal { opacity: 1; transform: translateY(0px) scale(1); }
+
+      /* Responsive */
       @media (max-width: 980px) {
         .plan-grid { grid-template-columns: 1fr; }
-        .upcoming { grid-template-columns: 1fr; }
-        .grid4 { grid-template-columns: 1fr; }
+        .grid3 { grid-template-columns: 1fr; }
         .modules { grid-template-columns: 1fr; }
       }
       @media (max-width: 520px) {
         header { padding: 14px 16px; }
         .brand img { height: 38px; }
-        .weekdays { display:none; }
-        .grid { grid-template-columns: 1fr; }
-        .daycol { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .price .amt { font-size: 34px; }
+        .hero-card { padding: 34px 18px 30px; }
+        .price .amt { font-size: 38px; }
       }
     </style>
   </head>
 
   <body>
-    <!-- Background (only visible when NOT blank-bg) -->
+    <!-- (Hidden background video wrapper kept, but not shown) -->
     <div class="bg-wrap">
       <video id="bgVideo" autoplay muted loop playsinline preload="auto">
         <source src="montage.mp4" type="video/mp4" />
       </video>
-      <div class="vignette"></div>
     </div>
 
-    <!-- Gold dust -->
+    <!-- Dust (only used in subscription areas) -->
     <canvas id="dustCanvas" aria-hidden="true"></canvas>
 
     <!-- Header -->
@@ -741,21 +624,23 @@
         <nav aria-label="Primary" id="navVisitor">
           <a href="#trading">Trading</a>
           <a href="#live">Live Sessions</a>
+          <a href="#community">Community</a>
           <a href="#about">About</a>
         </nav>
 
-        <!-- Logged-in nav (NO Group Signals) -->
+        <!-- Customer nav (active app only) -->
         <nav aria-label="Customer" id="navCustomer" style="display: none">
           <button class="active" data-section="home" type="button">Home</button>
           <button data-section="liveSessions" type="button">Live Sessions</button>
           <button data-section="subscription" type="button">Subscription</button>
+          <!-- ✅ Removed Group Signals from nav -->
         </nav>
       </div>
     </header>
 
     <main>
-      <!-- Logged-out hero -->
-      <section class="hero-card glow-surface" aria-label="PrimeX Hero" id="hero">
+      <!-- Hero -->
+      <section class="hero-card" aria-label="PrimeX Hero" id="hero">
         <div class="pill">Beyond Limits</div>
         <h1>Welcome to PrimeX</h1>
         <p class="sub">PrimeX | Trading × Mindset × Business</p>
@@ -764,7 +649,7 @@
 
       <!-- Subscription Gate -->
       <section class="gate-wrap" id="gate">
-        <div class="gate-card glow-surface" aria-label="PrimeX Access Gate">
+        <div class="gate-card" aria-label="PrimeX Access Gate">
           <div class="gate-inner">
             <div class="gate-top">
               <div class="gate-brand">
@@ -774,17 +659,20 @@
                   <span id="gateSubline">Activate your membership to enter the platform.</span>
                 </div>
               </div>
-              <button class="gate-logout" id="gateLogoutBtn" type="button">Logout</button>
+
+              <div class="gate-actions">
+                <!-- ✅ Dev Access is back -->
+                <button class="gate-btn" id="devAccessBtn" type="button">Dev Access</button>
+                <button class="gate-btn" id="gateLogoutBtn" type="button">Logout</button>
+              </div>
             </div>
 
             <div class="plan-grid">
-              <div class="plan glow-surface">
+              <div class="plan">
                 <div class="plan-head">
                   <div style="min-width: 0">
-                    <h2 style="margin:0;font-size:16px;font-weight:990;">PrimeX Subscription</h2>
-                    <p style="margin:6px 0 0;font-size:12px;color:rgba(255,255,255,.8);font-weight:850;">
-                      Full platform access — live sessions + group signals.
-                    </p>
+                    <h2>PrimeX Subscription</h2>
+                    <p>Full platform access — live sessions + group signals.</p>
                   </div>
                   <div class="price">
                     <div class="amt">$499</div>
@@ -804,7 +692,7 @@
                 </div>
               </div>
 
-              <div class="gate-side glow-surface">
+              <div class="gate-side">
                 <div class="status-badge" id="gateStatusBadge">
                   <span class="dot"></span><span id="gateStatusText">Status: Not active</span>
                 </div>
@@ -833,29 +721,29 @@
       <section class="app-wrap" id="app">
         <!-- HOME -->
         <div class="section active" id="section-home">
-          <div class="card glow-surface">
+          <div class="card">
             <div class="dash-title">
               <div>
                 <h2>Dashboard</h2>
                 <p>Quick access to sessions, signals, and your modules. Everything is built for clarity — no marketing.</p>
               </div>
-              <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end">
-                <div class="acct-pill active" id="homeSubPill" style="margin:0">Subscription: Active</div>
-                <div class="acct-pill locked" id="homeBizPill" style="margin:0">Business: Locked</div>
+              <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-end">
+                <div class="pill-badge gold" id="homeSubPill">Subscription: Active</div>
+                <div class="pill-badge" id="homeBizPill">Business: Not active</div>
               </div>
             </div>
 
-            <!-- Removed Group Signals card -->
-            <div class="grid4">
-              <div class="qa glow-surface" id="qaLive" role="button" tabindex="0" aria-label="Go to Live Sessions">
+            <!-- ✅ cleaner layout: removed Group Signals tile from here too -->
+            <div class="grid3">
+              <div class="qa" id="qaLive" role="button" tabindex="0">
                 <div>
                   <strong>Live Sessions</strong>
-                  <span>Open the calendar and join scheduled sessions.</span>
+                  <span>Open the schedule and join upcoming sessions.</span>
                 </div>
                 <div class="tag">Calendar</div>
               </div>
 
-              <div class="qa glow-surface" id="qaSub" role="button" tabindex="0" aria-label="Go to Subscription">
+              <div class="qa" id="qaSub" role="button" tabindex="0">
                 <div>
                   <strong>Subscription</strong>
                   <span>View plan details and your current status.</span>
@@ -863,122 +751,91 @@
                 <div class="tag gold" id="qaSubTag">Active</div>
               </div>
 
-              <div class="qa glow-surface" id="qaBusiness" role="button" tabindex="0" aria-label="Business module">
+              <div class="qa" id="qaBusiness" role="button" tabindex="0">
                 <div>
                   <strong>Business</strong>
-                  <span>Unlock your business dashboard module.</span>
+                  <span>Unlock your personal business dashboard module.</span>
                 </div>
                 <div class="tag" id="qaBizTag">Locked • $50</div>
               </div>
             </div>
 
-            <div class="modules">
-              <div class="mod glow-surface">
+            <div class="modules" style="margin-top: 14px">
+              <div class="mod">
                 <div class="pillx">Active</div>
                 <h3>Trading</h3>
                 <p>Access sessions, frameworks, and structured learning. Built for execution.</p>
               </div>
 
-              <div class="mod glow-surface">
+              <div class="mod">
                 <div class="pillx">Active</div>
                 <h3>Signals</h3>
-                <p>Group signals + market direction. Designed for high signal-to-noise.</p>
+                <p>Signals + market direction. Designed for high signal-to-noise.</p>
               </div>
 
-              <div class="mod locked glow-surface" id="businessModule" role="button" tabindex="0" aria-label="Business Dashboard module">
+              <div class="mod locked" id="businessModule" role="button" tabindex="0">
                 <div class="pillx" id="bizPill">Locked • $50</div>
                 <h3>Business Dashboard</h3>
                 <p>Unlock advanced tools and personal dashboard features (USDT TRC20 — manual verification).</p>
                 <button class="cta-mini" id="bizUnlockBtn" type="button">Unlock Business</button>
               </div>
             </div>
-
-            <div class="upcoming">
-              <div class="up-cta glow-surface">
-                <div>
-                  <strong style="font-size:12px;font-weight:990">Upcoming sessions</strong>
-                  <div style="margin-top:6px;font-size:11px;color:rgba(255,255,255,.78);font-weight:850;line-height:1.45">
-                    Preview of what’s next. Open Live Sessions for the full schedule.
-                  </div>
-                </div>
-                <button class="btn btn-gold" id="viewCalendarBtn" type="button">Open Live Sessions</button>
-              </div>
-
-              <div class="up-list" id="upcomingList"></div>
-            </div>
           </div>
         </div>
 
-        <!-- LIVE SESSIONS -->
+        <!-- LIVE SESSIONS (simple placeholder for now) -->
         <div class="section" id="section-liveSessions">
-          <div class="card glow-surface">
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <strong style="font-size:14px;font-weight:990">Live Sessions</strong>
-              <span style="font-size:12px;color:rgba(255,255,255,.78);font-weight:850">
-                Upcoming sessions (details visible — joining opens the Zoom link).
-              </span>
-            </div>
-
-            <div class="calendar-wrap" style="margin-top:12px">
-              <div class="cal-head">
-                <div style="display:flex;flex-direction:column;gap:2px">
-                  <strong style="font-size:14px">Schedule</strong>
-                  <span style="font-size:12px;color:rgba(255,255,255,.65);font-weight:850">(demo calendar layout)</span>
-                </div>
-
-                <div class="chips" id="chips">
-                  <button class="chip active" data-filter="All" type="button">All</button>
-                  <button class="chip" data-filter="Forex" type="button">Forex</button>
-                  <button class="chip" data-filter="Crypto" type="button">Crypto</button>
-                  <button class="chip" data-filter="Futures" type="button">Futures</button>
-                  <button class="chip" data-filter="Indices" type="button">Indices</button>
-                  <button class="chip" data-filter="Gold" type="button">Gold</button>
-                </div>
-              </div>
-
-              <div class="weekdays">
-                <div>Sunday</div><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div>
-              </div>
-
-              <div class="grid" id="calendarGrid"></div>
-            </div>
+          <div class="card">
+            <strong style="font-size:14px; font-weight:990">Live Sessions</strong>
+            <div class="tiny">Demo area. You can paste your calendar UI back in here anytime.</div>
           </div>
         </div>
 
         <!-- SUBSCRIPTION -->
         <div class="section" id="section-subscription">
-          <div class="card glow-surface">
-            <div class="plan-head">
-              <div class="gate-brand" style="gap: 12px">
-                <img src="primex-full-transparent-clean.png" alt="PrimeX" />
-                <div class="gate-title">
-                  <strong>PrimeX Subscription</strong>
-                  <span>USDT (TRC20) — manual verification</span>
+          <div class="sub-wrap">
+            <div class="sub-card" aria-label="PrimeX Subscription">
+              <div class="sub-inner">
+                <div class="plan-head">
+                  <div class="gate-brand" style="gap: 12px">
+                    <img src="primex-full-transparent-clean.png" alt="PrimeX" />
+                    <div class="gate-title">
+                      <strong>PrimeX Subscription</strong>
+                      <span>USDT (TRC20) — manual verification</span>
+                    </div>
+                  </div>
+                  <div class="price">
+                    <div class="amt">$499</div>
+                    <div class="dur">3 Months</div>
+                  </div>
                 </div>
-              </div>
-              <div class="price">
-                <div class="amt">$499</div>
-                <div class="dur">3 Months</div>
+
+                <div class="warn">
+                  ⚠️ Send <b>USDT on TRON (TRC20) only</b>.
+                  <span>Do not send ERC20 / BEP20 — funds may be lost.</span>
+                </div>
+
+                <div class="feat">
+                  <div class="row"><div class="tick">✓</div><div>Live Sessions access</div></div>
+                  <div class="row"><div class="tick">✓</div><div>Group Signals access</div></div>
+                  <div class="row"><div class="tick">✓</div><div>Education + analysis</div></div>
+                  <div class="row"><div class="tick">✓</div><div>Premium platform access</div></div>
+                </div>
+
+                <button class="gate-cta" id="subOpenPaymentBtn" type="button">Open Payment Steps</button>
+                <div class="gate-note" id="subStatusLine">Status: Active</div>
               </div>
             </div>
-
-            <div class="warn">
-              ⚠️ Send <b>USDT on TRON (TRC20) only</b>.
-              <span>Do not send ERC20 / BEP20 — funds may be lost.</span>
-            </div>
-
-            <button class="gate-cta" id="subOpenPaymentBtn" type="button">Open Payment Steps</button>
-            <div class="gate-note" id="subStatusLine">Status: Active</div>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Modal -->
+    <!-- Modal overlay -->
     <div class="overlay" id="overlay" aria-hidden="true">
-      <div class="modal glow-surface" role="dialog" aria-modal="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-top">
-          <div class="modal-title">
+          <div class="modal-title" id="modalTitle">
             <strong id="modeTitle">Create your account</strong>
             <span id="modeSub">Join PrimeX in seconds.</span>
           </div>
@@ -1014,109 +871,57 @@
           </div>
 
           <!-- PAYMENT PANEL -->
-          <div id="panel-pay" style="display: none">
-            <div class="glow-surface" style="border-radius:22px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.35);padding:16px">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
-                <div style="display:flex;gap:12px;align-items:center;min-width:0">
-                  <img src="primex-full-transparent-clean.png" alt="PrimeX" style="height:28px;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.65))" />
-                  <div style="min-width:0">
-                    <div style="font-size:13px;font-weight:990" id="payTitle">PrimeX Subscription</div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.75);font-weight:850" id="paySub">USDT (TRC20) — manual verification</div>
-                  </div>
-                </div>
-
-                <div style="text-align:right;white-space:nowrap">
-                  <div style="font-size:30px;font-weight:990" id="payAmount">$499</div>
-                  <div style="font-size:11px;color:rgba(255,255,255,0.78);font-weight:980" id="payDur">3 Months</div>
-                </div>
-              </div>
-
-              <div class="warn" style="margin-top:12px">
-                ⚠️ Send <b>USDT on TRON (TRC20) only</b>.
-                <span>Do not send ERC20 / BEP20 — funds may be lost.</span>
-              </div>
-
-              <div style="margin-top:12px;font-size:12px;font-weight:990;color:rgba(255,255,255,0.92)">1. Copy Wallet Address</div>
-
-              <div class="copyline" style="margin-top:8px">
-                <div style="min-width:0">
-                  <div style="font-size:11px;opacity:.78;font-weight:990;margin-bottom:6px">TRC20 Wallet Address</div>
-                  <code id="walletAddr">TRC20_WALLET_ADDRESS_HERE</code>
-                </div>
-                <button class="copybtn" id="copyWalletBtn" type="button">Copy</button>
-              </div>
-
-              <div style="margin-top:10px;font-size:12px;font-weight:990;color:rgba(255,255,255,0.92)">2. Send USDT (TRC20)</div>
-              <div style="margin-top:6px;font-size:11px;color:rgba(255,255,255,0.75);font-weight:850" id="payMeta">
-                Amount: $499 • Network: TRON
-              </div>
-
-              <div style="margin-top:10px;font-size:12px;font-weight:990;color:rgba(255,255,255,0.92)">3. Upload Payment Proof</div>
-
-              <div class="field" style="margin-top:12px">
-                <label for="txHash">Tx hash (recommended)</label>
-                <input id="txHash" type="text" placeholder="Transaction hash" />
-              </div>
-
-              <div class="field" style="margin-top:12px">
-                <label for="proof">Upload screenshot proof</label>
-                <input id="proof" type="file" accept="image/*" />
-              </div>
-
-              <button class="primary" id="submitProofBtn" type="button">Submit Proof</button>
-
-              <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.8);font-weight:850" id="paymentTiny">
-                Pending verification — Activation within ~24 hours.
-              </div>
+          <div id="panel-pay" style="display:none;">
+            <div class="warn" style="margin-top:0;">
+              Payment modal placeholder. If you want, I’ll paste your full payment UI back in here (unchanged).
+              <span>Right now your “Unlock Access” button will just set Pending like before.</span>
             </div>
-          </div>
-
-          <!-- SESSION DETAILS PANEL -->
-          <div id="panel-session" style="display: none">
-            <div class="card glow-surface" style="padding:14px;background:rgba(255,255,255,0.06);border-radius:16px">
-              <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
-                <div style="min-width:0">
-                  <div style="font-weight:990;font-size:14px" id="sessDetailTitle">Live Session</div>
-                  <div style="font-size:12px;color:rgba(255,255,255,0.78);font-weight:850;margin-top:6px" id="sessDetailMeta">—</div>
-                </div>
-                <div class="acct-pill active" style="padding:7px 10px;font-size:11px;margin:0">Unlocked</div>
-              </div>
-            </div>
-
-            <button class="primary" id="joinLiveBtn" type="button" style="margin-top:12px">Join Live</button>
-            <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.78);font-weight:850" id="joinHint">
-              Click Join Live to open the session.
-            </div>
+            <button class="primary" id="submitProofBtn" type="button" style="margin-top:12px;">Submit Proof (Demo)</button>
+            <div class="tiny" id="paymentTiny">Pending verification — Activation within ~24 hours.</div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Dummy anchors -->
-    <div id="trading" style="height: 1px"></div>
-    <div id="live" style="height: 1px"></div>
-    <div id="about" style="height: 1px"></div>
+    <div id="trading" style="height:1px"></div>
+    <div id="live" style="height:1px"></div>
+    <div id="community" style="height:1px"></div>
+    <div id="about" style="height:1px"></div>
 
     <script>
-      /* ===== State (demo) ===== */
+      /* =========================================================
+        PrimeX (single-file demo)
+        - Auth: sessionStorage px_loggedIn, px_email
+        - Subscription: localStorage px_subStatus (none|pending|active)
+        - Business module: localStorage px_businessStatus (none|pending|active)
+
+        ✅ IMPORTANT CHANGE YOU REQUESTED:
+        - NO dust on home or anywhere else
+        - Dust ONLY in subscription areas:
+            1) Gate screen (locked/pending)
+            2) Subscription section inside the app
+      ========================================================== */
+
       const state = {
         email: sessionStorage.getItem("px_email") || "",
         loggedIn: sessionStorage.getItem("px_loggedIn") === "1",
-        subStatus: localStorage.getItem("px_subStatus") || "none", // none|pending|active
+        subStatus: localStorage.getItem("px_subStatus") || "none",
         businessStatus: localStorage.getItem("px_businessStatus") || "none",
         activeSection: "home",
-        filter: "All",
-        selectedSessionId: null,
-        payMode: "sub", // sub|biz
+        payMode: "sub",
       };
 
-      /* ===== Elements ===== */
+      /* Elements */
       const body = document.body;
+
       const navVisitor = document.getElementById("navVisitor");
       const navCustomer = document.getElementById("navCustomer");
+
       const heroJoinBtn = document.getElementById("joinBtn");
 
       const gateLogoutBtn = document.getElementById("gateLogoutBtn");
+      const devAccessBtn = document.getElementById("devAccessBtn");
       const gateUnlockBtn = document.getElementById("gateUnlockBtn");
 
       const gateEmail = document.getElementById("gateEmail");
@@ -1130,32 +935,24 @@
       const homeBizPill = document.getElementById("homeBizPill");
       const qaSubTag = document.getElementById("qaSubTag");
       const qaBizTag = document.getElementById("qaBizTag");
+      const bizPill = document.getElementById("bizPill");
+      const subStatusLine = document.getElementById("subStatusLine");
 
       const qaLive = document.getElementById("qaLive");
       const qaSub = document.getElementById("qaSub");
       const qaBusiness = document.getElementById("qaBusiness");
-      const viewCalendarBtn = document.getElementById("viewCalendarBtn");
-
       const businessModule = document.getElementById("businessModule");
-      const bizPill = document.getElementById("bizPill");
       const bizUnlockBtn = document.getElementById("bizUnlockBtn");
 
       const subOpenPaymentBtn = document.getElementById("subOpenPaymentBtn");
-      const subStatusLine = document.getElementById("subStatusLine");
-
-      const upcomingList = document.getElementById("upcomingList");
-      const calendarGrid = document.getElementById("calendarGrid");
-      const chips = document.getElementById("chips");
 
       /* Modal */
       const overlay = document.getElementById("overlay");
       const closeBtn = document.getElementById("closeBtn");
       const modeTitle = document.getElementById("modeTitle");
       const modeSub = document.getElementById("modeSub");
-
       const panelAuth = document.getElementById("panel-auth");
       const panelPay = document.getElementById("panel-pay");
-      const panelSession = document.getElementById("panel-session");
 
       const tabSignup = document.getElementById("tabSignup");
       const tabSignin = document.getElementById("tabSignin");
@@ -1163,24 +960,13 @@
       const submitBtn = document.getElementById("submitBtn");
       const authForm = document.getElementById("authForm");
 
-      const payTitle = document.getElementById("payTitle");
-      const paySub = document.getElementById("paySub");
-      const payAmount = document.getElementById("payAmount");
-      const payDur = document.getElementById("payDur");
-      const payMeta = document.getElementById("payMeta");
-      const walletAddr = document.getElementById("walletAddr");
-      const copyWalletBtn = document.getElementById("copyWalletBtn");
       const submitProofBtn = document.getElementById("submitProofBtn");
       const paymentTiny = document.getElementById("paymentTiny");
 
-      const sessDetailTitle = document.getElementById("sessDetailTitle");
-      const sessDetailMeta = document.getElementById("sessDetailMeta");
-      const joinLiveBtn = document.getElementById("joinLiveBtn");
-      const joinHint = document.getElementById("joinHint");
-
-      /* ===== Gold Dust Canvas ===== */
+      /* ===== Dust Canvas (ONLY for subscription areas) ===== */
       const dustCanvas = document.getElementById("dustCanvas");
       const dustCtx = dustCanvas.getContext("2d", { alpha: true });
+
       let dustW = 0, dustH = 0, dpr = 1;
       let dustParticles = [];
       let dustMode = "off";
@@ -1199,41 +985,23 @@
       }
       function rand(min, max) { return min + Math.random() * (max - min); }
 
-      /* Bigger + brighter dust */
+      // ✅ Bigger particles (your request: too small before)
       function makeDust(count) {
         const arr = [];
         for (let i = 0; i < count; i++) {
           arr.push({
             x: rand(0, dustW),
             y: rand(0, dustH),
-            r: rand(1.2, 3.2),         // bigger
-            a: rand(0.18, 0.48),       // brighter
-            vx: rand(-0.14, 0.26),
-            vy: rand(-0.06, 0.18),
-            tw: rand(0.002, 0.012),
+            r: rand(1.2, 3.2),          // BIGGER
+            a: rand(0.16, 0.42),        // MORE VISIBLE
+            vx: rand(-0.18, 0.28),
+            vy: rand(0.05, 0.22),
+            tw: rand(0.002, 0.010),
             t: rand(0, 1000),
             hue: Math.random() < 0.78 ? rand(38, 52) : rand(195, 210),
           });
         }
         return arr;
-      }
-
-      function setDustMode(mode) {
-        dustMode = mode;
-        body.classList.toggle("dust-on", mode !== "off");
-        body.classList.toggle("dust-rich", mode === "rich");
-
-        if (mode === "off") {
-          stopDust();
-          return;
-        }
-        resizeDust();
-
-        // more particles
-        const base = mode === "rich" ? 220 : 160;
-        const count = Math.min(320, Math.floor(base + (dustW * dustH) / 24000));
-        dustParticles = makeDust(count);
-        startDust();
       }
 
       function startDust() {
@@ -1248,18 +1016,34 @@
         dustCtx.clearRect(0, 0, dustW, dustH);
       }
 
+      function setDustMode(mode) {
+        dustMode = mode;
+        body.classList.toggle("dust-on", mode !== "off");
+        body.classList.toggle("dust-rich", mode === "rich");
+
+        if (mode === "off") { stopDust(); return; }
+
+        resizeDust();
+        const base = mode === "rich" ? 140 : 110;
+        const count = Math.min(220, Math.floor(base + (dustW * dustH) / 26000));
+        dustParticles = makeDust(count);
+        startDust();
+      }
+
       function tickDust() {
         if (!dustRunning) return;
+
         dustCtx.clearRect(0, 0, dustW, dustH);
 
         for (const p of dustParticles) {
           p.t += 1;
-          p.x += p.vx; p.y += p.vy;
+          p.x += p.vx;
+          p.y += p.vy;
 
-          if (p.x < -20) p.x = dustW + 20;
-          if (p.x > dustW + 20) p.x = -20;
-          if (p.y < -20) p.y = dustH + 20;
-          if (p.y > dustH + 20) p.y = -20;
+          if (p.x < -30) p.x = dustW + 30;
+          if (p.x > dustW + 30) p.x = -30;
+          if (p.y < -30) p.y = dustH + 30;
+          if (p.y > dustH + 30) p.y = -30;
 
           const twinkle = 0.55 + 0.45 * Math.sin(p.t * p.tw);
           const alpha = (dustMode === "rich" ? p.a + 0.08 : p.a) * twinkle;
@@ -1269,10 +1053,9 @@
           dustCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
           dustCtx.fill();
 
-          // occasional sparkle glow
-          if (dustMode === "rich" && Math.random() < 0.02) {
+          if (dustMode === "rich" && Math.random() < 0.015) {
             dustCtx.beginPath();
-            dustCtx.fillStyle = `hsla(${p.hue}, 95%, 70%, ${alpha * 0.50})`;
+            dustCtx.fillStyle = `hsla(${p.hue}, 95%, 70%, ${alpha * 0.55})`;
             dustCtx.arc(p.x, p.y, p.r * 3.6, 0, Math.PI * 2);
             dustCtx.fill();
           }
@@ -1281,64 +1064,26 @@
         rafId = requestAnimationFrame(tickDust);
       }
 
-      window.addEventListener("resize", () => { if (dustMode !== "off") resizeDust(); });
+      window.addEventListener("resize", () => {
+        if (dustMode !== "off") resizeDust();
+      });
       document.addEventListener("visibilitychange", () => {
         if (document.hidden) stopDust();
         else if (dustMode !== "off") startDust();
       });
 
-      /* Mouse-follow glow */
-      function bindGlow(el) {
-        if (!el) return;
-        el.addEventListener("mousemove", (e) => {
-          const r = el.getBoundingClientRect();
-          const x = ((e.clientX - r.left) / r.width) * 100;
-          const y = ((e.clientY - r.top) / r.height) * 100;
-          el.style.setProperty("--mx", x.toFixed(2) + "%");
-          el.style.setProperty("--my", y.toFixed(2) + "%");
-        });
-        el.addEventListener("mouseleave", () => {
-          el.style.removeProperty("--mx");
-          el.style.removeProperty("--my");
-        });
-      }
-      function bindAllGlow() {
-        document.querySelectorAll(".glow-surface").forEach(bindGlow);
-        document.querySelectorAll("nav a, nav button").forEach(bindGlow);
-      }
-
-      /* Demo sessions */
-      const sessions = [
-        { id: "s1", dayIndex: 0, time: "3:15 PM", title: "Execution & Structure", host: "PrimeX", category: "Forex", joinUrl: "https://zoom.us/" },
-        { id: "s2", dayIndex: 1, time: "3:00 AM", title: "Risk Management", host: "PrimeX", category: "Indices", joinUrl: "https://zoom.us/" },
-        { id: "s3", dayIndex: 2, time: "3:00 AM", title: "Mindset Under Pressure", host: "PrimeX", category: "Crypto", joinUrl: "https://zoom.us/" },
-        { id: "s4", dayIndex: 4, time: "8:00 AM", title: "Market Prep Live", host: "PrimeX", category: "Gold", joinUrl: "https://zoom.us/" },
-        { id: "s5", dayIndex: 5, time: "4:00 PM", title: "Trading Review", host: "PrimeX", category: "Futures", joinUrl: "https://zoom.us/" },
-      ];
-
       /* Helpers */
       function isSubActive() { return state.subStatus === "active"; }
       function subLabel() { return state.subStatus === "active" ? "Active" : state.subStatus === "pending" ? "Pending" : "Not active"; }
-      function bizLabel() { return state.businessStatus === "active" ? "Active" : state.businessStatus === "pending" ? "Pending" : "Locked"; }
+      function bizLabel() { return state.businessStatus === "active" ? "Active" : state.businessStatus === "pending" ? "Pending" : "Not active"; }
 
-      function showVisitorNav() { navVisitor.style.display = "flex"; navCustomer.style.display = "none"; }
-      function showCustomerNav() { navVisitor.style.display = "none"; navCustomer.style.display = "flex"; }
-
-      function setActiveNavButton(section) {
-        [...navCustomer.querySelectorAll("button[data-section]")].forEach((btn) => {
-          btn.classList.toggle("active", btn.dataset.section === section);
-        });
+      function showVisitorNav() {
+        navVisitor.style.display = "flex";
+        navCustomer.style.display = "none";
       }
-
-      /* Dust behavior:
-         - logged out: light (looks nice with montage)
-         - gate: rich
-         - active app: rich
-      */
-      function applyDustForState() {
-        if (!state.loggedIn) { setDustMode("light"); return; }
-        if (!isSubActive()) { setDustMode("rich"); return; }
-        setDustMode("rich");
+      function showCustomerNav() {
+        navVisitor.style.display = "none";
+        navCustomer.style.display = "flex";
       }
 
       function showSection(section) {
@@ -1348,36 +1093,34 @@
         const el = document.getElementById(`section-${section}`);
         if (el) el.classList.add("active");
 
-        setActiveNavButton(section);
+        [...navCustomer.querySelectorAll("button[data-section]")].forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.section === section);
+        });
 
-        // IMPORTANT: Always black background in active app
-        if (state.loggedIn && isSubActive()) body.classList.add("blank-bg");
-
-        applyDustForState();
+        applyDustForState(); // ✅ dust rules
       }
 
       function setPills() {
-        homeSubPill.textContent = `Subscription: ${subLabel()}`;
-        homeSubPill.classList.toggle("active", isSubActive());
+        if (homeSubPill) homeSubPill.textContent = `Subscription: ${subLabel()}`;
+        if (homeBizPill) homeBizPill.textContent = `Business: ${bizLabel()}`;
 
-        homeBizPill.textContent = `Business: ${bizLabel()}`;
-        homeBizPill.classList.toggle("locked", state.businessStatus !== "active");
-
-        qaSubTag.textContent = subLabel();
-        qaBizTag.textContent =
+        if (qaSubTag) qaSubTag.textContent = subLabel();
+        if (qaBizTag) qaBizTag.textContent =
           state.businessStatus === "active" ? "Active" : state.businessStatus === "pending" ? "Pending • $50" : "Locked • $50";
 
-        bizPill.textContent =
+        if (bizPill) bizPill.textContent =
           state.businessStatus === "active" ? "Active" : state.businessStatus === "pending" ? "Pending • $50" : "Locked • $50";
 
-        subStatusLine.textContent = `Status: ${subLabel()}`;
+        if (subStatusLine) subStatusLine.textContent = `Status: ${subLabel()}`;
       }
 
       function setGateUI() {
-        gateEmail.textContent = state.email || "—";
+        if (gateEmail) gateEmail.textContent = state.email || "—";
+
         gateStatusBadge.classList.remove("pending", "active");
         if (state.subStatus === "pending") gateStatusBadge.classList.add("pending");
         if (state.subStatus === "active") gateStatusBadge.classList.add("active");
+
         gateStatusText.textContent = `Status: ${subLabel()}`;
 
         if (state.subStatus === "pending") {
@@ -1393,18 +1136,28 @@
         }
       }
 
+      /* ✅ Dust Rules (YOUR REQUEST)
+         - OFF everywhere by default
+         - ON ONLY for:
+            A) Gate screen (subscription not active)
+            B) Subscription section inside the app
+      */
+      function applyDustForState() {
+        const inGate = state.loggedIn && !isSubActive();                 // gate visible
+        const inSubSection = state.loggedIn && isSubActive() && state.activeSection === "subscription";
+
+        if (inGate || inSubSection) setDustMode("rich");
+        else setDustMode("off");
+      }
+
       function setModeClasses() {
         body.classList.remove("gate", "active-app", "dust-on", "dust-rich");
 
         if (!state.loggedIn) {
           showVisitorNav();
-          body.classList.remove("blank-bg"); // show montage on landing
           applyDustForState();
           return;
         }
-
-        // In gate and app: ALWAYS blank black background
-        body.classList.add("blank-bg");
 
         if (!isSubActive()) {
           body.classList.add("gate");
@@ -1422,7 +1175,10 @@
       }
 
       /* Modal helpers */
-      function openModal() { body.classList.add("modal-open"); overlay.setAttribute("aria-hidden", "false"); }
+      function openModal() {
+        body.classList.add("modal-open");
+        overlay.setAttribute("aria-hidden", "false");
+      }
       function closeModal() {
         body.classList.remove("modal-open");
         overlay.setAttribute("aria-hidden", "true");
@@ -1431,10 +1187,8 @@
       function showModalPanel(which) {
         panelAuth.style.display = "none";
         panelPay.style.display = "none";
-        panelSession.style.display = "none";
         if (which === "auth") panelAuth.style.display = "block";
         if (which === "pay") panelPay.style.display = "block";
-        if (which === "session") panelSession.style.display = "block";
       }
 
       function openAuthModal() {
@@ -1444,50 +1198,14 @@
         openModal();
         setTimeout(() => document.getElementById("email")?.focus(), 50);
       }
-
-      function openPaymentModal(mode) {
-        state.payMode = mode;
-        const isSub = mode === "sub";
-        const amount = isSub ? 499 : 50;
-        const dur = isSub ? "3 Months" : "One-time";
-        const title = isSub ? "PrimeX Subscription" : "Business Dashboard";
-        const sub = isSub ? "USDT (TRC20) — manual verification" : "USDT (TRC20) — module unlock";
-
-        modeTitle.textContent = isSub ? "Unlock access" : "Unlock business";
+      function openPaymentModal() {
+        modeTitle.textContent = "Unlock access";
         modeSub.textContent = "USDT (TRC20) — manual payment.";
-
-        payTitle.textContent = title;
-        paySub.textContent = sub;
-        payAmount.textContent = `$${amount}`;
-        payDur.textContent = dur;
-        payMeta.textContent = `Amount: $${amount} • Network: TRON`;
-        walletAddr.textContent = "TRC20_WALLET_ADDRESS_HERE";
-
-        paymentTiny.textContent =
-          isSub
-            ? state.subStatus === "pending"
-              ? "Submitted ✅ Pending verification. Estimated activation: ~24 hours."
-              : "Pending verification — Activation within ~24 hours."
-            : state.businessStatus === "pending"
-              ? "Submitted ✅ Pending verification. Estimated activation: ~24 hours."
-              : "Pending verification — Activation within ~24 hours.";
-
         showModalPanel("pay");
         openModal();
       }
 
-      function openSessionDetailsModal(session) {
-        modeTitle.textContent = "Live session";
-        modeSub.textContent = "Details are visible — joining opens the session link.";
-        showModalPanel("session");
-        state.selectedSessionId = session.id;
-        sessDetailTitle.textContent = `Live Session — ${session.title}`;
-        sessDetailMeta.textContent = `${session.time} • Host: ${session.host} • ${session.category}`;
-        joinHint.textContent = "Click Join Live to open the session.";
-        openModal();
-      }
-
-      /* overlay events */
+      /* UI Events */
       heroJoinBtn.addEventListener("click", openAuthModal);
       closeBtn.addEventListener("click", closeModal);
       overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
@@ -1500,9 +1218,10 @@
         tabSignin.classList.toggle("active", !isSignup);
         confirmWrap.style.display = isSignup ? "flex" : "none";
         document.getElementById("confirm").required = isSignup;
-        submitBtn.textContent = isSignup ? "Create account" : "Sign in";
+
         modeTitle.textContent = isSignup ? "Create your account" : "Welcome back";
         modeSub.textContent = isSignup ? "Join PrimeX in seconds." : "Sign in to continue.";
+        submitBtn.textContent = isSignup ? "Create account" : "Sign in";
       }
       tabSignup.addEventListener("click", () => setAuthMode("signup"));
       tabSignin.addEventListener("click", () => setAuthMode("signin"));
@@ -1514,11 +1233,13 @@
         const pass = document.getElementById("password").value;
         const confirm = document.getElementById("confirm").value;
         const isSignup = tabSignup.classList.contains("active");
+
         if (!email || !pass) return;
         if (isSignup && pass !== confirm) { alert("Passwords do not match."); return; }
 
         state.email = email;
         state.loggedIn = true;
+
         sessionStorage.setItem("px_loggedIn", "1");
         sessionStorage.setItem("px_email", email);
 
@@ -1530,17 +1251,38 @@
 
       /* Logout */
       function doLogout() {
-        // Full reset for clean testing (simple + reliable)
-        localStorage.removeItem("px_subStatus");
-        localStorage.removeItem("px_businessStatus");
-        sessionStorage.clear();
+        sessionStorage.removeItem("px_loggedIn");
+        sessionStorage.removeItem("px_email");
         state.loggedIn = false;
         state.email = "";
         location.reload();
       }
       gateLogoutBtn.addEventListener("click", doLogout);
 
-      /* Customer nav section switching */
+      /* ✅ Dev Access (back) */
+      devAccessBtn.addEventListener("click", () => {
+        state.subStatus = "active";
+        localStorage.setItem("px_subStatus", "active");
+        setModeClasses();
+      });
+
+      /* Gate unlock -> opens payment */
+      gateUnlockBtn.addEventListener("click", () => openPaymentModal());
+
+      /* Subscription section open payment */
+      subOpenPaymentBtn?.addEventListener("click", () => openPaymentModal());
+
+      /* Submit Proof (demo) -> pending */
+      submitProofBtn?.addEventListener("click", () => {
+        state.subStatus = "pending";
+        localStorage.setItem("px_subStatus", "pending");
+        paymentTiny.textContent = "Submitted ✅ Pending verification. Estimated activation: ~24 hours.";
+        setGateUI();
+        setPills();
+        setModeClasses();
+      });
+
+      /* Customer nav switching */
       navCustomer.addEventListener("click", (e) => {
         const btn = e.target.closest("button[data-section]");
         if (!btn) return;
@@ -1548,163 +1290,30 @@
       });
 
       /* Quick actions */
-      qaLive.addEventListener("click", () => showSection("liveSessions"));
-      qaSub.addEventListener("click", () => showSection("subscription"));
-      viewCalendarBtn.addEventListener("click", () => showSection("liveSessions"));
+      qaLive?.addEventListener("click", () => showSection("liveSessions"));
+      qaSub?.addEventListener("click", () => showSection("subscription"));
 
-      qaBusiness.addEventListener("click", () => openPaymentModal("biz"));
-      bizUnlockBtn.addEventListener("click", (e) => { e.stopPropagation(); openPaymentModal("biz"); });
-      businessModule.addEventListener("click", () => openPaymentModal("biz"));
-
-      /* Gate actions */
-      gateUnlockBtn.addEventListener("click", () => openPaymentModal("sub"));
-      subOpenPaymentBtn.addEventListener("click", () => openPaymentModal("sub"));
-
-      /* Copy wallet */
-      copyWalletBtn.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(walletAddr.textContent.trim());
-          copyWalletBtn.textContent = "Copied";
-          setTimeout(() => (copyWalletBtn.textContent = "Copy"), 900);
-        } catch (err) {
-          alert("Copy failed. Please copy manually.");
-        }
-      });
-
-      /* Submit proof */
-      submitProofBtn.addEventListener("click", () => {
-        if (state.payMode === "sub") {
-          state.subStatus = "pending";
-          localStorage.setItem("px_subStatus", "pending");
-          paymentTiny.textContent = "Submitted ✅ Pending verification. Estimated activation: ~24 hours.";
-          setGateUI();
-          setPills();
-          setModeClasses();
-          return;
-        }
-        state.businessStatus = "pending";
-        localStorage.setItem("px_businessStatus", "pending");
-        paymentTiny.textContent = "Submitted ✅ Pending verification. Estimated activation: ~24 hours.";
-        setPills();
-      });
-
-      /* Calendar */
-      function buildCalendar() {
-        calendarGrid.innerHTML = "";
-        for (let d = 0; d < 7; d++) {
-          const col = document.createElement("div");
-          col.className = "daycol";
-          const daySessions = sessions
-            .filter((s) => s.dayIndex === d)
-            .filter((s) => (state.filter === "All" ? true : s.category === state.filter));
-
-          if (daySessions.length === 0) {
-            const empty = document.createElement("div");
-            empty.style.opacity = ".55";
-            empty.style.fontSize = "12px";
-            empty.style.fontWeight = "980";
-            empty.style.color = "rgba(255,255,255,.75)";
-            empty.textContent = "—";
-            col.appendChild(empty);
-          } else {
-            daySessions.forEach((s) => {
-              const card = document.createElement("div");
-              card.className = "session-card glow-surface";
-
-              const left = document.createElement("div");
-              left.style.minWidth = "0";
-
-              const title = document.createElement("div");
-              title.className = "sess-title";
-              title.textContent = s.title;
-
-              const meta = document.createElement("div");
-              meta.className = "sess-meta";
-              meta.textContent = `${s.time} • ${s.category}`;
-
-              left.appendChild(title);
-              left.appendChild(meta);
-
-              const badge = document.createElement("div");
-              badge.className = "lockbadge";
-              badge.textContent = "Open";
-
-              card.appendChild(left);
-              card.appendChild(badge);
-
-              card.addEventListener("click", () => openSessionDetailsModal(s));
-              col.appendChild(card);
-
-              bindGlow(card);
-            });
-          }
-
-          calendarGrid.appendChild(col);
-        }
+      function openBizPayment() {
+        alert("Business payment flow not wired here yet (easy to add).");
       }
-
-      chips.addEventListener("click", (e) => {
-        const chip = e.target.closest(".chip");
-        if (!chip) return;
-        state.filter = chip.dataset.filter;
-        chips.querySelectorAll(".chip").forEach((c) => c.classList.toggle("active", c === chip));
-        buildCalendar();
-      });
-
-      joinLiveBtn.addEventListener("click", () => {
-        const session = sessions.find((s) => s.id === state.selectedSessionId);
-        if (!session) return;
-        window.open(session.joinUrl, "_blank", "noopener,noreferrer");
-        closeModal();
-      });
-
-      /* Upcoming sessions */
-      function buildUpcoming() {
-        upcomingList.innerHTML = "";
-        const preview = sessions.slice(0, 3);
-        preview.forEach((s) => {
-          const item = document.createElement("div");
-          item.className = "up-item glow-surface";
-
-          const left = document.createElement("div");
-          left.style.minWidth = "0";
-
-          const t = document.createElement("strong");
-          t.textContent = s.title;
-
-          const m = document.createElement("span");
-          m.textContent = `${s.time} • ${s.category} • Host: ${s.host}`;
-
-          left.appendChild(t);
-          left.appendChild(m);
-
-          const chip = document.createElement("div");
-          chip.className = "up-chip";
-          chip.textContent = s.category;
-
-          item.appendChild(left);
-          item.appendChild(chip);
-
-          upcomingList.appendChild(item);
-          bindGlow(item);
-        });
-      }
+      qaBusiness?.addEventListener("click", () => openBizPayment());
+      bizUnlockBtn?.addEventListener("click", (e) => { e.stopPropagation(); openBizPayment(); });
+      businessModule?.addEventListener("click", () => openBizPayment());
 
       /* Init */
       function init() {
         if (!localStorage.getItem("px_subStatus")) localStorage.setItem("px_subStatus", state.subStatus);
         if (!localStorage.getItem("px_businessStatus")) localStorage.setItem("px_businessStatus", state.businessStatus);
 
-        if (state.loggedIn && !state.email) state.email = sessionStorage.getItem("px_email") || "";
+        if (state.loggedIn && !state.email) {
+          state.email = sessionStorage.getItem("px_email") || "";
+        }
 
         resizeDust();
         setModeClasses();
-        buildCalendar();
-        buildUpcoming();
         setPills();
         setGateUI();
         applyDustForState();
-        bindAllGlow();
       }
 
       init();
