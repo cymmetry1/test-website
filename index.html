@@ -476,7 +476,7 @@
       -webkit-backdrop-filter: blur(4px);
     }
     .modal{
-      width: min(620px, 100%);
+      width: min(680px, 100%);
       border-radius: var(--radius);
       background: var(--glass-strong);
       border: 1px solid var(--stroke);
@@ -623,6 +623,8 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      display:block;
+      max-width: 100%;
     }
     .copybtn{
       border-radius: 999px;
@@ -639,7 +641,7 @@
 
     .checkline{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       gap: 10px;
       margin-top: 8px;
       padding: 10px 12px;
@@ -650,7 +652,183 @@
       font-weight: 800;
       font-size: 12px;
     }
-    .checkline input{ width: 18px; height: 18px; }
+    .checkline input{ width: 18px; height: 18px; margin-top:2px; }
+
+    /* ===== Subscription modal trust UI (NEW) ===== */
+    .subshell{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+      padding: 14px;
+    }
+    .subhead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .subbrand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width:0;
+    }
+    .subbrand img{
+      height: 28px;
+      width:auto;
+      display:block;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
+    }
+    .subbrand .subbrand-text{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
+    }
+    .subbrand .subbrand-text strong{
+      font-size: 13px;
+      letter-spacing:.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .subbrand .subbrand-text span{
+      font-size: 11px;
+      color: rgba(255,255,255,.62);
+      font-weight: 800;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .pricepill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(242,180,0,.26);
+      background: rgba(242,180,0,.10);
+      font-weight: 950;
+      color: rgba(255,255,255,.92);
+      white-space:nowrap;
+    }
+    .pricepill b{
+      font-size: 20px;
+      letter-spacing:-.3px;
+      color: rgba(255,255,255,.95);
+    }
+    .pricepill i{
+      font-style: normal;
+      font-size: 12px;
+      opacity:.88;
+      font-weight: 900;
+    }
+
+    .subgrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .kv{
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      padding: 10px 12px;
+      min-width:0;
+    }
+    .kv small{
+      display:block;
+      font-size: 11px;
+      color: rgba(255,255,255,.62);
+      font-weight: 900;
+      margin-bottom: 6px;
+      letter-spacing:.2px;
+    }
+    .kv strong{
+      display:block;
+      font-size: 12px;
+      font-weight: 950;
+      color: rgba(255,255,255,.90);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .warn{
+      margin-top: 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(242,180,0,.22);
+      background: rgba(242,180,0,.08);
+      padding: 10px 12px;
+      color: rgba(255,255,255,.88);
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .warn span{
+      display:block;
+      margin-top: 4px;
+      font-size: 11px;
+      color: rgba(255,255,255,.70);
+      font-weight: 800;
+    }
+
+    .steps{
+      margin-top: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+    }
+    .step{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+    }
+    .stepnum{
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      font-size: 12px;
+      font-weight: 950;
+      color: #0b0b0b;
+      background: linear-gradient(180deg, var(--gold), var(--gold2));
+      flex: 0 0 auto;
+      margin-top: 1px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.35);
+    }
+    .steptext{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
+    }
+    .steptext strong{
+      font-size: 12px;
+      font-weight: 950;
+      color: rgba(255,255,255,.92);
+    }
+    .steptext span{
+      font-size: 11px;
+      color: rgba(255,255,255,.66);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .microhelp{
+      margin-top: 8px;
+      font-size: 11px;
+      color: rgba(255,255,255,.62);
+      font-weight: 800;
+      line-height: 1.4;
+    }
 
     /* Open state */
     body.modal-open .overlay{ opacity: 1; pointer-events: auto; }
@@ -671,6 +849,8 @@
       .grid{ grid-template-columns: 1fr; }
       .weekdays{ display:none; }
       .daycol{ border-right:0; border-bottom: 1px solid rgba(255,255,255,.06); }
+      .subgrid{ grid-template-columns: 1fr; }
+      .pricepill b{ font-size: 18px; }
     }
   </style>
 </head>
@@ -856,39 +1036,125 @@
 
         <!-- SUBSCRIPTION / PAYMENT PANEL -->
         <div id="panel-subscribe" style="display:none;">
-          <div class="copyline" style="margin-bottom:10px;">
-            <div style="min-width:0;">
-              <div style="font-size:11px; opacity:.72; font-weight:900; margin-bottom:6px;">Send USDT (TRC20) to:</div>
-              <code id="walletAddr">TRC20_WALLET_ADDRESS_HERE</code>
+          <!-- Premium shell -->
+          <div class="subshell">
+            <div class="subhead">
+              <div class="subbrand">
+                <img src="primex-full-transparent-clean.png" alt="PrimeX" />
+                <div class="subbrand-text">
+                  <strong>PrimeX Subscription</strong>
+                  <span>USDT (TRC20) — manual verification</span>
+                </div>
+              </div>
+              <div class="pricepill" aria-label="Price">
+                <b>$499</b>
+                <i>3 months</i>
+              </div>
             </div>
-            <button class="copybtn" id="copyWalletBtn" type="button">Copy</button>
-          </div>
 
-          <div class="checkline">
-            <input type="checkbox" id="autoRenew" />
-            <label for="autoRenew" style="margin:0; cursor:pointer;">Auto-renew every 3 months</label>
-          </div>
-
-          <div class="row" style="margin-top:10px;">
-            <div class="field">
-              <label for="sendingWallet">Your sending wallet (optional)</label>
-              <input id="sendingWallet" type="text" placeholder="Your wallet address" />
+            <div class="subgrid" aria-label="Payment details">
+              <div class="kv">
+                <small>Recipient</small>
+                <strong>PrimeX</strong>
+              </div>
+              <div class="kv">
+                <small>Asset</small>
+                <strong>USDT</strong>
+              </div>
+              <div class="kv">
+                <small>Network</small>
+                <strong>TRON (TRC20)</strong>
+              </div>
+              <div class="kv">
+                <small>Amount</small>
+                <strong>$499 (3 months)</strong>
+              </div>
             </div>
-            <div class="field">
-              <label for="txHash">Tx hash (recommended)</label>
-              <input id="txHash" type="text" placeholder="Transaction hash" />
+
+            <div class="warn">
+              ⚠️ Send <b>USDT on TRON (TRC20) only</b>.
+              <span>Do not send ERC20 / BEP20 — funds may be lost.</span>
             </div>
-          </div>
 
-          <div class="field">
-            <label for="proof">Upload screenshot proof</label>
-            <input id="proof" type="file" accept="image/*" />
-          </div>
+            <!-- Wallet copy (kept existing IDs) -->
+            <div class="copyline" style="margin-top:12px;">
+              <div style="min-width:0;">
+                <div style="font-size:11px; opacity:.72; font-weight:900; margin-bottom:6px;">Copy wallet address (TRC20):</div>
+                <code id="walletAddr">TRC20_WALLET_ADDRESS_HERE</code>
+              </div>
+              <button class="copybtn" id="copyWalletBtn" type="button">Copy</button>
+            </div>
 
-          <button class="primary" id="submitProofBtn" type="button">Submit Payment Proof</button>
+            <!-- How it works -->
+            <div class="steps" aria-label="Steps">
+              <div class="step">
+                <div class="stepnum">1</div>
+                <div class="steptext">
+                  <strong>Copy the wallet address</strong>
+                  <span>Use the button above to copy the full TRC20 address.</span>
+                </div>
+              </div>
+              <div class="step">
+                <div class="stepnum">2</div>
+                <div class="steptext">
+                  <strong>Send $499 USDT (TRC20)</strong>
+                  <span>Confirm the network is TRON (TRC20) before sending.</span>
+                </div>
+              </div>
+              <div class="step">
+                <div class="stepnum">3</div>
+                <div class="steptext">
+                  <strong>Submit proof</strong>
+                  <span>Paste your tx hash (recommended) or upload a screenshot.</span>
+                </div>
+              </div>
+              <div class="step">
+                <div class="stepnum">4</div>
+                <div class="steptext">
+                  <strong>Status becomes Pending</strong>
+                  <span>Activation within ~24 hours after verification (demo flow).</span>
+                </div>
+              </div>
+            </div>
 
-          <div class="tiny" id="paymentTiny" style="margin-top:10px;">
-            After you submit, you’ll see “Pending verification”. Activation within ~24 hours.
+            <!-- Auto renew (kept existing ID) -->
+            <div class="checkline">
+              <input type="checkbox" id="autoRenew" />
+              <div style="display:flex; flex-direction:column; gap:4px;">
+                <label for="autoRenew" style="margin:0; cursor:pointer; font-weight:950; color:rgba(255,255,255,.88);">Auto-renew every 3 months</label>
+                <div style="font-size:11px; color:rgba(255,255,255,.62); font-weight:800; line-height:1.35;">
+                  Reminder setting only — PrimeX never accesses your wallet.
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:10px;">
+              <div class="field">
+                <label for="sendingWallet">Your sending wallet (optional)</label>
+                <input id="sendingWallet" type="text" placeholder="Your wallet address" />
+              </div>
+              <div class="field">
+                <label for="txHash">Tx hash (recommended)</label>
+                <input id="txHash" type="text" placeholder="Transaction hash" />
+              </div>
+            </div>
+
+            <div class="microhelp">
+              Tip: tx hash is recommended for fastest verification. If uploading a screenshot, include amount, date/time, and status.
+            </div>
+
+            <div class="field" style="margin-top:12px;">
+              <label for="proof">Upload screenshot proof</label>
+              <input id="proof" type="file" accept="image/*" />
+            </div>
+
+            <!-- Submit (kept existing ID) -->
+            <button class="primary" id="submitProofBtn" type="button">Submit Payment Proof</button>
+
+            <!-- Status text (kept existing ID) -->
+            <div class="tiny" id="paymentTiny" style="margin-top:10px;">
+              After you submit, you’ll see “Pending verification”. Activation within ~24 hours.
+            </div>
           </div>
         </div>
 
@@ -1096,7 +1362,13 @@
       // put your TRC20 wallet here:
       walletAddr.textContent = "TRC20_WALLET_ADDRESS_HERE";
       autoRenew.checked = state.subAutoRenew;
-      paymentTiny.textContent = "After you submit, you’ll see “Pending verification”. Activation within ~24 hours.";
+
+      // reflect current status in the helper text
+      paymentTiny.textContent =
+        state.subStatus === "pending"
+          ? "Submitted ✅ Pending verification. Estimated activation: ~24 hours."
+          : "After you submit, you’ll see “Pending verification”. Activation within ~24 hours.";
+
       openModal();
     }
 
@@ -1305,7 +1577,7 @@
       state.subStatus = "pending";
       localStorage.setItem("px_subStatus", "pending");
       setSubscriptionPill();
-      paymentTiny.textContent = "Submitted ✅ Pending verification. Estimated activation: 24 hours.";
+      paymentTiny.textContent = "Submitted ✅ Pending verification. Estimated activation: ~24 hours.";
     });
 
     /* ===== Group signals button ===== */
