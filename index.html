@@ -99,6 +99,7 @@
       display:block;
       filter: drop-shadow(0 10px 20px rgba(0,0,0,.55));
     }
+
     nav{
       display:flex;
       align-items:center;
@@ -373,6 +374,7 @@
 </head>
 
 <body>
+  <!-- Background -->
   <div class="bg-wrap">
     <video id="bgVideo" autoplay muted loop playsinline preload="auto">
       <source src="montage.mp4" type="video/mp4" />
@@ -380,6 +382,7 @@
     <div class="vignette"></div>
   </div>
 
+  <!-- Header -->
   <header>
     <div class="nav-inner">
       <a class="brand" href="index.html" aria-label="PrimeX Home">
@@ -395,15 +398,20 @@
     </div>
   </header>
 
+  <!-- Main hero -->
   <main>
     <section class="hero-card" aria-label="PrimeX Hero">
       <div class="pill">Beyond Limits</div>
       <h1>Welcome to PrimeX</h1>
-      <p class="sub">PrimeX | Trading × Mindset</p>
+
+      <!-- ✅ ONLY EDIT: quote text -->
+      <p class="sub">PrimeX | Trading × Mindset × Business</p>
+
       <button class="cta" id="joinBtn" type="button">Join Now</button>
     </section>
   </main>
 
+  <!-- Modal overlay -->
   <div class="overlay" id="overlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-top">
@@ -449,6 +457,7 @@
     </div>
   </div>
 
+  <!-- Dummy anchors -->
   <div id="trading" style="height:1px;"></div>
   <div id="live" style="height:1px;"></div>
   <div id="community" style="height:1px;"></div>
