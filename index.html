@@ -5,203 +5,399 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PrimeX</title>
 
+  <!-- Favicon / Tab icon -->
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="logo-192.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="logo-512.png" />
   <meta name="theme-color" content="#0b0b0b" />
 
   <style>
     :root{
-      --bg:#050505;
-      --glass:rgba(18,18,18,.62);
-      --glass-strong:rgba(18,18,18,.78);
-      --stroke:rgba(255,255,255,.14);
-      --muted:rgba(255,255,255,.68);
-      --text:rgba(255,255,255,.92);
-      --gold:#f2b400;
+      --bg: #050505;
+      --glass: rgba(18,18,18,.62);
+      --glass-strong: rgba(18,18,18,.78);
+      --stroke: rgba(255,255,255,.14);
+      --muted: rgba(255,255,255,.68);
+      --text: rgba(255,255,255,.92);
+      --gold: #f2b400;
       --gold2:#d79b00;
-      --shadow:0 20px 70px rgba(0,0,0,.55);
-      --radius:24px;
+      --shadow: 0 20px 70px rgba(0,0,0,.55);
+      --radius: 24px;
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background:var(--bg);
-      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
       overflow-x:hidden;
     }
 
     /* Background video */
     .bg-wrap{
-      position:fixed;
-      inset:0;
-      z-index:-2;
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: #000;
       overflow:hidden;
     }
-    #bgVideo{
+    video#bgVideo{
+      position:absolute;
+      inset:0;
       width:100%;
       height:100%;
-      object-fit:cover;
-      filter:grayscale(1) contrast(1.05) brightness(.55);
-      transform:scale(1.02);
+      object-fit: cover;
+      filter: grayscale(1) contrast(1.05) brightness(.55);
+      transform: scale(1.02);
     }
+    /* Soft vignette */
     .vignette{
       position:absolute;
       inset:-2px;
       background:
         radial-gradient(1200px 700px at 20% 10%, rgba(242,180,0,.22), transparent 55%),
+        radial-gradient(900px 600px at 80% 20%, rgba(255,255,255,.06), transparent 60%),
+        radial-gradient(1100px 800px at 50% 80%, rgba(0,0,0,.50), transparent 55%),
         linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.65));
+      z-index: -1;
       pointer-events:none;
     }
 
-    /* Header */
+    /* Top nav */
     header{
-      position:fixed;
+      position: fixed;
       top:0; left:0; right:0;
-      z-index:30;
-      padding:18px 28px;
-      pointer-events:none;
-    }
-
-    /* ✅ FIXED: full-width header content */
-    .nav-inner{
-      width:100%;
+      z-index: 30;
+      padding: 18px 28px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:18px;
+      pointer-events:none; /* allow clicks only on actual controls */
+    }
+
+    /* ✅ FIX: full-width container so logo left + links right */
+    .nav-inner{
+      width: 100%;
+      margin: 0;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 18px;
       pointer-events:auto;
     }
 
     .brand{
       display:flex;
       align-items:center;
-      gap:12px;
+      gap: 12px;
+      text-decoration:none;
+      color: var(--text);
     }
     .brand img{
-      height:44px;
-      filter:drop-shadow(0 10px 20px rgba(0,0,0,.55));
+      height: 44px;
+      width: auto;
+      display:block;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.55));
+    }
+    .brand span{
+      font-weight: 700;
+      letter-spacing:.2px;
+      font-size: 16px;
+      opacity:.92;
     }
 
     nav{
       display:flex;
-      gap:22px;
+      align-items:center;
+      gap: 22px;
     }
     nav a{
-      color:rgba(255,255,255,.88);
+      color: rgba(255,255,255,.88);
       text-decoration:none;
-      font-weight:600;
-      font-size:14px;
-      padding:10px;
-      border-radius:999px;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 10px 10px;
+      border-radius: 999px;
+      transition: background .2s ease, opacity .2s ease;
+      opacity:.92;
+    }
+    nav a:hover{
+      background: rgba(255,255,255,.08);
+      opacity:1;
     }
 
     /* Layout */
     main{
-      min-height:100vh;
+      min-height: 100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:140px 22px 80px;
+      padding: 140px 22px 80px;
     }
 
+    /* Hero card */
     .hero-card{
-      width:min(900px,100%);
-      background:var(--glass);
-      border:1px solid var(--stroke);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(12px);
-      padding:42px 36px;
+      width: min(900px, 100%);
+      border-radius: var(--radius);
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 42px 36px 40px;
       text-align:center;
-      transition:.28s ease;
+      position: relative;
+      transition: transform .28s ease, opacity .28s ease, filter .28s ease;
     }
 
     .pill{
-      padding:7px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.14);
-      font-size:12px;
-      font-weight:700;
-      margin-bottom:18px;
-      display:inline-block;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.90);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing:.2px;
+      margin-bottom: 18px;
     }
 
     h1{
-      font-size:clamp(34px,5.4vw,62px);
-      font-weight:900;
       margin:0 0 14px;
+      font-size: clamp(34px, 5.4vw, 62px);
+      line-height: 1.06;
+      letter-spacing: -0.8px;
+      font-weight: 900;
+      color: rgba(255,255,255,.96);
+      text-shadow: 0 10px 30px rgba(0,0,0,.55);
     }
 
     .sub{
-      max-width:680px;
-      margin:0 auto 26px;
-      font-size:14px;
-      color:var(--muted);
+      margin: 0 auto 26px;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
     }
 
     .cta{
-      background:linear-gradient(180deg,var(--gold),var(--gold2));
-      border:none;
-      border-radius:999px;
-      padding:13px 26px;
-      font-weight:900;
-      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      background: linear-gradient(180deg, var(--gold), var(--gold2));
+      color: #0b0b0b;
+      font-weight: 900;
+      border: none;
+      border-radius: 999px;
+      padding: 13px 26px;
+      cursor: pointer;
+      box-shadow: 0 14px 40px rgba(242,180,0,.22), 0 10px 30px rgba(0,0,0,.45);
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+    .cta:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .cta:active{ transform: translateY(0px) scale(.99); }
+
+    /* Modal overlay */
+    .overlay{
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+      background: rgba(0,0,0,.38);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
 
-    /* Modal */
-    body.modal-open{overflow:hidden}
+    /* Modal panel */
+    .modal{
+      width: min(560px, 100%);
+      border-radius: var(--radius);
+      background: var(--glass-strong);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transform: translateY(10px) scale(.96);
+      opacity: 0;
+      transition: transform .25s ease, opacity .25s ease;
+      position: relative;
+      overflow:hidden;
+    }
 
-    .overlay{
-      position:fixed;
-      inset:0;
+    .modal-top{
+      padding: 18px 20px 0;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .modal-title{
+      display:flex;
+      flex-direction:column;
+      gap: 2px;
+    }
+    .modal-title strong{
+      font-size: 16px;
+      letter-spacing:.2px;
+    }
+    .modal-title span{
+      font-size: 12px;
+      color: rgba(255,255,255,.62);
+    }
+    .xbtn{
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.92);
+      cursor: pointer;
       display:grid;
       place-items:center;
-      background:rgba(0,0,0,.38);
-      opacity:0;
-      pointer-events:none;
-      transition:.25s;
-      z-index:60;
+      transition: background .18s ease, transform .18s ease;
     }
-    body.modal-open .overlay{
+    .xbtn:hover{ background: rgba(255,255,255,.10); transform: translateY(-1px); }
+    .xbtn:active{ transform: translateY(0px); }
+
+    .modal-body{ padding: 16px 20px 22px; }
+
+    .tabs{
+      display:flex;
+      gap: 8px;
+      padding: 10px 0 14px;
+    }
+    .tab{
+      flex:1;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.86);
+      font-weight: 800;
+      cursor:pointer;
+      transition: background .18s ease, transform .18s ease, opacity .18s ease;
+      opacity:.9;
+    }
+    .tab.active{
+      background: rgba(242,180,0,.16);
+      border-color: rgba(242,180,0,.30);
       opacity:1;
-      pointer-events:auto;
     }
 
-    .modal{
-      background:var(--glass-strong);
-      border:1px solid var(--stroke);
-      border-radius:var(--radius);
-      width:min(560px,100%);
-      padding:20px;
-      transform:translateY(10px) scale(.96);
-      opacity:0;
-      transition:.25s;
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+      margin: 10px 0 14px;
     }
-    body.modal-open .modal{
-      transform:none;
-      opacity:1;
+    label{
+      font-size: 12px;
+      color: rgba(255,255,255,.70);
+      font-weight: 700;
+      letter-spacing:.2px;
+    }
+    input{
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      color: rgba(255,255,255,.92);
+      outline:none;
+      transition: border-color .18s ease, background .18s ease;
+    }
+    input:focus{
+      border-color: rgba(242,180,0,.55);
+      background: rgba(0,0,0,.35);
+    }
+
+    .form-actions{
+      display:flex;
+      gap: 10px;
+      margin-top: 12px;
+      align-items:center;
+    }
+    .primary{
+      flex: 1;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      background: linear-gradient(180deg, var(--gold), var(--gold2));
+      color:#0b0b0b;
+      font-weight: 900;
+      cursor:pointer;
+      box-shadow: 0 14px 40px rgba(242,180,0,.18), 0 10px 26px rgba(0,0,0,.42);
+      transition: transform .18s ease, filter .18s ease;
+    }
+    .primary:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .primary:active{ transform: translateY(0px) scale(.99); }
+
+    .helper{
+      margin-top: 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,.60);
+      line-height: 1.5;
+    }
+    .helper a{
+      color: rgba(255,255,255,.86);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,.22);
+    }
+    .helper a:hover{ border-bottom-color: rgba(242,180,0,.55); }
+
+    /* Open state animations */
+    body.modal-open .overlay{ opacity: 1; pointer-events: auto; }
+    body.modal-open .modal{ opacity: 1; transform: translateY(0px) scale(1); }
+    body.modal-open .hero-card{
+      opacity: .22;
+      transform: translateY(6px) scale(.985);
+      filter: blur(2px);
+      pointer-events:none;
+    }
+
+    /* Small screens */
+    @media (max-width: 520px){
+      header{ padding: 14px 16px; }
+      .brand img{ height: 38px; }
+      nav{ gap: 10px; }
+      nav a{ font-size: 13px; padding: 10px 8px; }
+      .hero-card{ padding: 34px 18px 30px; }
     }
   </style>
 </head>
 
 <body>
-
+  <!-- Background -->
   <div class="bg-wrap">
-    <video id="bgVideo" autoplay muted loop playsinline>
-      <source src="montage.mp4" type="video/mp4">
+    <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+      <source src="montage.mp4" type="video/mp4" />
     </video>
     <div class="vignette"></div>
   </div>
 
+  <!-- Header -->
   <header>
     <div class="nav-inner">
-      <a class="brand" href="#">
-        <img src="primex-full-transparent-clean.png" alt="PrimeX">
+      <a class="brand" href="index.html" aria-label="PrimeX Home">
+        <img src="primex-full-transparent-clean.png" alt="PrimeX Logo" />
       </a>
-      <nav>
+
+      <nav aria-label="Primary">
         <a href="#trading">Trading</a>
         <a href="#live">Live Sessions</a>
         <a href="#community">Community</a>
@@ -210,22 +406,153 @@
     </div>
   </header>
 
+  <!-- Main hero -->
   <main>
-    <section class="hero-card">
+    <section class="hero-card" aria-label="PrimeX Hero">
       <div class="pill">Beyond Limits</div>
       <h1>Welcome to PrimeX</h1>
+
       <p class="sub">
-        Prime X is a focused environment for people who take improvement seriously.
+        Prime X is a focused environment for people who take improvement seriously. Trading,
+        execution, structure, and accountability — no noise.
       </p>
-      <button class="cta" id="joinBtn">Join Prime X</button>
+
+      <!-- ✅ FIXED TEXT -->
+      <button class="cta" id="joinBtn" type="button">Join PrimeX</button>
     </section>
   </main>
 
-  <script>
-    const body=document.body;
-    const joinBtn=document.getElementById("joinBtn");
-    joinBtn.addEventListener("click",()=>body.classList.add("modal-open"));
-  </script>
+  <!-- Modal overlay -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-top">
+        <div class="modal-title" id="modalTitle">
+          <strong id="modeTitle">Create your account</strong>
+          <span id="modeSub">Join PrimeX in seconds.</span>
+        </div>
+        <button class="xbtn" id="closeBtn" type="button" aria-label="Close">✕</button>
+      </div>
 
+      <div class="modal-body">
+        <div class="tabs" role="tablist" aria-label="Sign in or sign up">
+          <button class="tab active" id="tabSignup" type="button" role="tab" aria-selected="true">Sign up</button>
+          <button class="tab" id="tabSignin" type="button" role="tab" aria-selected="false">Sign in</button>
+        </div>
+
+        <form id="authForm">
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="••••••••" minlength="6" required />
+          </div>
+
+          <div class="field" id="confirmWrap">
+            <label for="confirm">Confirm password</label>
+            <input id="confirm" name="confirm" type="password" placeholder="••••••••" minlength="6" required />
+          </div>
+
+          <div class="form-actions">
+            <button class="primary" id="submitBtn" type="submit">Create account</button>
+          </div>
+
+          <div class="helper" id="helperText">
+            By continuing, you agree to PrimeX terms. Already a member?
+            <a href="#" id="switchToSignin">Sign in</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dummy anchors -->
+  <div id="trading" style="height:1px;"></div>
+  <div id="live" style="height:1px;"></div>
+  <div id="community" style="height:1px;"></div>
+  <div id="about" style="height:1px;"></div>
+
+  <script>
+    const body = document.body;
+    const joinBtn = document.getElementById("joinBtn");
+    const overlay = document.getElementById("overlay");
+    const closeBtn = document.getElementById("closeBtn");
+
+    const tabSignup = document.getElementById("tabSignup");
+    const tabSignin = document.getElementById("tabSignin");
+    const confirmWrap = document.getElementById("confirmWrap");
+    const submitBtn = document.getElementById("submitBtn");
+    const modeTitle = document.getElementById("modeTitle");
+    const modeSub = document.getElementById("modeSub");
+    const helperText = document.getElementById("helperText");
+    const authForm = document.getElementById("authForm");
+
+    function openModal(){
+      body.classList.add("modal-open");
+      overlay.setAttribute("aria-hidden","false");
+      setTimeout(() => document.getElementById("email").focus(), 50);
+    }
+    function closeModal(){
+      body.classList.remove("modal-open");
+      overlay.setAttribute("aria-hidden","true");
+    }
+
+    joinBtn.addEventListener("click", openModal);
+    closeBtn.addEventListener("click", closeModal);
+    overlay.addEventListener("click", (e) => { if(e.target === overlay) closeModal(); });
+    window.addEventListener("keydown", (e) => { if(e.key === "Escape" && body.classList.contains("modal-open")) closeModal(); });
+
+    function setMode(mode){
+      const isSignup = mode === "signup";
+      tabSignup.classList.toggle("active", isSignup);
+      tabSignin.classList.toggle("active", !isSignup);
+      tabSignup.setAttribute("aria-selected", isSignup ? "true" : "false");
+      tabSignin.setAttribute("aria-selected", !isSignup ? "true" : "false");
+
+      confirmWrap.style.display = isSignup ? "flex" : "none";
+      document.getElementById("confirm").required = isSignup;
+
+      modeTitle.textContent = isSignup ? "Create your account" : "Welcome back";
+      modeSub.textContent = isSignup ? "Join PrimeX in seconds." : "Sign in to continue.";
+      submitBtn.textContent = isSignup ? "Create account" : "Sign in";
+
+      helperText.innerHTML = isSignup
+        ? `By continuing, you agree to PrimeX terms. Already a member? <a href="#" id="switchInline">Sign in</a>`
+        : `New here? <a href="#" id="switchInline">Create an account</a>`;
+
+      const switchInline = document.getElementById("switchInline");
+      switchInline.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        setMode(isSignup ? "signin" : "signup");
+      });
+    }
+
+    tabSignup.addEventListener("click", () => setMode("signup"));
+    tabSignin.addEventListener("click", () => setMode("signin"));
+    setMode("signup");
+
+    authForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const pass = document.getElementById("password").value;
+      const confirm = document.getElementById("confirm").value;
+      const isSignup = tabSignup.classList.contains("active");
+
+      if (!email || !pass) return;
+
+      if (isSignup && pass !== confirm) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      alert(isSignup ? "Account created (demo) ✅" : "Signed in (demo) ✅");
+      closeModal();
+      authForm.reset();
+      setMode("signup");
+    });
+  </script>
 </body>
 </html>
