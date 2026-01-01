@@ -24,6 +24,7 @@
       --gold2:#d79b00;
       --shadow: 0 20px 70px rgba(0,0,0,.55);
       --radius: 24px;
+      --radius2: 18px;
     }
 
     *{box-sizing:border-box}
@@ -36,7 +37,7 @@
       overflow-x:hidden;
     }
 
-    /* Background video */
+    /* ===== Background video (default) ===== */
     .bg-wrap{
       position: fixed;
       inset: 0;
@@ -53,7 +54,6 @@
       filter: grayscale(1) contrast(1.05) brightness(.55);
       transform: scale(1.02);
     }
-    /* Soft vignette */
     .vignette{
       position:absolute;
       inset:-2px;
@@ -66,7 +66,13 @@
       pointer-events:none;
     }
 
-    /* Top nav */
+    /* When we want a blank black background for certain app sections */
+    body.blank-bg .bg-wrap{ display:none; }
+    body.blank-bg{
+      background:#000;
+    }
+
+    /* ===== Header ===== */
     header{
       position: fixed;
       top:0; left:0; right:0;
@@ -104,23 +110,34 @@
       display:flex;
       align-items:center;
       gap: 22px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
-    nav a{
+    nav a, nav button{
       color: rgba(255,255,255,.88);
       text-decoration:none;
-      font-weight: 600;
+      font-weight: 800;
       font-size: 14px;
-      padding: 10px 10px;
+      padding: 10px 12px;
       border-radius: 999px;
-      transition: background .2s ease, opacity .2s ease;
+      transition: background .2s ease, opacity .2s ease, transform .2s ease;
       opacity:.92;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
     }
-    nav a:hover{
+    nav a:hover, nav button:hover{
       background: rgba(255,255,255,.08);
+      opacity:1;
+      transform: translateY(-1px);
+    }
+    nav .active{
+      background: rgba(242,180,0,.16);
+      border: 1px solid rgba(242,180,0,.28);
       opacity:1;
     }
 
-    /* Layout */
+    /* ===== Layout ===== */
     main{
       min-height: 100vh;
       display:flex;
@@ -129,7 +146,7 @@
       padding: 140px 22px 80px;
     }
 
-    /* Hero card */
+    /* Logged-out hero */
     .hero-card{
       width: min(900px, 100%);
       border-radius: var(--radius);
@@ -143,7 +160,6 @@
       position: relative;
       transition: transform .28s ease, opacity .28s ease, filter .28s ease;
     }
-
     .pill{
       display:inline-flex;
       align-items:center;
@@ -154,12 +170,11 @@
       background: rgba(255,255,255,.08);
       border: 1px solid rgba(255,255,255,.14);
       color: rgba(255,255,255,.90);
-      font-weight: 700;
+      font-weight: 900;
       font-size: 12px;
       letter-spacing:.2px;
       margin-bottom: 18px;
     }
-
     h1{
       margin:0 0 14px;
       font-size: clamp(34px, 5.4vw, 62px);
@@ -169,7 +184,6 @@
       color: rgba(255,255,255,.96);
       text-shadow: 0 10px 30px rgba(0,0,0,.55);
     }
-
     .sub{
       margin: 0 auto 26px;
       max-width: 680px;
@@ -177,8 +191,6 @@
       font-size: 14px;
       line-height: 1.7;
     }
-
-    /* CTA (glamour removed) */
     .cta{
       display:inline-flex;
       align-items:center;
@@ -197,7 +209,258 @@
     .cta:hover{ transform: translateY(-1px); }
     .cta:active{ transform: translateY(0px) scale(.99); }
 
-    /* Modal overlay */
+    /* ===== App (logged-in) ===== */
+    .app-wrap{
+      width: min(1060px, 100%);
+      display:none;
+      gap: 18px;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    body.logged-in .app-wrap{ display:flex; }
+    body.logged-in .hero-card{ display:none; }
+
+    .card{
+      border-radius: var(--radius);
+      background: rgba(18,18,18,.62);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 18px 55px rgba(0,0,0,.48);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      padding: 18px;
+    }
+    .card h2{
+      margin:0 0 6px;
+      font-size: 16px;
+      letter-spacing:.2px;
+    }
+    .card p{
+      margin:0;
+      color: rgba(255,255,255,.66);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 14px;
+      padding: 16px 18px;
+    }
+    .welcome{
+      display:flex;
+      flex-direction:column;
+      gap: 2px;
+    }
+    .welcome strong{
+      font-size: 16px;
+    }
+    .welcome small{
+      color: rgba(255,255,255,.62);
+      font-weight: 700;
+    }
+
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.14);
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(255,255,255,.85);
+      white-space:nowrap;
+    }
+
+    /* App sections */
+    .section{ display:none; }
+    .section.active{ display:block; }
+
+    /* ===== Live Sessions (blank background per your request) ===== */
+    .calendar-wrap{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(10,10,10,.72);
+      overflow:hidden;
+    }
+    .cal-head{
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+    .chip{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.86);
+      font-size: 12px;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .chip:hover{ transform: translateY(-1px); }
+    .chip.active{
+      background: rgba(242,180,0,.14);
+      border-color: rgba(242,180,0,.28);
+    }
+
+    .weekdays{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0;
+      padding: 10px 0;
+      background: rgba(0,0,0,.45);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(255,255,255,.78);
+    }
+    .weekdays div{
+      text-align:center;
+      padding: 6px 0;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      min-height: 360px;
+    }
+    .daycol{
+      border-right: 1px solid rgba(255,255,255,.06);
+      padding: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .daycol:last-child{ border-right:0; }
+
+    .session-card{
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      padding: 12px 12px;
+      display:flex;
+      justify-content:space-between;
+      gap: 10px;
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      position:relative;
+    }
+    .session-card:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.08);
+      border-color: rgba(242,180,0,.22);
+    }
+    .sess-left{
+      display:flex;
+      flex-direction:column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .sess-title{
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(255,255,255,.92);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .sess-meta{
+      font-size: 11px;
+      color: rgba(255,255,255,.62);
+      font-weight: 800;
+      display:flex;
+      gap: 8px;
+      flex-wrap:wrap;
+    }
+    .lockbadge{
+      align-self:center;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.35);
+      color: rgba(255,255,255,.80);
+      white-space:nowrap;
+    }
+    .heart{
+      position:absolute;
+      top: 8px;
+      right: 10px;
+      opacity:.35;
+      font-size: 14px;
+      user-select:none;
+    }
+
+    /* ===== Subscription page (blank background per your request) ===== */
+    .plan-row{
+      display:flex;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.86);
+      font-weight: 900;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    .sub-actions{
+      display:flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .18s ease, filter .18s ease, background .18s ease;
+      box-shadow: 0 10px 26px rgba(0,0,0,.42);
+    }
+    .btn:active{ transform: scale(.99); }
+    .btn-gold{
+      background: linear-gradient(180deg, var(--gold), var(--gold2));
+      color:#0b0b0b;
+      flex: 1;
+      min-width: 220px;
+    }
+    .btn-ghost{
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.90);
+    }
+
+    .tiny{
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(255,255,255,.55);
+      line-height: 1.45;
+    }
+
+    /* ===== Group signals ===== */
+    .big-action{
+      margin-top: 12px;
+      width:100%;
+      padding: 14px 18px;
+    }
+
+    /* ===== Modal overlay (shared) ===== */
     .overlay{
       position: fixed;
       inset: 0;
@@ -212,10 +475,8 @@
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
     }
-
-    /* Modal panel */
     .modal{
-      width: min(560px, 100%);
+      width: min(620px, 100%);
       border-radius: var(--radius);
       background: var(--glass-strong);
       border: 1px solid var(--stroke);
@@ -228,7 +489,6 @@
       position: relative;
       overflow:hidden;
     }
-
     .modal-top{
       padding: 18px 20px 0;
       display:flex;
@@ -248,6 +508,7 @@
     .modal-title span{
       font-size: 12px;
       color: rgba(255,255,255,.62);
+      font-weight: 700;
     }
     .xbtn{
       width: 40px;
@@ -263,7 +524,6 @@
     }
     .xbtn:hover{ background: rgba(255,255,255,.10); transform: translateY(-1px); }
     .xbtn:active{ transform: translateY(0px); }
-
     .modal-body{ padding: 16px 20px 22px; }
 
     .tabs{
@@ -278,7 +538,7 @@
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
       color: rgba(255,255,255,.86);
-      font-weight: 800;
+      font-weight: 900;
       cursor:pointer;
       transition: background .18s ease, transform .18s ease, opacity .18s ease;
       opacity:.9;
@@ -298,10 +558,10 @@
     label{
       font-size: 12px;
       color: rgba(255,255,255,.70);
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing:.2px;
     }
-    input{
+    input, textarea{
       padding: 12px 14px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.14);
@@ -309,20 +569,23 @@
       color: rgba(255,255,255,.92);
       outline:none;
       transition: border-color .18s ease, background .18s ease;
+      font-family: inherit;
     }
-    input:focus{
+    textarea{ min-height: 80px; resize: vertical; }
+    input:focus, textarea:focus{
       border-color: rgba(242,180,0,.55);
       background: rgba(0,0,0,.35);
     }
 
-    .form-actions{
+    .row{
       display:flex;
       gap: 10px;
-      margin-top: 12px;
-      align-items:center;
+      flex-wrap:wrap;
     }
+    .row > .field{ flex:1; min-width: 200px; }
+
     .primary{
-      flex: 1;
+      width:100%;
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -340,22 +603,58 @@
     .primary:hover{ transform: translateY(-1px); filter: brightness(1.02); }
     .primary:active{ transform: translateY(0px) scale(.99); }
 
-    .helper{
-      margin-top: 12px;
-      font-size: 12px;
-      color: rgba(255,255,255,.60);
-      line-height: 1.5;
-    }
-    .helper a{
+    .copyline{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      justify-content:space-between;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      font-weight: 900;
       color: rgba(255,255,255,.86);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,.22);
+      overflow:hidden;
     }
-    .helper a:hover{ border-bottom-color: rgba(242,180,0,.55); }
+    .copyline code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      color: rgba(255,255,255,.84);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .copybtn{
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: rgba(255,255,255,.90);
+      font-weight: 900;
+      padding: 10px 12px;
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease;
+      white-space:nowrap;
+    }
+    .copybtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.08); }
 
-    /* Open state animations (auth modal) */
-    body.modal-open .overlay#overlay{ opacity: 1; pointer-events: auto; }
-    body.modal-open .modal#authModal{ opacity: 1; transform: translateY(0px) scale(1); }
+    .checkline{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.82);
+      font-weight: 800;
+      font-size: 12px;
+    }
+    .checkline input{ width: 18px; height: 18px; }
+
+    /* Open state */
+    body.modal-open .overlay{ opacity: 1; pointer-events: auto; }
+    body.modal-open .modal{ opacity: 1; transform: translateY(0px) scale(1); }
     body.modal-open .hero-card{
       opacity: .22;
       transform: translateY(6px) scale(.985);
@@ -363,234 +662,15 @@
       pointer-events:none;
     }
 
-    /* ───────────────────────────────────────────────────────────
-       NEW: Customer page + Subscription/Payment + Session modals
-       Minimal additions, same aesthetic.
-       ─────────────────────────────────────────────────────────── */
-
-    /* Logged-in state: hide hero area, show customer page */
-    body.logged-in main{ display:none; }
-    #customerWrap{
-      display:none;
-      min-height: 100vh;
-      padding: 140px 22px 80px;
-      width: 100%;
-    }
-    body.logged-in #customerWrap{ display:block; }
-
-    .customer-inner{
-      width: min(1100px, 100%);
-      margin: 0 auto;
-      display:flex;
-      flex-direction:column;
-      gap: 16px;
-    }
-
-    .panel{
-      border-radius: var(--radius);
-      background: var(--glass);
-      border: 1px solid var(--stroke);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
-      padding: 22px 22px;
-    }
-    .panel-head{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .panel-title{
-      display:flex;
-      flex-direction:column;
-      gap: 4px;
-    }
-    .panel-title strong{
-      font-size: 16px;
-      letter-spacing:.2px;
-    }
-    .panel-title span{
-      font-size: 12px;
-      color: rgba(255,255,255,.62);
-    }
-
-    .status-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.14);
-      color: rgba(255,255,255,.90);
-      font-weight: 800;
-      font-size: 12px;
-      letter-spacing:.2px;
-      white-space:nowrap;
-    }
-
-    .sessions{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    .session-item{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      padding: 12px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      cursor:pointer;
-      transition: transform .18s ease, background .18s ease, opacity .18s ease;
-    }
-    .session-item:hover{ transform: translateY(-1px); background: rgba(255,255,255,.08); }
-    .session-left{
-      display:flex;
-      flex-direction:column;
-      gap: 3px;
-      min-width: 0;
-    }
-    .session-left strong{
-      font-size: 14px;
-      font-weight: 900;
-      letter-spacing:.1px;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .session-left span{
-      font-size: 12px;
-      color: rgba(255,255,255,.62);
-    }
-    .session-right{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      flex-shrink:0;
-    }
-    .mini{
-      font-size: 12px;
-      color: rgba(255,255,255,.70);
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      white-space:nowrap;
-    }
-
-    .link-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap: 10px;
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.92);
-      font-weight: 900;
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 999px;
-      padding: 12px 18px;
-      cursor:pointer;
-      transition: transform .18s ease, background .18s ease;
-      text-decoration:none;
-    }
-    .link-btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.08); }
-    .link-btn:active{ transform: translateY(0px) scale(.99); }
-
-    /* Subscription modal + payment modal + session modal open states */
-    body.sub-open .overlay#subOverlay{ opacity:1; pointer-events:auto; }
-    body.sub-open .modal#subModal{ opacity:1; transform: translateY(0px) scale(1); }
-
-    body.pay-open .overlay#payOverlay{ opacity:1; pointer-events:auto; }
-    body.pay-open .modal#payModal{ opacity:1; transform: translateY(0px) scale(1); }
-
-    body.session-open .overlay#sessionOverlay{ opacity:1; pointer-events:auto; }
-    body.session-open .modal#sessionModal{ opacity:1; transform: translateY(0px) scale(1); }
-
-    .kv{
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      margin-top: 6px;
-    }
-    .krow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      font-size: 13px;
-    }
-    .krow span{ color: rgba(255,255,255,.70); font-weight: 700; }
-    .krow strong{ font-weight: 900; }
-
-    .copy-row{
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      margin-top: 10px;
-    }
-    .copybox{
-      flex:1;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.25);
-      color: rgba(255,255,255,.92);
-      font-size: 13px;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .smallbtn{
-      height: 42px;
-      padding: 0 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.92);
-      font-weight: 900;
-      cursor:pointer;
-      transition: background .18s ease, transform .18s ease;
-      white-space:nowrap;
-    }
-    .smallbtn:hover{ background: rgba(255,255,255,.10); transform: translateY(-1px); }
-    .smallbtn:active{ transform: translateY(0px); }
-
-    .checkrow{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      margin-top: 10px;
-      color: rgba(255,255,255,.78);
-      font-size: 13px;
-      user-select:none;
-    }
-    .checkrow input{ width: 16px; height: 16px; margin:0; }
-
-    .note{
-      margin-top: 10px;
-      font-size: 12px;
-      color: rgba(255,255,255,.62);
-      line-height: 1.5;
-    }
-
     @media (max-width: 520px){
       header{ padding: 14px 16px; }
       .brand img{ height: 38px; }
       nav{ gap: 10px; }
-      nav a{ font-size: 13px; padding: 10px 8px; }
+      nav a, nav button{ font-size: 13px; padding: 10px 10px; }
       .hero-card{ padding: 34px 18px 30px; }
-      .panel{ padding: 18px 16px; }
-      .session-item{ padding: 12px 10px; }
-      .session-left strong{ white-space:normal; }
+      .grid{ grid-template-columns: 1fr; }
+      .weekdays{ display:none; }
+      .daycol{ border-right:0; border-bottom: 1px solid rgba(255,255,255,.06); }
     }
   </style>
 </head>
@@ -611,105 +691,133 @@
         <img src="primex-full-transparent-clean.png" alt="PrimeX Logo" />
       </a>
 
-      <nav aria-label="Primary">
+      <!-- Visitor nav -->
+      <nav aria-label="Primary" id="navVisitor">
         <a href="#trading">Trading</a>
         <a href="#live">Live Sessions</a>
         <a href="#community">Community</a>
         <a href="#about">About</a>
       </nav>
+
+      <!-- Logged-in nav (hidden until login) -->
+      <nav aria-label="Customer" id="navCustomer" style="display:none;">
+        <button class="active" data-section="home" type="button">Home</button>
+        <button data-section="liveSessions" type="button">Live Sessions</button>
+        <button data-section="subscription" type="button">Subscription</button>
+        <button data-section="groupSignals" type="button">Group Signals</button>
+        <button id="logoutBtn" type="button">Logout</button>
+      </nav>
     </div>
   </header>
 
-  <!-- Main hero (guest) -->
+  <!-- Main -->
   <main>
-    <section class="hero-card" aria-label="PrimeX Hero">
+    <!-- Logged-out hero -->
+    <section class="hero-card" aria-label="PrimeX Hero" id="hero">
       <div class="pill">Beyond Limits</div>
       <h1>Welcome to PrimeX</h1>
-
       <p class="sub">PrimeX | Trading × Mindset × Business</p>
-
       <button class="cta" id="joinBtn" type="button">Join Now</button>
+    </section>
+
+    <!-- Logged-in app -->
+    <section class="app-wrap" id="app">
+      <!-- top welcome card -->
+      <div class="card topbar">
+        <div class="welcome">
+          <strong id="welcomeTitle">Welcome</strong>
+          <small id="welcomeEmail">—</small>
+          <p style="margin-top:8px;">
+            Access to Live Sessions and Group Signals requires an active subscription.
+          </p>
+        </div>
+        <div class="status-pill" id="subStatusPill">Subscription: Not active</div>
+      </div>
+
+      <!-- HOME section (default after login) -->
+      <div class="section active" id="section-home">
+        <div class="card">
+          <h2>Your sections</h2>
+          <p>Use the top menu to open Live Sessions, Subscription, or Group Signals.</p>
+        </div>
+      </div>
+
+      <!-- LIVE SESSIONS section -->
+      <div class="section" id="section-liveSessions">
+        <div class="card">
+          <h2>Live Sessions</h2>
+          <p>Upcoming sessions (details visible — joining requires subscription).</p>
+
+          <div class="calendar-wrap" style="margin-top:12px;">
+            <div class="cal-head">
+              <div style="display:flex; flex-direction:column; gap:2px;">
+                <strong style="font-size:14px;">Schedule</strong>
+                <span style="font-size:12px; color:rgba(255,255,255,.55); font-weight:800;">(demo calendar layout)</span>
+              </div>
+              <div class="chips" id="chips">
+                <button class="chip active" data-filter="All" type="button">All</button>
+                <button class="chip" data-filter="Forex" type="button">Forex</button>
+                <button class="chip" data-filter="Crypto" type="button">Crypto</button>
+                <button class="chip" data-filter="Futures" type="button">Futures</button>
+                <button class="chip" data-filter="Indices" type="button">Indices</button>
+                <button class="chip" data-filter="Gold" type="button">Gold</button>
+              </div>
+            </div>
+
+            <div class="weekdays">
+              <div>Sunday</div><div>Monday</div><div>Tuesday</div><div>Wednesday</div><div>Thursday</div><div>Friday</div><div>Saturday</div>
+            </div>
+
+            <div class="grid" id="calendarGrid">
+              <!-- filled by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBSCRIPTION section -->
+      <div class="section" id="section-subscription">
+        <div class="card">
+          <h2>Subscription</h2>
+          <p>Unlock full access.</p>
+
+          <div class="plan-row">
+            <span>Plan</span>
+            <span>$499 / 3 months</span>
+          </div>
+          <div class="plan-row">
+            <span>Payment</span>
+            <span>USDT (TRC20) — manual</span>
+          </div>
+
+          <div class="sub-actions">
+            <button class="btn btn-gold" id="unlockAccessBtn" type="button">Unlock Access</button>
+            <button class="btn btn-ghost" id="viewPlanBtn" type="button">View Plan Details</button>
+          </div>
+
+          <div class="tiny">
+            After submitting payment proof, your account will be activated within 24 hours. <br/>
+            Renewal reminder is sent 7 days before expiry (demo logic).
+          </div>
+        </div>
+      </div>
+
+      <!-- GROUP SIGNALS section -->
+      <div class="section" id="section-groupSignals">
+        <div class="card">
+          <h2>Group Signals</h2>
+          <p>Join the signals group (subscription required).</p>
+
+          <button class="btn btn-gold big-action" id="joinSignalsBtn" type="button">Join Group Signals</button>
+          <div class="tiny">In the paid state, this can take them directly to the group. No visible invite link.</div>
+        </div>
+      </div>
     </section>
   </main>
 
-  <!-- Customer Page (after signup/signin) -->
-  <section id="customerWrap" aria-label="PrimeX Customer">
-    <div class="customer-inner">
-
-      <!-- Status / Welcome -->
-      <div class="panel" id="customerStatusPanel">
-        <div class="panel-head">
-          <div class="panel-title">
-            <strong id="welcomeTitle">Welcome</strong>
-            <span id="welcomeSub">You’re inside PrimeX.</span>
-          </div>
-          <div class="status-pill" id="subStatusPill">Subscription: Not active</div>
-        </div>
-        <div class="note" id="subStatusNote">Access to Live Sessions and Group Signals requires an active subscription.</div>
-      </div>
-
-      <!-- Live Sessions -->
-      <div class="panel" id="liveSessionsPanel">
-        <div class="panel-head">
-          <div class="panel-title">
-            <strong>Live Sessions</strong>
-            <span>Upcoming sessions (details visible — join requires subscription).</span>
-          </div>
-        </div>
-        <div class="sessions" id="sessionsList"></div>
-      </div>
-
-      <!-- Subscription -->
-      <div class="panel" id="subscriptionPanel">
-        <div class="panel-head">
-          <div class="panel-title">
-            <strong>Subscription</strong>
-            <span>Unlock full access.</span>
-          </div>
-        </div>
-
-        <div class="kv">
-          <div class="krow">
-            <span>Plan</span>
-            <strong>$499 / 3 months</strong>
-          </div>
-          <div class="krow">
-            <span>Payment</span>
-            <strong>USDT (TRC20) — manual</strong>
-          </div>
-        </div>
-
-        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="primary" id="unlockBtn" type="button">Unlock Access</button>
-          <button class="link-btn" id="viewPlansBtn" type="button">View Plan Details</button>
-        </div>
-
-        <div class="note">
-          After submitting payment proof, your account will be activated within <strong>24 hours</strong>.
-          Renewal reminder is sent <strong>7 days</strong> before expiry (demo logic).
-        </div>
-      </div>
-
-      <!-- Group Signals -->
-      <div class="panel" id="signalsPanel">
-        <div class="panel-head">
-          <div class="panel-title">
-            <strong>Group Signals</strong>
-            <span>Join the signals group (subscription required).</span>
-          </div>
-        </div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="primary" id="signalsBtn" type="button">Join Group Signals</button>
-        </div>
-        <div class="note">In the paid state, this will take them directly to the group. No visible invite link.</div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- AUTH Modal overlay (original) -->
+  <!-- Modal overlay (shared) -->
   <div class="overlay" id="overlay" aria-hidden="true">
-    <div class="modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-top">
         <div class="modal-title" id="modalTitle">
           <strong id="modeTitle">Create your account</strong>
@@ -719,154 +827,88 @@
       </div>
 
       <div class="modal-body">
-        <div class="tabs" role="tablist" aria-label="Sign in or sign up">
-          <button class="tab active" id="tabSignup" type="button" role="tab" aria-selected="true">Sign up</button>
-          <button class="tab" id="tabSignin" type="button" role="tab" aria-selected="false">Sign in</button>
-        </div>
-
-        <form id="authForm">
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="you@example.com" required />
+        <!-- AUTH PANEL -->
+        <div id="panel-auth">
+          <div class="tabs" role="tablist" aria-label="Sign in or sign up">
+            <button class="tab active" id="tabSignup" type="button" role="tab" aria-selected="true">Sign up</button>
+            <button class="tab" id="tabSignin" type="button" role="tab" aria-selected="false">Sign in</button>
           </div>
 
-          <div class="field">
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password" placeholder="••••••••" minlength="6" required />
-          </div>
+          <form id="authForm">
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+            </div>
 
-          <div class="field" id="confirmWrap">
-            <label for="confirm">Confirm password</label>
-            <input id="confirm" name="confirm" type="password" placeholder="••••••••" minlength="6" required />
-          </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" placeholder="••••••••" minlength="6" required />
+            </div>
 
-          <div class="form-actions">
+            <div class="field" id="confirmWrap">
+              <label for="confirm">Confirm password</label>
+              <input id="confirm" name="confirm" type="password" placeholder="••••••••" minlength="6" required />
+            </div>
+
             <button class="primary" id="submitBtn" type="submit">Create account</button>
+          </form>
+        </div>
+
+        <!-- SUBSCRIPTION / PAYMENT PANEL -->
+        <div id="panel-subscribe" style="display:none;">
+          <div class="copyline" style="margin-bottom:10px;">
+            <div style="min-width:0;">
+              <div style="font-size:11px; opacity:.72; font-weight:900; margin-bottom:6px;">Send USDT (TRC20) to:</div>
+              <code id="walletAddr">TRC20_WALLET_ADDRESS_HERE</code>
+            </div>
+            <button class="copybtn" id="copyWalletBtn" type="button">Copy</button>
           </div>
 
-          <div class="helper" id="helperText">
-            By continuing, you agree to PrimeX terms. Already a member?
-            <a href="#" id="switchToSignin">Sign in</a>
+          <div class="checkline">
+            <input type="checkbox" id="autoRenew" />
+            <label for="autoRenew" style="margin:0; cursor:pointer;">Auto-renew every 3 months</label>
           </div>
-        </form>
-      </div>
-    </div>
-  </div>
 
-  <!-- Session Details Modal -->
-  <div class="overlay" id="sessionOverlay" aria-hidden="true">
-    <div class="modal" id="sessionModal" role="dialog" aria-modal="true" aria-labelledby="sessionTitle">
-      <div class="modal-top">
-        <div class="modal-title">
-          <strong id="sessionTitle">Session</strong>
-          <span id="sessionMeta">Details</span>
-        </div>
-        <button class="xbtn" id="sessionClose" type="button" aria-label="Close">✕</button>
-      </div>
-
-      <div class="modal-body">
-        <div class="kv">
-          <div class="krow"><span>Date</span><strong id="sdDate">—</strong></div>
-          <div class="krow"><span>Time</span><strong id="sdTime">—</strong></div>
-          <div class="krow"><span>Host</span><strong id="sdHost">—</strong></div>
-        </div>
-
-        <div class="note" id="sdDesc" style="margin-top:10px;">—</div>
-
-        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="primary" id="joinSessionBtn" type="button">Join Live</button>
-          <button class="link-btn" id="closeSessionBtn" type="button">Close</button>
-        </div>
-
-        <div class="note">If your subscription is inactive, clicking Join will open the subscription prompt.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Subscription Modal -->
-  <div class="overlay" id="subOverlay" aria-hidden="true">
-    <div class="modal" id="subModal" role="dialog" aria-modal="true" aria-labelledby="subTitle">
-      <div class="modal-top">
-        <div class="modal-title">
-          <strong id="subTitle">Unlock PrimeX</strong>
-          <span>Full access — $499 / 3 months</span>
-        </div>
-        <button class="xbtn" id="subClose" type="button" aria-label="Close">✕</button>
-      </div>
-
-      <div class="modal-body">
-        <div class="kv">
-          <div class="krow"><span>Includes</span><strong>Live Sessions + Replays + Group Signals</strong></div>
-          <div class="krow"><span>Payment</span><strong>USDT (TRC20) — manual</strong></div>
-          <div class="krow"><span>Activation</span><strong>Within 24 hours</strong></div>
-        </div>
-
-        <div class="checkrow">
-          <input id="autoRenew" type="checkbox" />
-          <label for="autoRenew" style="margin:0; font-size:13px; color: rgba(255,255,255,.78); font-weight:800;">
-            Enable auto-renew (reminder 7 days before expiry)
-          </label>
-        </div>
-
-        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="primary" id="openPaymentBtn" type="button">Continue to Payment</button>
-          <button class="link-btn" id="subLearnBtn" type="button">Learn More</button>
-        </div>
-
-        <div class="note">
-          Auto-renew does not auto-charge yet (manual payments). It enables renewal reminders and faster renewal flow later.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Payment Modal -->
-  <div class="overlay" id="payOverlay" aria-hidden="true">
-    <div class="modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
-      <div class="modal-top">
-        <div class="modal-title">
-          <strong id="payTitle">Manual Payment</strong>
-          <span>Send 499 USDT (TRC20) and submit proof.</span>
-        </div>
-        <button class="xbtn" id="payClose" type="button" aria-label="Close">✕</button>
-      </div>
-
-      <div class="modal-body">
-        <div class="kv">
-          <div class="krow"><span>Amount</span><strong>499 USDT</strong></div>
-          <div class="krow"><span>Network</span><strong>TRC20 (TRON)</strong></div>
-        </div>
-
-        <div class="note" style="margin-top:10px;">
-          Only send via <strong>TRC20</strong>. Sending from another network may result in loss of funds.
-        </div>
-
-        <div class="copy-row">
-          <div class="copybox" id="walletAddressBox" title="Wallet Address">
-            TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-          </div>
-          <button class="smallbtn" id="copyWalletBtn" type="button">Copy</button>
-        </div>
-
-        <form id="paymentForm" style="margin-top:12px;">
-          <div class="field">
-            <label for="txid">Transaction Hash (TXID)</label>
-            <input id="txid" name="txid" type="text" placeholder="Paste TXID..." required />
+          <div class="row" style="margin-top:10px;">
+            <div class="field">
+              <label for="sendingWallet">Your sending wallet (optional)</label>
+              <input id="sendingWallet" type="text" placeholder="Your wallet address" />
+            </div>
+            <div class="field">
+              <label for="txHash">Tx hash (recommended)</label>
+              <input id="txHash" type="text" placeholder="Transaction hash" />
+            </div>
           </div>
 
           <div class="field">
-            <label for="proof">Screenshot (optional)</label>
-            <input id="proof" name="proof" type="file" accept="image/*" />
+            <label for="proof">Upload screenshot proof</label>
+            <input id="proof" type="file" accept="image/*" />
           </div>
 
-          <div class="form-actions">
-            <button class="primary" id="submitPaymentBtn" type="submit">Submit for Approval</button>
+          <button class="primary" id="submitProofBtn" type="button">Submit Payment Proof</button>
+
+          <div class="tiny" id="paymentTiny" style="margin-top:10px;">
+            After you submit, you’ll see “Pending verification”. Activation within ~24 hours.
+          </div>
+        </div>
+
+        <!-- SESSION DETAILS PANEL -->
+        <div id="panel-session" style="display:none;">
+          <div class="card" style="padding:14px; background: rgba(255,255,255,.06); border-radius: 16px;">
+            <div style="display:flex; justify-content:space-between; gap:10px; align-items:flex-start;">
+              <div style="min-width:0;">
+                <div style="font-weight:900; font-size:14px;" id="sessDetailTitle">Live Session</div>
+                <div style="font-size:12px; color:rgba(255,255,255,.62); font-weight:800; margin-top:6px;" id="sessDetailMeta">—</div>
+              </div>
+              <div class="status-pill" style="padding:7px 10px; font-size:11px;" id="sessDetailLock">Locked</div>
+            </div>
           </div>
 
-          <div class="note" id="pendingMsg" style="display:none;">
-            Payment submitted. Your account will be activated within an estimated <strong>24 hours</strong>.
+          <button class="primary" id="joinLiveBtn" type="button" style="margin-top:12px;">Join Live</button>
+          <div class="tiny" id="joinHint" style="margin-top:10px;">
+            If you’re not subscribed, clicking Join will take you to Subscription.
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
@@ -878,125 +920,209 @@
   <div id="about" style="height:1px;"></div>
 
   <script>
-    /* ───────────────────────────────────────────────────────────
-       STATE (demo, localStorage)
-       ─────────────────────────────────────────────────────────── */
-    const LS = {
-      auth: "primex_auth",
-      sub: "primex_sub",
-      sessions: "primex_sessions"
+    /* ===== Basic state (demo) =====
+      - login stored in sessionStorage
+      - subscription stored in localStorage
+    */
+    const state = {
+      email: sessionStorage.getItem("px_email") || "",
+      loggedIn: sessionStorage.getItem("px_loggedIn") === "1",
+      subStatus: localStorage.getItem("px_subStatus") || "none", // "none" | "pending" | "active"
+      subAutoRenew: localStorage.getItem("px_autoRenew") === "1",
+      activeSection: "home",
+      filter: "All",
+      selectedSessionId: null
     };
 
-    function nowMs(){ return Date.now(); }
-    function daysToMs(d){ return d * 24 * 60 * 60 * 1000; }
-
-    function getAuth(){
-      try { return JSON.parse(localStorage.getItem(LS.auth) || "null"); } catch { return null; }
-    }
-    function setAuth(data){
-      localStorage.setItem(LS.auth, JSON.stringify(data));
-    }
-
-    function getSub(){
-      try { return JSON.parse(localStorage.getItem(LS.sub) || "null"); } catch { return null; }
-    }
-    function setSub(data){
-      localStorage.setItem(LS.sub, JSON.stringify(data));
-    }
-
-    function isSubscribed(){
-      const sub = getSub();
-      if(!sub) return false;
-      if(sub.status !== "active") return false;
-      if(!sub.expiresAt) return false;
-      return nowMs() < sub.expiresAt;
-    }
-
-    function subStatus(){
-      const sub = getSub();
-      if(!sub) return { status:"none" };
-      if(sub.status === "pending") return { status:"pending" };
-      if(sub.status === "active"){
-        if(sub.expiresAt && nowMs() < sub.expiresAt) return { status:"active", expiresAt: sub.expiresAt, autoRenew: !!sub.autoRenew };
-        return { status:"expired", expiresAt: sub.expiresAt, autoRenew: !!sub.autoRenew };
-      }
-      if(sub.status === "expired") return { status:"expired", expiresAt: sub.expiresAt, autoRenew: !!sub.autoRenew };
-      return { status:"none" };
-    }
-
-    /* ───────────────────────────────────────────────────────────
-       SESSIONS (demo)
-       ─────────────────────────────────────────────────────────── */
-    const DEFAULT_SESSIONS = [
-      {
-        id: "s1",
-        title: "Live Session — Execution & Structure",
-        date: "2026-01-04",
-        time: "19:00",
-        host: "PrimeX",
-        desc: "Structure, execution rules, and accountability.",
-        zoomUrl: "https://example.com/zoom-placeholder-1"
-      },
-      {
-        id: "s2",
-        title: "Live Session — Risk Management",
-        date: "2026-01-07",
-        time: "20:00",
-        host: "PrimeX",
-        desc: "Risk control, sizing, and protecting equity.",
-        zoomUrl: "https://example.com/zoom-placeholder-2"
-      },
-      {
-        id: "s3",
-        title: "Live Session — Mindset Under Pressure",
-        date: "2026-01-11",
-        time: "19:30",
-        host: "PrimeX",
-        desc: "Consistency, focus, and discipline during drawdowns.",
-        zoomUrl: "https://example.com/zoom-placeholder-3"
-      }
-    ];
-
-    function getSessions(){
-      try {
-        const s = JSON.parse(localStorage.getItem(LS.sessions) || "null");
-        if(Array.isArray(s) && s.length) return s;
-      } catch {}
-      localStorage.setItem(LS.sessions, JSON.stringify(DEFAULT_SESSIONS));
-      return DEFAULT_SESSIONS;
-    }
-
-    /* ───────────────────────────────────────────────────────────
-       AUTH MODAL (existing)
-       ─────────────────────────────────────────────────────────── */
+    /* ===== Elements ===== */
     const body = document.body;
-    const joinBtn = document.getElementById("joinBtn");
+    const bgVideo = document.getElementById("bgVideo");
+
+    const navVisitor = document.getElementById("navVisitor");
+    const navCustomer = document.getElementById("navCustomer");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const heroJoinBtn = document.getElementById("joinBtn");
+
     const overlay = document.getElementById("overlay");
     const closeBtn = document.getElementById("closeBtn");
+    const modeTitle = document.getElementById("modeTitle");
+    const modeSub = document.getElementById("modeSub");
 
+    // Auth
+    const panelAuth = document.getElementById("panel-auth");
     const tabSignup = document.getElementById("tabSignup");
     const tabSignin = document.getElementById("tabSignin");
     const confirmWrap = document.getElementById("confirmWrap");
     const submitBtn = document.getElementById("submitBtn");
-    const modeTitle = document.getElementById("modeTitle");
-    const modeSub = document.getElementById("modeSub");
-    const helperText = document.getElementById("helperText");
     const authForm = document.getElementById("authForm");
 
-    function openAuth(){
+    // Payment panel
+    const panelSubscribe = document.getElementById("panel-subscribe");
+    const walletAddr = document.getElementById("walletAddr");
+    const copyWalletBtn = document.getElementById("copyWalletBtn");
+    const autoRenew = document.getElementById("autoRenew");
+    const submitProofBtn = document.getElementById("submitProofBtn");
+    const paymentTiny = document.getElementById("paymentTiny");
+
+    // Session panel
+    const panelSession = document.getElementById("panel-session");
+    const sessDetailTitle = document.getElementById("sessDetailTitle");
+    const sessDetailMeta = document.getElementById("sessDetailMeta");
+    const sessDetailLock = document.getElementById("sessDetailLock");
+    const joinLiveBtn = document.getElementById("joinLiveBtn");
+    const joinHint = document.getElementById("joinHint");
+
+    // App
+    const welcomeTitle = document.getElementById("welcomeTitle");
+    const welcomeEmail = document.getElementById("welcomeEmail");
+    const subStatusPill = document.getElementById("subStatusPill");
+
+    const unlockAccessBtn = document.getElementById("unlockAccessBtn");
+    const viewPlanBtn = document.getElementById("viewPlanBtn");
+    const joinSignalsBtn = document.getElementById("joinSignalsBtn");
+
+    const calendarGrid = document.getElementById("calendarGrid");
+    const chips = document.getElementById("chips");
+
+    /* ===== Demo live sessions data ===== */
+    const sessions = [
+      { id:"s1", dayIndex:0, time:"3:15 PM", title:"Execution & Structure", host:"PrimeX", category:"Forex", joinUrl:"https://zoom.us/" },
+      { id:"s2", dayIndex:1, time:"3:00 AM", title:"Risk Management", host:"PrimeX", category:"Indices", joinUrl:"https://zoom.us/" },
+      { id:"s3", dayIndex:2, time:"3:00 AM", title:"Mindset Under Pressure", host:"PrimeX", category:"Crypto", joinUrl:"https://zoom.us/" },
+      { id:"s4", dayIndex:4, time:"8:00 AM", title:"Market Prep Live", host:"PrimeX", category:"Gold", joinUrl:"https://zoom.us/" },
+      { id:"s5", dayIndex:5, time:"4:00 PM", title:"Trading Review", host:"PrimeX", category:"Futures", joinUrl:"https://zoom.us/" },
+    ];
+
+    /* ===== Helpers ===== */
+    function isSubscribedActive(){
+      return state.subStatus === "active";
+    }
+
+    function setSubscriptionPill(){
+      const label =
+        state.subStatus === "active" ? "Subscription: Active" :
+        state.subStatus === "pending" ? "Subscription: Pending" :
+        "Subscription: Not active";
+      subStatusPill.textContent = label;
+    }
+
+    function showCustomerNav(){
+      navVisitor.style.display = "none";
+      navCustomer.style.display = "flex";
+    }
+
+    function showVisitorNav(){
+      navVisitor.style.display = "flex";
+      navCustomer.style.display = "none";
+    }
+
+    function setLoggedInUI(on){
+      body.classList.toggle("logged-in", on);
+
+      if(on){
+        showCustomerNav();
+        welcomeTitle.textContent = "Welcome";
+        welcomeEmail.textContent = state.email || "—";
+        setSubscriptionPill();
+      } else {
+        showVisitorNav();
+        body.classList.remove("blank-bg");
+      }
+    }
+
+    function setActiveNavButton(section){
+      [...navCustomer.querySelectorAll("button[data-section]")].forEach(btn=>{
+        btn.classList.toggle("active", btn.dataset.section === section);
+      });
+    }
+
+    function showSection(section){
+      state.activeSection = section;
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      const el = document.getElementById(`section-${section}`);
+      if(el) el.classList.add("active");
+      setActiveNavButton(section);
+
+      // per your request: blank background for calendar + subscription
+      const needsBlank = (section === "liveSessions" || section === "subscription");
+      body.classList.toggle("blank-bg", needsBlank);
+
+      // keep montage for others
+      if(bgVideo){
+        // (we just hide via CSS when blank-bg; video can keep playing, no big deal)
+      }
+    }
+
+    /* ===== Modal: open/close + panel switching ===== */
+    function openModal(){
       body.classList.add("modal-open");
       overlay.setAttribute("aria-hidden","false");
-      setTimeout(() => document.getElementById("email").focus(), 50);
     }
-    function closeAuth(){
+    function closeModal(){
       body.classList.remove("modal-open");
       overlay.setAttribute("aria-hidden","true");
+      // reset to auth panel by default
+      showModalPanel("auth");
     }
 
-    joinBtn.addEventListener("click", openAuth);
-    closeBtn.addEventListener("click", closeAuth);
-    overlay.addEventListener("click", (e) => { if(e.target === overlay) closeAuth(); });
+    function showModalPanel(which){
+      // hide all panels
+      panelAuth.style.display = "none";
+      panelSubscribe.style.display = "none";
+      panelSession.style.display = "none";
 
+      if(which === "auth"){
+        panelAuth.style.display = "block";
+      } else if(which === "subscribe"){
+        panelSubscribe.style.display = "block";
+      } else if(which === "session"){
+        panelSession.style.display = "block";
+      }
+    }
+
+    function openAuthModal(){
+      modeTitle.textContent = "Create your account";
+      modeSub.textContent = "Join PrimeX in seconds.";
+      showModalPanel("auth");
+      openModal();
+      setTimeout(()=> document.getElementById("email")?.focus(), 50);
+    }
+
+    function openSubscribeModal(){
+      modeTitle.textContent = "Unlock access";
+      modeSub.textContent = "USDT (TRC20) — manual payment.";
+      showModalPanel("subscribe");
+      // put your TRC20 wallet here:
+      walletAddr.textContent = "TRC20_WALLET_ADDRESS_HERE";
+      autoRenew.checked = state.subAutoRenew;
+      paymentTiny.textContent = "After you submit, you’ll see “Pending verification”. Activation within ~24 hours.";
+      openModal();
+    }
+
+    function openSessionDetailsModal(session){
+      modeTitle.textContent = "Live session";
+      modeSub.textContent = "Details are visible — joining may require subscription.";
+      showModalPanel("session");
+
+      state.selectedSessionId = session.id;
+      sessDetailTitle.textContent = `Live Session — ${session.title}`;
+      sessDetailMeta.textContent = `${session.time} • Host: ${session.host} • ${session.category}`;
+      sessDetailLock.textContent = isSubscribedActive() ? "Unlocked" : "Locked";
+      joinHint.textContent = isSubscribedActive()
+        ? "Click Join Live to open the session."
+        : "You need an active subscription to join. Click Join Live to unlock access.";
+
+      openModal();
+    }
+
+    /* overlay events */
+    heroJoinBtn.addEventListener("click", openAuthModal);
+    closeBtn.addEventListener("click", closeModal);
+    overlay.addEventListener("click", (e) => { if(e.target === overlay) closeModal(); });
+    window.addEventListener("keydown", (e) => { if(e.key === "Escape" && body.classList.contains("modal-open")) closeModal(); });
+
+    /* ===== Auth tabs + submit ===== */
     function setMode(mode){
       const isSignup = mode === "signup";
       tabSignup.classList.toggle("active", isSignup);
@@ -1010,264 +1136,11 @@
       modeTitle.textContent = isSignup ? "Create your account" : "Welcome back";
       modeSub.textContent = isSignup ? "Join PrimeX in seconds." : "Sign in to continue.";
       submitBtn.textContent = isSignup ? "Create account" : "Sign in";
-
-      helperText.innerHTML = isSignup
-        ? `By continuing, you agree to PrimeX terms. Already a member? <a href="#" id="switchInline">Sign in</a>`
-        : `New here? <a href="#" id="switchInline">Create an account</a>`;
-
-      const switchInline = document.getElementById("switchInline");
-      switchInline.addEventListener("click", (ev) => {
-        ev.preventDefault();
-        setMode(isSignup ? "signin" : "signup");
-      });
     }
 
     tabSignup.addEventListener("click", () => setMode("signup"));
     tabSignin.addEventListener("click", () => setMode("signin"));
     setMode("signup");
-
-    /* ───────────────────────────────────────────────────────────
-       CUSTOMER PAGE UI
-       ─────────────────────────────────────────────────────────── */
-    const welcomeTitle = document.getElementById("welcomeTitle");
-    const welcomeSub = document.getElementById("welcomeSub");
-    const subStatusPill = document.getElementById("subStatusPill");
-    const subStatusNote = document.getElementById("subStatusNote");
-
-    const sessionsList = document.getElementById("sessionsList");
-
-    function formatDate(iso){
-      // keep simple: YYYY-MM-DD -> readable
-      const [y,m,d] = iso.split("-").map(Number);
-      const dt = new Date(Date.UTC(y, (m-1), d));
-      return dt.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"2-digit" });
-    }
-
-    function renderStatus(){
-      const auth = getAuth();
-      const s = subStatus();
-
-      if(auth && auth.email){
-        welcomeTitle.textContent = "Welcome";
-        welcomeSub.textContent = auth.email;
-      } else {
-        welcomeTitle.textContent = "Welcome";
-        welcomeSub.textContent = "You’re inside PrimeX.";
-      }
-
-      if(s.status === "active"){
-        const exp = new Date(s.expiresAt);
-        subStatusPill.textContent = "Subscription: Active";
-        subStatusNote.textContent = `Active until ${exp.toLocaleDateString()}. Auto-renew: ${s.autoRenew ? "ON" : "OFF"}.`;
-      } else if(s.status === "pending"){
-        subStatusPill.textContent = "Subscription: Pending";
-        subStatusNote.textContent = "Payment submitted. Activation within an estimated 24 hours.";
-      } else if(s.status === "expired"){
-        subStatusPill.textContent = "Subscription: Expired";
-        subStatusNote.textContent = "Your subscription has expired. Renew to regain access.";
-      } else {
-        subStatusPill.textContent = "Subscription: Not active";
-        subStatusNote.textContent = "Access to Live Sessions and Group Signals requires an active subscription.";
-      }
-    }
-
-    let currentSession = null;
-
-    function renderSessions(){
-      const sessions = getSessions();
-      sessionsList.innerHTML = "";
-      sessions.forEach(s => {
-        const item = document.createElement("div");
-        item.className = "session-item";
-        item.setAttribute("role", "button");
-        item.tabIndex = 0;
-
-        const left = document.createElement("div");
-        left.className = "session-left";
-        left.innerHTML = `<strong>${s.title}</strong><span>${formatDate(s.date)} • ${s.time} • Host: ${s.host}</span>`;
-
-        const right = document.createElement("div");
-        right.className = "session-right";
-        const badge = document.createElement("div");
-        badge.className = "mini";
-        badge.textContent = isSubscribed() ? "Access" : "Locked";
-        right.appendChild(badge);
-
-        item.appendChild(left);
-        item.appendChild(right);
-
-        item.addEventListener("click", () => openSession(s));
-        item.addEventListener("keydown", (e) => {
-          if(e.key === "Enter" || e.key === " ") openSession(s);
-        });
-
-        sessionsList.appendChild(item);
-      });
-    }
-
-    /* ───────────────────────────────────────────────────────────
-       SESSION MODAL
-       ─────────────────────────────────────────────────────────── */
-    const sessionOverlay = document.getElementById("sessionOverlay");
-    const sessionClose = document.getElementById("sessionClose");
-    const closeSessionBtn = document.getElementById("closeSessionBtn");
-    const sessionTitle = document.getElementById("sessionTitle");
-    const sessionMeta = document.getElementById("sessionMeta");
-    const sdDate = document.getElementById("sdDate");
-    const sdTime = document.getElementById("sdTime");
-    const sdHost = document.getElementById("sdHost");
-    const sdDesc = document.getElementById("sdDesc");
-    const joinSessionBtn = document.getElementById("joinSessionBtn");
-
-    function openSession(s){
-      currentSession = s;
-      sessionTitle.textContent = s.title;
-      sessionMeta.textContent = "Session details";
-      sdDate.textContent = formatDate(s.date);
-      sdTime.textContent = s.time;
-      sdHost.textContent = s.host;
-      sdDesc.textContent = s.desc;
-
-      body.classList.add("session-open");
-      sessionOverlay.setAttribute("aria-hidden","false");
-    }
-    function closeSession(){
-      body.classList.remove("session-open");
-      sessionOverlay.setAttribute("aria-hidden","true");
-      currentSession = null;
-    }
-    sessionClose.addEventListener("click", closeSession);
-    closeSessionBtn.addEventListener("click", closeSession);
-    sessionOverlay.addEventListener("click", (e) => { if(e.target === sessionOverlay) closeSession(); });
-
-    joinSessionBtn.addEventListener("click", () => {
-      if(!currentSession) return;
-      if(!isSubscribed()){
-        closeSession();
-        openSubscription();
-        return;
-      }
-      // Paid: direct open (no visible link)
-      window.open(currentSession.zoomUrl, "_blank", "noopener,noreferrer");
-      closeSession();
-    });
-
-    /* ───────────────────────────────────────────────────────────
-       SUBSCRIPTION MODAL
-       ─────────────────────────────────────────────────────────── */
-    const subOverlay = document.getElementById("subOverlay");
-    const subClose = document.getElementById("subClose");
-    const openPaymentBtn = document.getElementById("openPaymentBtn");
-    const subLearnBtn = document.getElementById("subLearnBtn");
-    const autoRenew = document.getElementById("autoRenew");
-
-    function openSubscription(){
-      body.classList.add("sub-open");
-      subOverlay.setAttribute("aria-hidden","false");
-    }
-    function closeSubscription(){
-      body.classList.remove("sub-open");
-      subOverlay.setAttribute("aria-hidden","true");
-    }
-    subClose.addEventListener("click", closeSubscription);
-    subOverlay.addEventListener("click", (e) => { if(e.target === subOverlay) closeSubscription(); });
-
-    document.getElementById("unlockBtn").addEventListener("click", openSubscription);
-    document.getElementById("viewPlansBtn").addEventListener("click", openSubscription);
-    subLearnBtn.addEventListener("click", () => {
-      // Same modal for now (no new page yet).
-      // This is intentionally minimal.
-    });
-
-    /* ───────────────────────────────────────────────────────────
-       PAYMENT MODAL
-       ─────────────────────────────────────────────────────────── */
-    const payOverlay = document.getElementById("payOverlay");
-    const payClose = document.getElementById("payClose");
-    const walletAddressBox = document.getElementById("walletAddressBox");
-    const copyWalletBtn = document.getElementById("copyWalletBtn");
-    const paymentForm = document.getElementById("paymentForm");
-    const pendingMsg = document.getElementById("pendingMsg");
-    const submitPaymentBtn = document.getElementById("submitPaymentBtn");
-
-    // TODO: replace with your real TRC20 wallet address:
-    const TRC20_WALLET = "TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-    walletAddressBox.textContent = TRC20_WALLET;
-
-    function openPayment(){
-      body.classList.add("pay-open");
-      payOverlay.setAttribute("aria-hidden","false");
-      pendingMsg.style.display = "none";
-      paymentForm.reset();
-      submitPaymentBtn.disabled = false;
-    }
-    function closePayment(){
-      body.classList.remove("pay-open");
-      payOverlay.setAttribute("aria-hidden","true");
-    }
-
-    payClose.addEventListener("click", closePayment);
-    payOverlay.addEventListener("click", (e) => { if(e.target === payOverlay) closePayment(); });
-
-    openPaymentBtn.addEventListener("click", () => {
-      closeSubscription();
-      openPayment();
-    });
-
-    copyWalletBtn.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(TRC20_WALLET);
-        copyWalletBtn.textContent = "Copied";
-        setTimeout(() => copyWalletBtn.textContent = "Copy", 900);
-      } catch {
-        // silent fail
-      }
-    });
-
-    paymentForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const txid = document.getElementById("txid").value.trim();
-      if(!txid) return;
-
-      const ar = !!autoRenew.checked;
-
-      // mark pending (manual approval)
-      setSub({
-        status: "pending",
-        autoRenew: ar,
-        submittedAt: nowMs(),
-        // store txid (demo)
-        txid: txid
-      });
-
-      pendingMsg.style.display = "block";
-      submitPaymentBtn.disabled = true;
-
-      renderStatus();
-      renderSessions();
-    });
-
-    /* ───────────────────────────────────────────────────────────
-       GROUP SIGNALS (gated)
-       ─────────────────────────────────────────────────────────── */
-    document.getElementById("signalsBtn").addEventListener("click", () => {
-      if(!isSubscribed()){
-        openSubscription();
-        return;
-      }
-      // Paid: direct open (placeholder)
-      // Replace later with your real private routing (no visible link on UI).
-      window.open("https://example.com/group-signals-placeholder", "_blank", "noopener,noreferrer");
-    });
-
-    /* ───────────────────────────────────────────────────────────
-       SIGNUP/SIGNIN -> logged-in state
-       ─────────────────────────────────────────────────────────── */
-    function enterCustomer(){
-      body.classList.add("logged-in");
-      renderStatus();
-      renderSessions();
-    }
 
     authForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -1284,40 +1157,183 @@
         return;
       }
 
-      // Demo auth: store email + login time
-      setAuth({ email, at: nowMs() });
+      // demo login success
+      state.email = email;
+      state.loggedIn = true;
+      sessionStorage.setItem("px_loggedIn","1");
+      sessionStorage.setItem("px_email", email);
 
-      closeAuth();
+      setLoggedInUI(true);
+
+      // IMPORTANT: you said "don’t go directly anywhere"
+      // so we keep them on Home section (not auto-opening Live Sessions, etc.)
+      showSection("home");
+
+      closeModal();
       authForm.reset();
       setMode("signup");
-
-      // show customer page
-      enterCustomer();
     });
 
-    /* ───────────────────────────────────────────────────────────
-       GLOBAL ESC: close top-most modal
-       ─────────────────────────────────────────────────────────── */
-    window.addEventListener("keydown", (e) => {
-      if(e.key !== "Escape") return;
-
-      if(body.classList.contains("pay-open")) { closePayment(); return; }
-      if(body.classList.contains("sub-open")) { closeSubscription(); return; }
-      if(body.classList.contains("session-open")) { closeSession(); return; }
-      if(body.classList.contains("modal-open")) { closeAuth(); return; }
+    /* ===== Logout ===== */
+    logoutBtn.addEventListener("click", () => {
+      sessionStorage.removeItem("px_loggedIn");
+      sessionStorage.removeItem("px_email");
+      state.loggedIn = false;
+      state.email = "";
+      setLoggedInUI(false);
+      // show visitor hero again
+      location.reload(); // simplest reset for now
     });
 
-    /* ───────────────────────────────────────────────────────────
-       BOOT: auto-login if auth exists
-       ─────────────────────────────────────────────────────────── */
-    (function boot(){
-      const auth = getAuth();
-      if(auth && auth.email){
-        enterCustomer();
+    /* ===== Customer nav section switching ===== */
+    navCustomer.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-section]");
+      if(!btn) return;
+      const section = btn.dataset.section;
+      showSection(section);
+    });
+
+    /* ===== Calendar build + filtering ===== */
+    function buildCalendar(){
+      calendarGrid.innerHTML = "";
+      for(let d=0; d<7; d++){
+        const col = document.createElement("div");
+        col.className = "daycol";
+        col.dataset.day = String(d);
+
+        const daySessions = sessions.filter(s => s.dayIndex === d)
+          .filter(s => state.filter === "All" ? true : s.category === state.filter);
+
+        if(daySessions.length === 0){
+          const empty = document.createElement("div");
+          empty.style.opacity = ".45";
+          empty.style.fontSize = "12px";
+          empty.style.fontWeight = "900";
+          empty.style.color = "rgba(255,255,255,.55)";
+          empty.textContent = "—";
+          col.appendChild(empty);
+        } else {
+          daySessions.forEach(s => {
+            const card = document.createElement("div");
+            card.className = "session-card";
+            card.dataset.sessionId = s.id;
+
+            const left = document.createElement("div");
+            left.className = "sess-left";
+
+            const title = document.createElement("div");
+            title.className = "sess-title";
+            title.textContent = s.title;
+
+            const meta = document.createElement("div");
+            meta.className = "sess-meta";
+            meta.textContent = `${s.time} • ${s.category}`;
+
+            left.appendChild(title);
+            left.appendChild(meta);
+
+            const badge = document.createElement("div");
+            badge.className = "lockbadge";
+            badge.textContent = isSubscribedActive() ? "Open" : "Locked";
+
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.textContent = "♡";
+
+            card.appendChild(left);
+            card.appendChild(badge);
+            card.appendChild(heart);
+
+            card.addEventListener("click", () => {
+              // details visible always
+              openSessionDetailsModal(s);
+            });
+
+            col.appendChild(card);
+          });
+        }
+
+        calendarGrid.appendChild(col);
       }
-      renderStatus();
-      renderSessions();
-    })();
+    }
+
+    chips.addEventListener("click", (e) => {
+      const chip = e.target.closest(".chip");
+      if(!chip) return;
+      state.filter = chip.dataset.filter;
+      chips.querySelectorAll(".chip").forEach(c=> c.classList.toggle("active", c === chip));
+      buildCalendar();
+    });
+
+    /* ===== Session Details actions ===== */
+    joinLiveBtn.addEventListener("click", () => {
+      const session = sessions.find(s => s.id === state.selectedSessionId);
+      if(!session) return;
+
+      if(!isSubscribedActive()){
+        // go to subscription (modal) instead
+        openSubscribeModal();
+        return;
+      }
+
+      // subscribed -> open zoom directly (no visible link)
+      window.open(session.joinUrl, "_blank", "noopener,noreferrer");
+      closeModal();
+    });
+
+    /* ===== Subscription actions ===== */
+    unlockAccessBtn.addEventListener("click", openSubscribeModal);
+    viewPlanBtn.addEventListener("click", openSubscribeModal);
+
+    copyWalletBtn.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(walletAddr.textContent.trim());
+        copyWalletBtn.textContent = "Copied";
+        setTimeout(()=> copyWalletBtn.textContent = "Copy", 900);
+      }catch(err){
+        alert("Copy failed. Please copy manually.");
+      }
+    });
+
+    autoRenew.addEventListener("change", () => {
+      state.subAutoRenew = autoRenew.checked;
+      localStorage.setItem("px_autoRenew", state.subAutoRenew ? "1" : "0");
+    });
+
+    submitProofBtn.addEventListener("click", () => {
+      // demo: mark as pending
+      state.subStatus = "pending";
+      localStorage.setItem("px_subStatus", "pending");
+      setSubscriptionPill();
+      paymentTiny.textContent = "Submitted ✅ Pending verification. Estimated activation: 24 hours.";
+    });
+
+    /* ===== Group signals button ===== */
+    joinSignalsBtn.addEventListener("click", () => {
+      if(!isSubscribedActive()){
+        openSubscribeModal();
+        return;
+      }
+      // subscribed -> direct open group (placeholder)
+      // replace with your real invite link later (still hidden from UI)
+      window.open("https://t.me/", "_blank", "noopener,noreferrer");
+    });
+
+    /* ===== Init ===== */
+    function init(){
+      setLoggedInUI(state.loggedIn);
+
+      // If already logged in from sessionStorage
+      if(state.loggedIn){
+        // keep Home open by default (your request: don’t go directly anywhere)
+        showSection("home");
+      }
+
+      // calendar always builds
+      buildCalendar();
+    }
+
+    init();
   </script>
 </body>
 </html>
