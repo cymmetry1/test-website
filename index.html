@@ -1,533 +1,1631 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PrimeX</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PrimeX</title>
 
-  <link rel="icon" type="image/png" href="primex-mark-44-clean.png" />
+    <!-- ✅ FIXED TAB ICON (use PrimeX mark, not broken favicon.ico) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="primex-mark-44-clean.png" />
+    <link rel="shortcut icon" href="primex-mark-44-clean.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="logo-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="logo-512.png" />
+    <meta name="theme-color" content="#0b0b0b" />
 
-  <style>
-    :root{
-      --bg: #050505;
-      --glass: rgba(18,18,18,.65);
-      --glass2: rgba(12,12,12,.86);
-      --stroke: rgba(255,255,255,.12);
-      --text: rgba(255,255,255,.94);
-      --muted: rgba(255,255,255,.72);
-      --gold:#f2b400;
-      --gold2:#d79b00;
-      --shadow: 0 24px 90px rgba(0,0,0,.65);
-      --r1: 28px;
-      --r2: 18px;
-    }
+    <style>
+      :root {
+        --bg: #050505;
+        --glass: rgba(18, 18, 18, 0.62);
+        --glass-strong: rgba(18, 18, 18, 0.78);
+        --stroke: rgba(255, 255, 255, 0.14);
+        --muted: rgba(255, 255, 255, 0.74);
+        --text: rgba(255, 255, 255, 0.94);
+        --gold: #f2b400;
+        --gold2: #d79b00;
+        --blue: #58c7ff;
+        --blue2: #2a7bff;
+        --shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
+        --radius: 24px;
+        --radius2: 18px;
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x:hidden;
-    }
+        /* ✅ Glamour / glow tuning */
+        --glowGoldA: rgba(242, 180, 0, 0.34);
+        --glowGoldB: rgba(242, 180, 0, 0.14);
+        --glowBlueA: rgba(88, 199, 255, 0.18);
+        --glowBlueB: rgba(42, 123, 255, 0.12);
+      }
 
-    /* Background video */
-    .bg-wrap{
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      background: #000;
-      overflow:hidden;
-    }
-    video#bgVideo{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      filter: grayscale(1) contrast(1.05) brightness(.55);
-      transform: scale(1.02);
-    }
-    .vignette{
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(1200px 700px at 20% 10%, rgba(242,180,0,.20), transparent 55%),
-        linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.72));
-      pointer-events:none;
-      z-index:-2;
-    }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+          "Apple Color Emoji", "Segoe UI Emoji";
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+      }
 
-    /* ===== HEADER ===== */
-    header{
-      position: fixed;
-      top:0; left:0; right:0;
-      z-index: 30;
-      padding: 18px 26px;
-    }
-    .nav-inner{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 16px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      text-decoration:none;
-      color: var(--text);
-    }
-    .brand img{ height:44px; filter: drop-shadow(0 10px 20px rgba(0,0,0,.55)); }
-    nav{
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      align-items:center;
-    }
-    nav button{
-      border:none;
-      cursor:pointer;
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.92);
-      font-weight: 900;
-      transition: transform .16s ease, background .16s ease, border-color .16s ease;
-    }
-    nav button:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); border-color: rgba(242,180,0,.18); }
-    nav button.active{ background: rgba(242,180,0,.14); border-color: rgba(242,180,0,.26); }
+      /* ===== Background video (default) ===== */
+      .bg-wrap {
+        position: fixed;
+        inset: 0;
+        z-index: -3;
+        background: #000;
+        overflow: hidden;
+      }
+      video#bgVideo {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(1) contrast(1.05) brightness(0.55);
+        transform: scale(1.02);
+      }
+      .vignette {
+        position: absolute;
+        inset: -2px;
+        background: radial-gradient(1200px 700px at 20% 10%, rgba(242, 180, 0, 0.22), transparent 55%),
+          radial-gradient(900px 600px at 80% 20%, rgba(255, 255, 255, 0.06), transparent 60%),
+          radial-gradient(1100px 800px at 50% 80%, rgba(0, 0, 0, 0.5), transparent 55%),
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.65));
+        z-index: -2;
+        pointer-events: none;
+      }
 
-    /* IMPORTANT: hide header entirely while in gate */
-    body.gate header{ display:none; }
+      /* When we want a blank black background for certain sections OR gate */
+      body.blank-bg .bg-wrap {
+        display: none;
+      }
+      body.blank-bg {
+        background: #000;
+      }
 
-    /* ===== MAIN LAYOUT ===== */
-    main{
-      min-height: 100vh;
-      display:grid;
-      place-items:center;
-      padding: 120px 22px 80px;
-    }
+      /* Subdued montage for APP HOME only (active user) */
+      body.home-subdued video#bgVideo {
+        filter: grayscale(1) contrast(0.98) brightness(0.4) blur(2px);
+        transform: scale(1.035);
+      }
+      body.home-subdued .vignette {
+        background: radial-gradient(1200px 700px at 20% 10%, rgba(242, 180, 0, 0.14), transparent 60%),
+          radial-gradient(900px 600px at 80% 20%, rgba(255, 255, 255, 0.05), transparent 62%),
+          radial-gradient(1100px 800px at 50% 80%, rgba(0, 0, 0, 0.6), transparent 55%),
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.78));
+      }
 
-    /* ===== LANDING (logged out) ===== */
-    .hero{
-      width: min(920px, 100%);
-      border-radius: var(--r1);
-      border: 1px solid var(--stroke);
-      background: var(--glass);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 40px 34px;
-      text-align:center;
-      display:none;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 7px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.08);
-      font-weight: 950;
-      font-size: 12px;
-      margin-bottom: 16px;
-    }
-    h1{
-      margin:0 0 12px;
-      font-size: clamp(34px, 5.4vw, 62px);
-      font-weight: 980;
-      letter-spacing: -0.8px;
-      text-shadow: 0 12px 34px rgba(0,0,0,.65);
-    }
-    .sub{
-      margin: 0 auto 22px;
-      max-width: 680px;
-      font-size: 14px;
-      line-height: 1.7;
-      color: var(--muted);
-      font-weight: 800;
-    }
-    .cta{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border:none;
-      cursor:pointer;
-      border-radius: 999px;
-      padding: 13px 26px;
-      background: linear-gradient(180deg, var(--gold), var(--gold2));
-      color:#0b0b0b;
-      font-weight: 980;
-      box-shadow: 0 14px 40px rgba(0,0,0,.55);
-      transition: transform .16s ease;
-    }
-    .cta:hover{ transform: translateY(-1px); }
+      /* ===== Gold Dust Canvas Overlay ===== */
+      #dustCanvas {
+        position: fixed;
+        inset: 0;
+        z-index: -1; /* above background, below UI */
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+      }
+      body.dust-on #dustCanvas {
+        opacity: 0.95;
+      }
+      body.dust-rich #dustCanvas {
+        opacity: 1;
+      }
 
-    /* ===== GATE ===== */
-    .gate-wrap{
-      width: min(980px, 100%);
-      display:none;
-    }
-    .gate-card{
-      border-radius: 34px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: var(--glass2);
-      box-shadow: 0 40px 140px rgba(0,0,0,.78);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      overflow:hidden;
-      padding: 16px;
-      position:relative;
-    }
-    .gate-card:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(1200px 700px at 18% 18%, rgba(242,180,0,.14), transparent 55%),
-        radial-gradient(900px 700px at 82% 18%, rgba(255,255,255,.06), transparent 58%),
-        linear-gradient(180deg, rgba(0,0,0,.40), rgba(0,0,0,.65));
-      pointer-events:none;
-      z-index:0;
-    }
-    .gate-inner{ position:relative; z-index:1; padding: 16px 18px 18px; }
+      /* =========================================================
+        ✅ GLAMOUR / WHOISJOA-ISH MOUSE GLOW (LIGHTWEIGHT)
+        - Works via CSS vars: --mx, --my
+        - Applied to nav items + cards + interactive blocks
+      ========================================================== */
+      .glow-surface {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .glow-surface::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.22s ease;
+        z-index: 0;
+        background: radial-gradient(
+            420px 260px at var(--mx, 50%) var(--my, 50%),
+            var(--glowGoldA),
+            transparent 60%
+          ),
+          radial-gradient(
+            520px 320px at calc(var(--mx, 50%) + 8%) calc(var(--my, 50%) + 6%),
+            var(--glowGoldB),
+            transparent 62%
+          ),
+          radial-gradient(
+            520px 320px at calc(var(--mx, 50%) - 10%) calc(var(--my, 50%) - 8%),
+            var(--glowBlueA),
+            transparent 64%
+          );
+        filter: blur(0.2px);
+        mix-blend-mode: screen;
+      }
+      .glow-surface:hover::before {
+        opacity: 1;
+      }
+      .glow-surface::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0;
+        transition: opacity 0.22s ease;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 45%, rgba(242, 180, 0, 0.06));
+      }
+      .glow-surface:hover::after {
+        opacity: 0.9;
+      }
+      .glow-surface > * {
+        position: relative;
+        z-index: 1;
+      }
 
-    .gate-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    .gate-brand{ display:flex; align-items:center; gap: 12px; min-width:0; }
-    .gate-brand img{ height: 32px; filter: drop-shadow(0 10px 18px rgba(0,0,0,.65)); }
-    .gate-title strong{ display:block; font-size: 14px; font-weight: 980; }
-    .gate-title span{ display:block; margin-top: 4px; font-size: 11px; color: var(--muted); font-weight: 850; }
+      /* Nav item glow (hover/active) */
+      nav a,
+      nav button {
+        position: relative;
+        overflow: hidden;
+      }
+      nav a::before,
+      nav button::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        background: radial-gradient(180px 120px at var(--mx, 50%) var(--my, 50%), rgba(242, 180, 0, 0.22), transparent 60%),
+          radial-gradient(220px 140px at calc(var(--mx, 50%) - 10%) calc(var(--my, 50%) - 8%), rgba(88, 199, 255, 0.1), transparent 68%);
+        mix-blend-mode: screen;
+      }
+      nav a:hover::before,
+      nav button:hover::before {
+        opacity: 1;
+      }
+      nav .active::before {
+        opacity: 1;
+      }
 
-    .logout{
-      border-radius: 999px;
-      padding: 10px 14px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.92);
-      font-weight: 950;
-      cursor:pointer;
-      transition: transform .16s ease, background .16s ease, border-color .16s ease;
-    }
-    .logout:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); border-color: rgba(242,180,0,.18); }
+      /* Increase readability slightly */
+      .qa span,
+      .mod p,
+      .dash-title p,
+      .sub,
+      .tiny,
+      .sess-meta {
+        color: rgba(255, 255, 255, 0.72);
+      }
+      .qa strong,
+      .mod h3,
+      .dash-title h2 {
+        color: rgba(255, 255, 255, 0.96);
+      }
 
-    .gate-grid{
-      display:grid;
-      grid-template-columns: 1.25fr .75fr;
-      gap: 14px;
-    }
-    .panel{
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.28);
-      padding: 16px;
-    }
-    .price{
-      text-align:right;
-      white-space:nowrap;
-    }
-    .price .amt{ font-size: 40px; font-weight: 990; letter-spacing: -0.8px; }
-    .price .dur{ font-size: 12px; font-weight: 950; color: rgba(255,255,255,.74); margin-top: 2px; }
+      /* ===== Header ===== */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 30;
+        padding: 18px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        pointer-events: none;
+      }
+      .nav-inner {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        pointer-events: auto;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--text);
+      }
+      .brand img {
+        height: 44px;
+        width: auto;
+        display: block;
+        filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.55));
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      nav a,
+      nav button {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        font-weight: 900;
+        font-size: 13px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        transition: background 0.2s ease, opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+        opacity: 0.92;
+        background: transparent;
+        border: 1px solid transparent;
+        cursor: pointer;
+      }
+      nav a:hover,
+      nav button:hover {
+        background: rgba(255, 255, 255, 0.08);
+        opacity: 1;
+        transform: translateY(-1px);
+      }
+      nav .active {
+        background: rgba(242, 180, 0, 0.14);
+        border-color: rgba(242, 180, 0, 0.28);
+        opacity: 1;
+      }
 
-    .warn{
-      margin-top: 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(242,180,0,.22);
-      background: rgba(242,180,0,.08);
-      padding: 10px 12px;
-      font-size: 12px;
-      font-weight: 950;
-      line-height: 1.35;
-    }
-    .warn small{ display:block; margin-top: 4px; color: rgba(255,255,255,.78); font-weight: 850; }
+      /* Public language switch (UI only) */
+      .lang {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: 6px;
+      }
+      .lang-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 950;
+        cursor: pointer;
+        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+      }
+      .lang-btn:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(242, 180, 0, 0.18);
+      }
+      .lang-pill {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, var(--gold), var(--gold2));
+        box-shadow: 0 0 0 5px rgba(242, 180, 0, 0.1);
+      }
+      .lang-menu {
+        position: absolute;
+        top: 44px;
+        right: 0;
+        width: 180px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(12, 12, 12, 0.92);
+        box-shadow: 0 22px 70px rgba(0, 0, 0, 0.6);
+        padding: 8px;
+        display: none;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      .lang-menu.open {
+        display: block;
+      }
+      .lang-item {
+        width: 100%;
+        padding: 10px 10px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 950;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
+      }
+      .lang-item:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(242, 180, 0, 0.16);
+      }
+      .lang-tag {
+        font-size: 11px;
+        font-weight: 980;
+        padding: 6px 9px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.35);
+        color: rgba(255, 255, 255, 0.8);
+        white-space: nowrap;
+      }
 
-    .gate-cta{
-      margin-top: 14px;
-      width:100%;
-      border:none;
-      cursor:pointer;
-      border-radius: 999px;
-      padding: 14px 16px;
-      background: linear-gradient(180deg, var(--gold), var(--gold2));
-      color:#0b0b0b;
-      font-weight: 990;
-      box-shadow: 0 18px 55px rgba(242,180,0,.18), 0 18px 45px rgba(0,0,0,.55);
-    }
-    .note{
-      margin-top: 10px;
-      font-size: 11px;
-      color: rgba(255,255,255,.70);
-      font-weight: 850;
-      line-height: 1.45;
-      text-align:center;
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      border-radius: 999px;
-      padding: 9px 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      font-size: 12px;
-      font-weight: 980;
-      width: fit-content;
-    }
-    .dot{ width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.35); box-shadow: 0 0 0 5px rgba(255,255,255,.06); }
-    .badge.pending .dot{ background: rgba(242,180,0,.9); box-shadow: 0 0 0 5px rgba(242,180,0,.10); }
-    .badge.active .dot{ background: rgba(88,199,255,.85); box-shadow: 0 0 0 5px rgba(88,199,255,.10); }
+      /* Account avatar (active app only) */
+      .acct {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: 6px;
+        position: relative;
+      }
+      .avatar-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.06);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+      }
+      .avatar-btn:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(242, 180, 0, 0.22);
+      }
+      .avatar-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, var(--gold), var(--gold2));
+        box-shadow: 0 0 0 5px rgba(242, 180, 0, 0.14);
+      }
+      .acct-menu {
+        position: absolute;
+        top: 46px;
+        right: 0;
+        width: 280px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(12, 12, 12, 0.9);
+        box-shadow: 0 22px 70px rgba(0, 0, 0, 0.6);
+        padding: 10px;
+        display: none;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      .acct-menu.open {
+        display: block;
+      }
+      .acct-row {
+        padding: 10px 10px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 8px;
+      }
+      .acct-row strong {
+        display: block;
+        font-size: 12px;
+        letter-spacing: 0.2px;
+        font-weight: 980;
+      }
+      .acct-row span {
+        display: block;
+        margin-top: 4px;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.68);
+        font-weight: 850;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .acct-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.35);
+        font-size: 11px;
+        font-weight: 980;
+        color: rgba(255, 255, 255, 0.88);
+      }
+      .acct-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .acct-actions button {
+        flex: 1;
+        padding: 10px 10px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 980;
+        cursor: pointer;
+        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+      }
+      .acct-actions button:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(242, 180, 0, 0.2);
+      }
 
-    /* ===== APP ===== */
-    .app{
-      width: min(1120px, 100%);
-      display:none;
-      flex-direction:column;
-      gap: 14px;
-    }
-    .card{
-      border-radius: var(--r1);
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(18,18,18,.62);
-      box-shadow: 0 18px 60px rgba(0,0,0,.55);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 18px;
-    }
+      /* Hide header completely in subscription gate (locked/pending) */
+      body.gate header {
+        display: none;
+      }
 
-    /* SHOW/HIDE STATES */
-    body.loggedout .hero{ display:block; }
-    body.gate .gate-wrap{ display:block; }
-    body.active .app{ display:flex; }
+      /* ===== Layout ===== */
+      main {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 140px 22px 80px;
+      }
 
-    @media(max-width: 980px){
-      .gate-grid{ grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
+      /* Logged-out hero */
+      .hero-card {
+        width: min(900px, 100%);
+        border-radius: var(--radius);
+        background: var(--glass);
+        border: 1px solid var(--stroke);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        padding: 42px 36px 40px;
+        text-align: center;
+        position: relative;
+        transition: transform 0.28s ease, opacity 0.28s ease, filter 0.28s ease;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 980;
+        font-size: 12px;
+        letter-spacing: 0.2px;
+        margin-bottom: 18px;
+      }
+      h1 {
+        margin: 0 0 14px;
+        font-size: clamp(34px, 5.4vw, 62px);
+        line-height: 1.06;
+        letter-spacing: -0.8px;
+        font-weight: 980;
+        color: rgba(255, 255, 255, 0.96);
+        text-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+      }
+      .sub {
+        margin: 0 auto 26px;
+        max-width: 680px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+        font-weight: 750;
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: linear-gradient(180deg, var(--gold), var(--gold2));
+        color: #0b0b0b;
+        font-weight: 980;
+        border: none;
+        border-radius: 999px;
+        padding: 13px 26px;
+        cursor: pointer;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+        transition: transform 0.18s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .cta:hover {
+        transform: translateY(-1px);
+      }
+      .cta:active {
+        transform: translateY(0px) scale(0.99);
+      }
+      .cta::after {
+        content: "";
+        position: absolute;
+        top: -40%;
+        left: -30%;
+        width: 40%;
+        height: 200%;
+        transform: rotate(18deg);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+        opacity: 0.18;
+        transition: transform 0.9s ease;
+      }
+      .cta:hover::after {
+        transform: translateX(320%) rotate(18deg);
+      }
 
-<body class="loggedout">
-  <div class="bg-wrap">
-    <video id="bgVideo" autoplay muted loop playsinline preload="auto">
-      <source src="montage.mp4" type="video/mp4" />
-    </video>
-    <div class="vignette"></div>
-  </div>
+      /* ===== Gate (subscription-only mode) ===== */
+      .gate-wrap {
+        width: min(1040px, 100%);
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      body.gate .gate-wrap {
+        display: flex;
+      }
+      body.gate .hero-card {
+        display: none;
+      }
+      body.gate .app-wrap {
+        display: none;
+      }
 
-  <header>
-    <div class="nav-inner">
-      <a class="brand" href="#" aria-label="PrimeX">
-        <img src="primex-full-transparent-clean.png" alt="PrimeX Logo" />
-      </a>
+      /* (rest of your CSS continues unchanged...) */
 
-      <nav id="navCustomer" style="display:none;">
-        <button class="active" data-section="home" type="button">Home</button>
-        <button data-section="live" type="button">Live Sessions</button>
-        <button data-section="sub" type="button">Subscription</button>
-        <button data-section="signals" type="button">Group Signals</button>
-        <button data-section="business" type="button">Business</button>
-        <button id="logoutBtn" type="button">Logout</button>
-      </nav>
+      @media (max-width: 980px) {
+        .plan-grid {
+          grid-template-columns: 1fr;
+        }
+        .steps {
+          grid-template-columns: 1fr 1fr;
+        }
+        .upcoming {
+          grid-template-columns: 1fr;
+        }
+        .grid4 {
+          grid-template-columns: 1fr 1fr;
+        }
+        .modules {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 520px) {
+        header {
+          padding: 14px 16px;
+        }
+        .brand img {
+          height: 38px;
+        }
+        nav {
+          gap: 8px;
+        }
+        nav a,
+        nav button {
+          font-size: 13px;
+          padding: 10px 10px;
+        }
+        .hero-card {
+          padding: 34px 18px 30px;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .weekdays {
+          display: none;
+        }
+        .daycol {
+          border-right: 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .price .amt {
+          font-size: 34px;
+        }
+        .grid4 {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Background -->
+    <div class="bg-wrap">
+      <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+        <source src="montage.mp4" type="video/mp4" />
+      </video>
+      <div class="vignette"></div>
     </div>
-  </header>
 
-  <main>
-    <!-- LANDING -->
-    <section class="hero">
-      <div class="pill">Beyond Limits</div>
-      <h1>Welcome to PrimeX</h1>
-      <p class="sub">PrimeX | Trading × Mindset × Business</p>
-      <button class="cta" id="joinBtn" type="button">Join Now</button>
-    </section>
+    <!-- Gold dust overlay -->
+    <canvas id="dustCanvas" aria-hidden="true"></canvas>
 
-    <!-- GATE -->
-    <section class="gate-wrap">
-      <div class="gate-card">
-        <div class="gate-inner">
-          <div class="gate-top">
-            <div class="gate-brand">
-              <img src="primex-full-transparent-clean.png" alt="PrimeX" />
-              <div class="gate-title">
-                <strong>PrimeX Access</strong>
-                <span id="gateLine">Activate your membership to enter the platform.</span>
-              </div>
+    <!-- Header -->
+    <header>
+      <div class="nav-inner">
+        <a class="brand" href="index.html" aria-label="PrimeX Home">
+          <img src="primex-full-transparent-clean.png" alt="PrimeX Logo" />
+        </a>
+
+        <!-- Visitor nav -->
+        <nav aria-label="Primary" id="navVisitor">
+          <a href="#trading">Trading</a>
+          <a href="#live">Live Sessions</a>
+          <a href="#community">Community</a>
+          <a href="#about">About</a>
+
+          <!-- Language (UI only) -->
+          <div class="lang" id="langWrap">
+            <button class="lang-btn" id="langBtn" type="button" aria-label="Language">
+              <span class="lang-pill"></span>
+              <span id="langLabel">EN</span>
+            </button>
+
+            <div class="lang-menu" id="langMenu" role="menu" aria-label="Language menu">
+              <button class="lang-item" type="button" data-lang="en">
+                <span>English</span><span class="lang-tag">EN</span>
+              </button>
+              <button class="lang-item" type="button" data-lang="fa">
+                <span>فارسی</span><span class="lang-tag">Soon</span>
+              </button>
             </div>
-            <button class="logout" id="gateLogout" type="button">Logout</button>
           </div>
+        </nav>
 
-          <div class="gate-grid">
-            <div class="panel">
-              <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
-                <div>
-                  <div style="font-size:16px; font-weight:990;">PrimeX Subscription</div>
-                  <div style="margin-top:6px; font-size:12px; color:rgba(255,255,255,.78); font-weight:850;">
-                    Full platform access — live sessions + group signals.
-                  </div>
-                </div>
-                <div class="price">
-                  <div class="amt">$499</div>
-                  <div class="dur">3 Months</div>
-                </div>
+        <!-- Logged-in nav (active app only) -->
+        <nav aria-label="Customer" id="navCustomer" style="display: none">
+          <button class="active" data-section="home" type="button">Home</button>
+          <button data-section="liveSessions" type="button">Live Sessions</button>
+          <button data-section="subscription" type="button">Subscription</button>
+          <button data-section="groupSignals" type="button">Group Signals</button>
+
+          <div class="acct" id="acctWrap" aria-label="Account">
+            <button class="avatar-btn" id="avatarBtn" type="button" aria-label="Account menu">
+              <span class="avatar-dot"></span>
+            </button>
+
+            <div class="acct-menu" id="acctMenu">
+              <div class="acct-row">
+                <strong>Account</strong>
+                <span id="acctEmail">—</span>
+                <div class="acct-pill" id="acctSubPill">Subscription: —</div>
+                <div class="acct-pill" id="acctBizPill" style="margin-top: 8px">Business: —</div>
               </div>
 
-              <div class="warn">
-                ⚠️ Send <b>USDT on TRON (TRC20) only</b>.
-                <small>Do not send ERC20 / BEP20 — funds may be lost.</small>
-              </div>
-
-              <button class="gate-cta" id="unlockBtn" type="button">Unlock Access</button>
-              <div class="note" id="gateNote">After submitting proof → status becomes Pending → activation ~24 hours.</div>
-
-              <div class="note" style="opacity:.75;">
-                Dev: <b>?dev=1</b> forces gate always • <b>?sub=1</b> forces active • <b>?biz=1</b> unlocks business
-              </div>
-            </div>
-
-            <div class="panel">
-              <div class="badge" id="statusBadge"><span class="dot"></span><span id="statusText">Status: Not active</span></div>
-              <div style="margin-top:12px;">
-                <div style="font-size:12px; font-weight:990;">Account</div>
-                <div style="margin-top:6px; font-size:12px; color:rgba(255,255,255,.74); font-weight:850;" id="acctEmail">—</div>
-              </div>
-
-              <div style="margin-top:14px; font-size:12px; color:rgba(255,255,255,.72); font-weight:850; line-height:1.45;">
-                Submit payment proof and we verify manually. Once activated, the dashboard opens automatically.
+              <div class="acct-actions">
+                <button id="acctLogoutBtn" type="button">Logout</button>
               </div>
             </div>
           </div>
-        </div>
+        </nav>
       </div>
-    </section>
+    </header>
 
-    <!-- APP -->
-    <section class="app" id="app">
-      <div class="card">
-        <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-          <div>
-            <div style="font-size:16px; font-weight:990;">Dashboard</div>
-            <div style="margin-top:6px; font-size:12px; color:rgba(255,255,255,.72); font-weight:850;">
-              Clean app mode. Gate is fully hidden.
-            </div>
-          </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <div class="badge active"><span class="dot"></span><span>Subscription: Active</span></div>
+    <!-- Main -->
+    <main>
+      <!-- Logged-out hero -->
+      <section class="hero-card glow-surface" aria-label="PrimeX Hero" id="hero">
+        <div class="pill">Beyond Limits</div>
+        <h1>Welcome to PrimeX</h1>
+        <p class="sub">PrimeX | Trading × Mindset × Business</p>
+        <button class="cta" id="joinBtn" type="button">Join Now</button>
+      </section>
+
+      <!-- Subscription Gate (locked/pending) -->
+      <section class="gate-wrap" id="gate">
+        <div class="gate-card glow-surface" aria-label="PrimeX Access Gate">
+          <div class="gate-inner">
+            <!-- ... your gate HTML unchanged ... -->
           </div>
         </div>
+      </section>
 
-        <div style="margin-top:14px; font-size:12px; color:rgba(255,255,255,.72); font-weight:850;">
-          (Your real app sections go here — this is just a stable shell.)
-        </div>
+      <!-- Active App -->
+      <section class="app-wrap" id="app">
+        <!-- ... your app HTML unchanged ... -->
+      </section>
+    </main>
+
+    <!-- Modal overlay -->
+    <div class="overlay" id="overlay" aria-hidden="true">
+      <div class="modal glow-surface" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <!-- ... your modal HTML unchanged ... -->
       </div>
-    </section>
-  </main>
+    </div>
 
-  <script>
-    // ===== Simple stable state machine =====
-    // localStorage:
-    // px_subStatus: none | pending | active
-    // sessionStorage:
-    // px_loggedIn: 1/0
-    // px_email: string
+    <!-- Dummy anchors -->
+    <div id="trading" style="height: 1px"></div>
+    <div id="live" style="height: 1px"></div>
+    <div id="community" style="height: 1px"></div>
+    <div id="about" style="height: 1px"></div>
 
-    const params = new URLSearchParams(location.search);
+    <script>
+      /* =========================================================
+        PrimeX (single-file demo)
+        - Auth: sessionStorage px_loggedIn, px_email
+        - Subscription: localStorage px_subStatus (none|pending|active), px_autoRenew
+        - Business module: localStorage px_businessStatus (none|pending|active)
+        - Language UI: localStorage px_lang (en|fa)
+        - Persian coming soon
+        - Gate mode (none/pending): subscription ONLY, nav hidden
+        - Active app: full nav + avatar menu, dashboard home
+        - Gold dust overlay: canvas, toggled per section/state
 
-    const DEV_FORCE_GATE = params.get("dev") === "1";
-    const DEV_FORCE_ACTIVE = params.get("sub") === "1";
+        ✅ Added: lightweight mouse-follow glow for existing UI (no feature removal)
+        ✅ Added: DEV MODE override to NEVER skip subscription flow (see below)
+      ========================================================== */
 
-    let loggedIn = sessionStorage.getItem("px_loggedIn") === "1";
-    let email = sessionStorage.getItem("px_email") || "";
-    let subStatus = localStorage.getItem("px_subStatus") || "none";
+      /* ===== Basic state (demo) ===== */
+      const state = {
+        email: sessionStorage.getItem("px_email") || "",
+        loggedIn: sessionStorage.getItem("px_loggedIn") === "1",
+        subStatus: localStorage.getItem("px_subStatus") || "none",
+        subAutoRenew: localStorage.getItem("px_autoRenew") === "1",
+        businessStatus: localStorage.getItem("px_businessStatus") || "none",
+        lang: localStorage.getItem("px_lang") || "en",
+        activeSection: "home",
+        filter: "All",
+        selectedSessionId: null,
+        payMode: "sub", // "sub" | "biz"
+      };
 
-    if (DEV_FORCE_ACTIVE) subStatus = "active";
-    if (DEV_FORCE_GATE) subStatus = "none";
+      /* ===== Elements ===== */
+      const body = document.body;
+      const navVisitor = document.getElementById("navVisitor");
+      const navCustomer = document.getElementById("navCustomer");
+      const heroJoinBtn = document.getElementById("joinBtn");
 
-    const body = document.body;
-    const navCustomer = document.getElementById("navCustomer");
-    const acctEmailEl = document.getElementById("acctEmail");
-    const statusBadge = document.getElementById("statusBadge");
-    const statusText = document.getElementById("statusText");
-    const gateLine = document.getElementById("gateLine");
-    const gateNote = document.getElementById("gateNote");
+      // Lang UI
+      const langBtn = document.getElementById("langBtn");
+      const langMenu = document.getElementById("langMenu");
+      const langLabel = document.getElementById("langLabel");
 
-    function setStatusUI(){
-      statusBadge.classList.remove("pending","active");
-      if(subStatus === "pending") statusBadge.classList.add("pending");
-      if(subStatus === "active") statusBadge.classList.add("active");
-      statusText.textContent = "Status: " + (subStatus === "active" ? "Active" : subStatus === "pending" ? "Pending" : "Not active");
+      const gateLogoutBtn = document.getElementById("gateLogoutBtn");
+      const gateUnlockBtn = document.getElementById("gateUnlockBtn");
+      const devPreviewBtn = document.getElementById("devPreviewBtn");
+      const gateEmail = document.getElementById("gateEmail");
+      const gateStatusBadge = document.getElementById("gateStatusBadge");
+      const gateStatusText = document.getElementById("gateStatusText");
+      const gateSubline = document.getElementById("gateSubline");
+      const gateNote = document.getElementById("gateNote");
+      const gateExplain = document.getElementById("gateExplain");
 
-      if(subStatus === "pending"){
-        gateLine.textContent = "Verification in progress. You'll enter after activation.";
-        gateNote.textContent = "Submitted ✅ Pending verification — activation ~24 hours.";
-      } else {
-        gateLine.textContent = "Activate your membership to enter the platform.";
-        gateNote.textContent = "After submitting proof → status becomes Pending → activation ~24 hours.";
+      // Account / avatar menu (active app only)
+      const avatarBtn = document.getElementById("avatarBtn");
+      const acctMenu = document.getElementById("acctMenu");
+      const acctEmail = document.getElementById("acctEmail");
+      const acctSubPill = document.getElementById("acctSubPill");
+      const acctBizPill = document.getElementById("acctBizPill");
+      const acctLogoutBtn = document.getElementById("acctLogoutBtn");
+
+      // Home pills
+      const homeSubPill = document.getElementById("homeSubPill");
+      const homeBizPill = document.getElementById("homeBizPill");
+      const qaSubTag = document.getElementById("qaSubTag");
+      const qaBizTag = document.getElementById("qaBizTag");
+
+      // Dashboard quick actions
+      const qaLive = document.getElementById("qaLive");
+      const qaSignals = document.getElementById("qaSignals");
+      const qaSub = document.getElementById("qaSub");
+      const qaBusiness = document.getElementById("qaBusiness");
+      const viewCalendarBtn = document.getElementById("viewCalendarBtn");
+
+      // Business module
+      const businessModule = document.getElementById("businessModule");
+      const bizPill = document.getElementById("bizPill");
+      const bizUnlockBtn = document.getElementById("bizUnlockBtn");
+
+      // Subscription section (active app)
+      const subOpenPaymentBtn = document.getElementById("subOpenPaymentBtn");
+      const subStatusLine = document.getElementById("subStatusLine");
+
+      // Sections
+      const upcomingList = document.getElementById("upcomingList");
+      const joinSignalsBtn = document.getElementById("joinSignalsBtn");
+
+      // Calendar
+      const calendarGrid = document.getElementById("calendarGrid");
+      const chips = document.getElementById("chips");
+
+      /* ===== Modal ===== */
+      const overlay = document.getElementById("overlay");
+      const closeBtn = document.getElementById("closeBtn");
+      const modeTitle = document.getElementById("modeTitle");
+      const modeSub = document.getElementById("modeSub");
+
+      // Panels
+      const panelAuth = document.getElementById("panel-auth");
+      const panelPay = document.getElementById("panel-pay");
+      const panelSession = document.getElementById("panel-session");
+
+      // Auth
+      const tabSignup = document.getElementById("tabSignup");
+      const tabSignin = document.getElementById("tabSignin");
+      const confirmWrap = document.getElementById("confirmWrap");
+      const submitBtn = document.getElementById("submitBtn");
+      const authForm = document.getElementById("authForm");
+
+      // Pay panel fields
+      const payTitle = document.getElementById("payTitle");
+      const paySub = document.getElementById("paySub");
+      const payAmount = document.getElementById("payAmount");
+      const payDur = document.getElementById("payDur");
+      const payMeta = document.getElementById("payMeta");
+      const autoRenewWrap = document.getElementById("autoRenewWrap");
+      const walletAddr = document.getElementById("walletAddr");
+      const copyWalletBtn = document.getElementById("copyWalletBtn");
+      const autoRenew = document.getElementById("autoRenew");
+      const submitProofBtn = document.getElementById("submitProofBtn");
+      const paymentTiny = document.getElementById("paymentTiny");
+
+      // Session panel
+      const sessDetailTitle = document.getElementById("sessDetailTitle");
+      const sessDetailMeta = document.getElementById("sessDetailMeta");
+      const joinLiveBtn = document.getElementById("joinLiveBtn");
+      const joinHint = document.getElementById("joinHint");
+
+      /* ===== Gold Dust Canvas ===== */
+      const dustCanvas = document.getElementById("dustCanvas");
+      const dustCtx = dustCanvas.getContext("2d", { alpha: true });
+      let dustW = 0,
+        dustH = 0,
+        dpr = 1;
+      let dustParticles = [];
+      let dustMode = "off"; // "off" | "light" | "rich"
+      let dustRunning = false;
+      let rafId = null;
+
+      function resizeDust() {
+        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        dustW = Math.floor(window.innerWidth);
+        dustH = Math.floor(window.innerHeight);
+        dustCanvas.width = Math.floor(dustW * dpr);
+        dustCanvas.height = Math.floor(dustH * dpr);
+        dustCanvas.style.width = dustW + "px";
+        dustCanvas.style.height = dustH + "px";
+        dustCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
-    }
 
-    function applyState(){
-      body.classList.remove("loggedout","gate","active");
+      function rand(min, max) {
+        return min + Math.random() * (max - min);
+      }
 
-      acctEmailEl.textContent = email || "—";
-      setStatusUI();
+      function makeDust(count) {
+        const arr = [];
+        for (let i = 0; i < count; i++) {
+          arr.push({
+            x: rand(0, dustW),
+            y: rand(0, dustH),
+            r: rand(0.6, 1.8),
+            a: rand(0.1, 0.35),
+            vx: rand(-0.12, 0.22),
+            vy: rand(-0.04, 0.14),
+            tw: rand(0.002, 0.012),
+            t: rand(0, 1000),
+            hue: Math.random() < 0.72 ? rand(38, 52) : rand(195, 210),
+          });
+        }
+        return arr;
+      }
 
-      // Logged out: landing only
-      if(!loggedIn){
-        body.classList.add("loggedout");
+      function setDustMode(mode) {
+        dustMode = mode;
+        body.classList.toggle("dust-on", mode !== "off");
+        body.classList.toggle("dust-rich", mode === "rich");
+
+        if (mode === "off") {
+          stopDust();
+          return;
+        }
+
+        resizeDust();
+        const base = mode === "rich" ? 120 : 85;
+        const count = Math.min(160, Math.floor(base + (dustW * dustH) / 32000));
+        dustParticles = makeDust(count);
+        startDust();
+      }
+
+      function startDust() {
+        if (dustRunning) return;
+        dustRunning = true;
+        tickDust();
+      }
+
+      function stopDust() {
+        dustRunning = false;
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        dustCtx.clearRect(0, 0, dustW, dustH);
+      }
+
+      function tickDust() {
+        if (!dustRunning) return;
+
+        dustCtx.clearRect(0, 0, dustW, dustH);
+
+        for (const p of dustParticles) {
+          p.t += 1;
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < -20) p.x = dustW + 20;
+          if (p.x > dustW + 20) p.x = -20;
+          if (p.y < -20) p.y = dustH + 20;
+          if (p.y > dustH + 20) p.y = -20;
+
+          const twinkle = 0.55 + 0.45 * Math.sin(p.t * p.tw);
+          const alpha = (dustMode === "rich" ? p.a + 0.06 : p.a) * twinkle;
+
+          dustCtx.beginPath();
+          dustCtx.fillStyle = `hsla(${p.hue}, 95%, 60%, ${alpha})`;
+          dustCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          dustCtx.fill();
+
+          if (dustMode === "rich" && Math.random() < 0.012) {
+            dustCtx.beginPath();
+            dustCtx.fillStyle = `hsla(${p.hue}, 95%, 70%, ${alpha * 0.55})`;
+            dustCtx.arc(p.x, p.y, p.r * 3.3, 0, Math.PI * 2);
+            dustCtx.fill();
+          }
+        }
+
+        if (dustMode === "rich" && Math.random() < 0.06) {
+          const sx = rand(0, dustW);
+          const sy = rand(0, dustH);
+          const len = rand(80, 180);
+          dustCtx.strokeStyle = `rgba(242,180,0,${rand(0.04, 0.08)})`;
+          dustCtx.lineWidth = 1;
+          dustCtx.beginPath();
+          dustCtx.moveTo(sx, sy);
+          dustCtx.lineTo(sx + len, sy + rand(-12, 12));
+          dustCtx.stroke();
+        }
+
+        rafId = requestAnimationFrame(tickDust);
+      }
+
+      window.addEventListener("resize", () => {
+        if (dustMode !== "off") resizeDust();
+      });
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stopDust();
+        else if (dustMode !== "off") startDust();
+      });
+
+      /* ✅ Mouse-follow glow variables (nav + glow-surface blocks) */
+      function bindGlow(el) {
+        if (!el) return;
+
+        el.addEventListener("mousemove", (e) => {
+          const r = el.getBoundingClientRect();
+          const x = ((e.clientX - r.left) / r.width) * 100;
+          const y = ((e.clientY - r.top) / r.height) * 100;
+          el.style.setProperty("--mx", x.toFixed(2) + "%");
+          el.style.setProperty("--my", y.toFixed(2) + "%");
+        });
+
+        el.addEventListener("mouseleave", () => {
+          el.style.removeProperty("--mx");
+          el.style.removeProperty("--my");
+        });
+      }
+
+      function bindAllGlow() {
+        document.querySelectorAll(".glow-surface").forEach(bindGlow);
+        document.querySelectorAll("nav a, nav button").forEach(bindGlow);
+      }
+
+      /* ===== Demo sessions ===== */
+      const sessions = [
+        { id: "s1", dayIndex: 0, time: "3:15 PM", title: "Execution & Structure", host: "PrimeX", category: "Forex", joinUrl: "https://zoom.us/" },
+        { id: "s2", dayIndex: 1, time: "3:00 AM", title: "Risk Management", host: "PrimeX", category: "Indices", joinUrl: "https://zoom.us/" },
+        { id: "s3", dayIndex: 2, time: "3:00 AM", title: "Mindset Under Pressure", host: "PrimeX", category: "Crypto", joinUrl: "https://zoom.us/" },
+        { id: "s4", dayIndex: 4, time: "8:00 AM", title: "Market Prep Live", host: "PrimeX", category: "Gold", joinUrl: "https://zoom.us/" },
+        { id: "s5", dayIndex: 5, time: "4:00 PM", title: "Trading Review", host: "PrimeX", category: "Futures", joinUrl: "https://zoom.us/" },
+      ];
+
+      /* ===== Helpers ===== */
+      function isSubActive() {
+        return state.subStatus === "active";
+      }
+      function isBizActive() {
+        return state.businessStatus === "active";
+      }
+      function subLabel() {
+        return state.subStatus === "active" ? "Active" : state.subStatus === "pending" ? "Pending" : "Not active";
+      }
+      function bizLabel() {
+        return state.businessStatus === "active" ? "Active" : state.businessStatus === "pending" ? "Pending" : "Not active";
+      }
+
+      function showVisitorNav() {
+        navVisitor.style.display = "flex";
         navCustomer.style.display = "none";
-        return;
+      }
+      function showCustomerNav() {
+        navVisitor.style.display = "none";
+        navCustomer.style.display = "flex";
       }
 
-      // Logged in + NOT active: gate only
-      if(subStatus !== "active"){
-        body.classList.add("gate");
-        navCustomer.style.display = "none"; // IMPORTANT: never show nav in gate
-        return;
+      function setActiveNavButton(section) {
+        [...navCustomer.querySelectorAll("button[data-section]")].forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.section === section);
+        });
       }
 
-      // Logged in + active: app only
-      body.classList.add("active");
-      navCustomer.style.display = "flex";
-    }
+      function applyDustForState() {
+        if (!state.loggedIn) {
+          setDustMode("light");
+          return;
+        }
+        if (!isSubActive()) {
+          setDustMode("rich");
+          return;
+        }
+        if (state.activeSection === "home") setDustMode("light");
+        else setDustMode("off");
+      }
 
-    // Join: just “logs in” for demo
-    document.getElementById("joinBtn").addEventListener("click", () => {
-      loggedIn = true;
-      email = email || "test@primex.com";
-      sessionStorage.setItem("px_loggedIn","1");
-      sessionStorage.setItem("px_email", email);
-      applyState();
-    });
+      function showSection(section) {
+        state.activeSection = section;
 
-    // Gate buttons (demo)
-    document.getElementById("unlockBtn").addEventListener("click", () => {
-      subStatus = "pending";
-      localStorage.setItem("px_subStatus","pending");
-      setStatusUI();
-      applyState();
-      alert("Demo: set to Pending. In real flow, you'd open the TRC20 payment modal here.");
-    });
+        document.querySelectorAll(".section").forEach((s) => s.classList.remove("active"));
+        const el = document.getElementById(`section-${section}`);
+        if (el) el.classList.add("active");
 
-    function logout(){
-      sessionStorage.removeItem("px_loggedIn");
-      sessionStorage.removeItem("px_email");
-      loggedIn = false;
-      email = "";
-      applyState();
-      location.reload();
-    }
+        setActiveNavButton(section);
 
-    document.getElementById("gateLogout").addEventListener("click", logout);
-    document.getElementById("logoutBtn").addEventListener("click", logout);
+        const needsBlank = section === "liveSessions" || section === "subscription" || section === "groupSignals";
+        body.classList.toggle("blank-bg", needsBlank);
+        body.classList.toggle("home-subdued", !needsBlank && section === "home");
 
-    applyState();
-  </script>
-</body>
+        applyDustForState();
+      }
+
+      function setPills() {
+        acctEmail.textContent = state.email || "—";
+        acctSubPill.textContent = `Subscription: ${subLabel()}`;
+        acctBizPill.textContent = `Business: ${bizLabel()}`;
+
+        homeSubPill.textContent = `Subscription: ${subLabel()}`;
+        homeBizPill.textContent = `Business: ${bizLabel()}`;
+
+        qaSubTag.textContent = subLabel();
+        qaBizTag.textContent = state.businessStatus === "active" ? "Active" : state.businessStatus === "pending" ? "Pending • $50" : "Locked • $50";
+
+        bizPill.textContent = state.businessStatus === "active" ? "Active" : state.businessStatus === "pending" ? "Pending • $50" : "Locked • $50";
+
+        subStatusLine.textContent = `Status: ${subLabel()}`;
+      }
+
+      function setGateUI() {
+        gateEmail.textContent = state.email || "—";
+        gateStatusBadge.classList.remove("pending", "active");
+        if (state.subStatus === "pending") gateStatusBadge.classList.add("pending");
+        if (state.subStatus === "active") gateStatusBadge.classList.add("active");
+
+        gateStatusText.textContent = `Status: ${subLabel()}`;
+
+        if (state.subStatus === "pending") {
+          gateSubline.textContent = "Verification in progress. You'll enter the platform after activation.";
+          gateNote.innerHTML = "Submitted ✅ <b>Pending verification</b> — activation within ~24 hours.";
+          gateExplain.textContent = "You're all set. We verify your payment and activate access.";
+          gateUnlockBtn.textContent = "View Payment Steps";
+        } else {
+          gateSubline.textContent = "Activate your membership to enter the platform.";
+          gateNote.innerHTML = "After submitting proof, status becomes <b>Pending</b> — activation within ~24 hours.";
+          gateExplain.textContent = "Submit USDT (TRC20) proof → we verify → access activates.";
+          gateUnlockBtn.textContent = "Unlock Access";
+        }
+      }
+
+      function setModeClasses() {
+        body.classList.remove("gate", "active-app", "blank-bg", "home-subdued", "dust-on", "dust-rich");
+
+        if (!state.loggedIn) {
+          showVisitorNav();
+          body.classList.remove("blank-bg");
+          applyDustForState();
+          return;
+        }
+
+        if (!isSubActive()) {
+          body.classList.add("gate");
+          body.classList.add("blank-bg");
+          showVisitorNav();
+          setGateUI();
+          applyDustForState();
+          return;
+        }
+
+        body.classList.add("active-app");
+        showCustomerNav();
+        setPills();
+        showSection(state.activeSection || "home");
+        applyDustForState();
+      }
+
+      /* ===== Modal helpers ===== */
+      function openModal() {
+        body.classList.add("modal-open");
+        overlay.setAttribute("aria-hidden", "false");
+      }
+      function closeModal() {
+        body.classList.remove("modal-open");
+        overlay.setAttribute("aria-hidden", "true");
+        showModalPanel("auth");
+      }
+      function showModalPanel(which) {
+        panelAuth.style.display = "none";
+        panelPay.style.display = "none";
+        panelSession.style.display = "none";
+        if (which === "auth") panelAuth.style.display = "block";
+        if (which === "pay") panelPay.style.display = "block";
+        if (which === "session") panelSession.style.display = "block";
+      }
+
+      function openAuthModal() {
+        modeTitle.textContent = "Create your account";
+        modeSub.textContent = "Join PrimeX in seconds.";
+        showModalPanel("auth");
+        openModal();
+        setTimeout(() => document.getElementById("email")?.focus(), 50);
+      }
+
+      function openPaymentModal(mode) {
+        state.payMode = mode;
+        const isSub = mode === "sub";
+        const amount = isSub ? 499 : 50;
+        const dur = isSub ? "3 Months" : "One-time";
+        const title = isSub ? "PrimeX Subscription" : "Business Dashboard";
+        const sub = isSub ? "USDT (TRC20) — manual verification" : "USDT (TRC20) — module unlock";
+
+        modeTitle.textContent = isSub ? "Unlock access" : "Unlock business";
+        modeSub.textContent = "USDT (TRC20) — manual payment.";
+
+        payTitle.textContent = title;
+        paySub.textContent = sub;
+        payAmount.textContent = `$${amount}`;
+        payDur.textContent = dur;
+        payMeta.textContent = `Amount: $${amount} • Network: TRON`;
+
+        walletAddr.textContent = "TRC20_WALLET_ADDRESS_HERE";
+        autoRenewWrap.style.display = isSub ? "block" : "none";
+
+        if (isSub) autoRenew.checked = state.subAutoRenew;
+
+        if (isSub) {
+          paymentTiny.textContent =
+            state.subStatus === "pending"
+              ? "Submitted ✅ Pending verification. Estimated activation: ~24 hours."
+              : "Pending verification — Activation within ~24 hours.";
+        } else {
+          paymentTiny.textContent =
+            state.businessStatus === "pending"
+              ? "Submitted ✅ Pending verification. Estimated activation: ~24 hours."
+              : "Pending verification — Activation within ~24 hours.";
+        }
+
+        showModalPanel("pay");
+        openModal();
+      }
+
+      function openSessionDetailsModal(session) {
+        modeTitle.textContent = "Live session";
+        modeSub.textContent = "Details are visible — joining opens the session link.";
+        showModalPanel("session");
+        state.selectedSessionId = session.id;
+
+        sessDetailTitle.textContent = `Live Session — ${session.title}`;
+        sessDetailMeta.textContent = `${session.time} • Host: ${session.host} • ${session.category}`;
+        joinHint.textContent = "Click Join Live to open the session.";
+        openModal();
+      }
+
+      /* overlay events */
+      heroJoinBtn.addEventListener("click", openAuthModal);
+      closeBtn.addEventListener("click", closeModal);
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) closeModal();
+      });
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && body.classList.contains("modal-open")) closeModal();
+      });
+
+      /* ===== Language UI ===== */
+      function setLangUI() {
+        langLabel.textContent = (state.lang || "en").toUpperCase();
+      }
+      langBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        langMenu.classList.toggle("open");
+      });
+      langMenu.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-lang]");
+        if (!btn) return;
+        const lang = btn.dataset.lang;
+
+        if (lang === "fa") {
+          alert("Persian (FA) is coming soon. For now the site stays in English.");
+          langMenu.classList.remove("open");
+          return;
+        }
+
+        state.lang = "en";
+        localStorage.setItem("px_lang", "en");
+        setLangUI();
+        langMenu.classList.remove("open");
+      });
+
+      window.addEventListener("click", () => {
+        if (langMenu.classList.contains("open")) langMenu.classList.remove("open");
+        if (acctMenu && acctMenu.classList.contains("open")) acctMenu.classList.remove("open");
+      });
+
+      /* ===== Auth tabs ===== */
+      function setAuthMode(mode) {
+        const isSignup = mode === "signup";
+
+        tabSignup.classList.toggle("active", isSignup);
+        tabSignin.classList.toggle("active", !isSignup);
+
+        tabSignup.setAttribute("aria-selected", isSignup ? "true" : "false");
+        tabSignin.setAttribute("aria-selected", !isSignup ? "true" : "false");
+
+        confirmWrap.style.display = isSignup ? "flex" : "none";
+        document.getElementById("confirm").required = isSignup;
+
+        modeTitle.textContent = isSignup ? "Create your account" : "Welcome back";
+        modeSub.textContent = isSignup ? "Join PrimeX in seconds." : "Sign in to continue.";
+        submitBtn.textContent = isSignup ? "Create account" : "Sign in";
+      }
+
+      tabSignup.addEventListener("click", () => setAuthMode("signup"));
+      tabSignin.addEventListener("click", () => setAuthMode("signin"));
+      setAuthMode("signup");
+
+      authForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const pass = document.getElementById("password").value;
+        const confirm = document.getElementById("confirm").value;
+        const isSignup = tabSignup.classList.contains("active");
+
+        if (!email || !pass) return;
+
+        if (isSignup && pass !== confirm) {
+          alert("Passwords do not match.");
+          return;
+        }
+
+        state.email = email;
+        state.loggedIn = true;
+
+        sessionStorage.setItem("px_loggedIn", "1");
+        sessionStorage.setItem("px_email", email);
+
+        setModeClasses();
+        closeModal();
+        authForm.reset();
+        setAuthMode("signup");
+      });
+
+      /* ===== Logout ===== */
+      function doLogout() {
+        sessionStorage.removeItem("px_loggedIn");
+        sessionStorage.removeItem("px_email");
+        state.loggedIn = false;
+        state.email = "";
+        location.reload();
+      }
+      gateLogoutBtn?.addEventListener("click", doLogout);
+      acctLogoutBtn?.addEventListener("click", doLogout);
+
+      /* ===== DEV bypass (preview dashboard) ===== */
+      devPreviewBtn?.addEventListener("click", () => {
+        state.subStatus = "active";
+        localStorage.setItem("px_subStatus", "active");
+        setModeClasses();
+      });
+
+      /* ===== Customer nav section switching (active only) ===== */
+      navCustomer.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-section]");
+        if (!btn) return;
+        showSection(btn.dataset.section);
+        if (acctMenu) acctMenu.classList.remove("open");
+      });
+
+      /* ===== Avatar menu ===== */
+      function toggleAcctMenu() {
+        acctMenu.classList.toggle("open");
+      }
+      avatarBtn?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleAcctMenu();
+      });
+
+      /* ===== Quick actions ===== */
+      qaLive?.addEventListener("click", () => showSection("liveSessions"));
+      qaSignals?.addEventListener("click", () => showSection("groupSignals"));
+      qaSub?.addEventListener("click", () => showSection("subscription"));
+      viewCalendarBtn?.addEventListener("click", () => showSection("liveSessions"));
+
+      qaBusiness?.addEventListener("click", () => {
+        if (isBizActive()) return;
+        openPaymentModal("biz");
+      });
+
+      bizUnlockBtn?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (isBizActive()) return;
+        openPaymentModal("biz");
+      });
+
+      businessModule?.addEventListener("click", () => {
+        if (isBizActive()) return;
+        openPaymentModal("biz");
+      });
+
+      /* ===== Gate actions ===== */
+      gateUnlockBtn?.addEventListener("click", () => openPaymentModal("sub"));
+
+      /* ===== Subscription section (active app) ===== */
+      subOpenPaymentBtn?.addEventListener("click", () => openPaymentModal("sub"));
+
+      /* ===== Copy wallet ===== */
+      copyWalletBtn?.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(walletAddr.textContent.trim());
+          copyWalletBtn.textContent = "Copied";
+          setTimeout(() => (copyWalletBtn.textContent = "Copy"), 900);
+        } catch (err) {
+          alert("Copy failed. Please copy manually.");
+        }
+      });
+
+      /* Auto-renew setting (subscription only) */
+      autoRenew?.addEventListener("change", () => {
+        state.subAutoRenew = autoRenew.checked;
+        localStorage.setItem("px_autoRenew", state.subAutoRenew ? "1" : "0");
+      });
+
+      /* Submit proof (subscription OR business) */
+      submitProofBtn?.addEventListener("click", () => {
+        if (state.payMode === "sub") {
+          state.subStatus = "pending";
+          localStorage.setItem("px_subStatus", "pending");
+          paymentTiny.textContent = "Submitted ✅ Pending verification. Estimated activation: ~24 hours.";
+          setGateUI();
+          setPills();
+          setModeClasses();
+          return;
+        }
+
+        state.businessStatus = "pending";
+        localStorage.setItem("px_businessStatus", "pending");
+        paymentTiny.textContent = "Submitted ✅ Pending verification. Estimated activation: ~24 hours.";
+        setPills();
+      });
+
+      /* ===== Group signals ===== */
+      joinSignalsBtn?.addEventListener("click", () => {
+        window.open("https://t.me/", "_blank", "noopener,noreferrer");
+      });
+
+      /* ===== Calendar ===== */
+      function buildCalendar() {
+        calendarGrid.innerHTML = "";
+
+        for (let d = 0; d < 7; d++) {
+          const col = document.createElement("div");
+          col.className = "daycol";
+          col.dataset.day = String(d);
+
+          const daySessions = sessions
+            .filter((s) => s.dayIndex === d)
+            .filter((s) => (state.filter === "All" ? true : s.category === state.filter));
+
+          if (daySessions.length === 0) {
+            const empty = document.createElement("div");
+            empty.style.opacity = ".55";
+            empty.style.fontSize = "12px";
+            empty.style.fontWeight = "980";
+            empty.style.color = "rgba(255,255,255,.70)";
+            empty.textContent = "—";
+            col.appendChild(empty);
+          } else {
+            daySessions.forEach((s) => {
+              const card = document.createElement("div");
+              card.className = "session-card glow-surface";
+              card.dataset.sessionId = s.id;
+
+              const left = document.createElement("div");
+              left.className = "sess-left";
+
+              const title = document.createElement("div");
+              title.className = "sess-title";
+              title.textContent = s.title;
+
+              const meta = document.createElement("div");
+              meta.className = "sess-meta";
+              meta.textContent = `${s.time} • ${s.category}`;
+
+              left.appendChild(title);
+              left.appendChild(meta);
+
+              const badge = document.createElement("div");
+              badge.className = "lockbadge";
+              badge.textContent = "Open";
+
+              card.appendChild(left);
+              card.appendChild(badge);
+
+              card.addEventListener("click", () => openSessionDetailsModal(s));
+
+              col.appendChild(card);
+
+              // ✅ apply mouse glow to generated cards
+              bindGlow(card);
+            });
+          }
+
+          calendarGrid.appendChild(col);
+        }
+      }
+
+      chips?.addEventListener("click", (e) => {
+        const chip = e.target.closest(".chip");
+        if (!chip) return;
+
+        state.filter = chip.dataset.filter;
+        chips.querySelectorAll(".chip").forEach((c) => c.classList.toggle("active", c === chip));
+
+        buildCalendar();
+      });
+
+      /* Session join (active only) */
+      joinLiveBtn?.addEventListener("click", () => {
+        const session = sessions.find((s) => s.id === state.selectedSessionId);
+        if (!session) return;
+        window.open(session.joinUrl, "_blank", "noopener,noreferrer");
+        closeModal();
+      });
+
+      /* ===== Upcoming sessions (dashboard) ===== */
+      function buildUpcoming() {
+        upcomingList.innerHTML = "";
+        const preview = sessions.slice(0, 3);
+
+        preview.forEach((s) => {
+          const item = document.createElement("div");
+          item.className = "up-item glow-surface";
+
+          const left = document.createElement("div");
+          left.style.minWidth = "0";
+
+          const t = document.createElement("strong");
+          t.textContent = s.title;
+
+          const m = document.createElement("span");
+          m.textContent = `${s.time} • ${s.category} • Host: ${s.host}`;
+
+          left.appendChild(t);
+          left.appendChild(m);
+
+          const chip = document.createElement("div");
+          chip.className = "up-chip";
+          chip.textContent = s.category;
+
+          item.appendChild(left);
+          item.appendChild(chip);
+
+          upcomingList.appendChild(item);
+
+          bindGlow(item);
+        });
+      }
+
+      /* =========================================================
+        ✅ DEV MODE — NEVER SKIP SUBSCRIPTION FLOW
+        Turn ON:
+          - add ?dev=1 to your URL (recommended) example: index.html?dev=1
+          - OR run in console once: localStorage.setItem("px_dev_mode","1"); location.reload();
+
+        Turn OFF:
+          - remove ?dev=1
+          - and/or run: localStorage.removeItem("px_dev_mode"); location.reload();
+
+        Behavior when ON:
+          - Forces subStatus to "none" on every load (so it never jumps to dashboard)
+          - Leaves auth alone
+          - Does NOT break your payment submit -> pending flow (pending still works)
+          - Disables the "Dev: Preview Dashboard" button so it can’t bypass
+      ========================================================== */
+      (function PRIME_X_DEV_MODE_NEVER_SKIP() {
+        try {
+          const params = new URLSearchParams(location.search);
+          const devParamOn = params.has("dev") && params.get("dev") !== "0";
+          const devStoredOn = localStorage.getItem("px_dev_mode") === "1";
+          const DEV_MODE = devParamOn || devStoredOn;
+
+          // optional: expose flag for debugging
+          window.__PRIMEX_DEV__ = DEV_MODE;
+
+          if (!DEV_MODE) return;
+
+          // Force subscription flow every load
+          state.subStatus = "none";
+          localStorage.setItem("px_subStatus", "none");
+
+          // Optional: keep business clean in dev tests too
+          state.businessStatus = "none";
+          localStorage.setItem("px_businessStatus", "none");
+
+          // Disable the preview dashboard bypass while dev mode is on
+          if (devPreviewBtn) {
+            devPreviewBtn.addEventListener(
+              "click",
+              (e) => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                alert("Dev mode is ON: Dashboard preview is disabled so the subscription flow never gets skipped.");
+              },
+              true
+            );
+          }
+        } catch (err) {
+          // dev-only: fail silently
+        }
+      })();
+
+      /* ===== Init ===== */
+      function init() {
+        if (!localStorage.getItem("px_subStatus")) localStorage.setItem("px_subStatus", state.subStatus);
+        if (!localStorage.getItem("px_businessStatus")) localStorage.setItem("px_businessStatus", state.businessStatus);
+        if (!localStorage.getItem("px_lang")) localStorage.setItem("px_lang", state.lang);
+
+        if (state.loggedIn && !state.email) {
+          state.email = sessionStorage.getItem("px_email") || "";
+        }
+
+        setLangUI();
+        resizeDust();
+        setModeClasses();
+        buildCalendar();
+        buildUpcoming();
+        setPills();
+        setGateUI();
+
+        if (isSubActive()) {
+          state.activeSection = "home";
+          showSection("home");
+        } else {
+          applyDustForState();
+        }
+
+        // ✅ bind glow across existing UI
+        bindAllGlow();
+      }
+
+      init();
+    </script>
+  </body>
 </html>
