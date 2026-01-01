@@ -26,7 +26,7 @@
     html,body{height:100%}
     body{
       margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       background:var(--bg);
       color:var(--text);
       overflow-x:hidden;
@@ -64,15 +64,21 @@
       pointer-events:none;
     }
 
-    /* ✅ FIXED: no width constraint */
+    /* ✅ FIXED: full-width header content */
     .nav-inner{
       width:100%;
       display:flex;
       align-items:center;
       justify-content:space-between;
+      gap:18px;
       pointer-events:auto;
     }
 
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
     .brand img{
       height:44px;
       filter:drop-shadow(0 10px 20px rgba(0,0,0,.55));
@@ -91,6 +97,7 @@
       border-radius:999px;
     }
 
+    /* Layout */
     main{
       min-height:100vh;
       display:flex;
@@ -108,6 +115,7 @@
       backdrop-filter:blur(12px);
       padding:42px 36px;
       text-align:center;
+      transition:.28s ease;
     }
 
     .pill{
@@ -190,7 +198,9 @@
 
   <header>
     <div class="nav-inner">
-      <img src="primex-full-transparent-clean.png" alt="PrimeX">
+      <a class="brand" href="#">
+        <img src="primex-full-transparent-clean.png" alt="PrimeX">
+      </a>
       <nav>
         <a href="#trading">Trading</a>
         <a href="#live">Live Sessions</a>
@@ -204,7 +214,9 @@
     <section class="hero-card">
       <div class="pill">Beyond Limits</div>
       <h1>Welcome to PrimeX</h1>
-      <p class="sub">Prime X is a focused environment for people who take improvement seriously.</p>
+      <p class="sub">
+        Prime X is a focused environment for people who take improvement seriously.
+      </p>
       <button class="cta" id="joinBtn">Join Prime X</button>
     </section>
   </main>
@@ -212,7 +224,7 @@
   <script>
     const body=document.body;
     const joinBtn=document.getElementById("joinBtn");
-    joinBtn.onclick=()=>body.classList.add("modal-open");
+    joinBtn.addEventListener("click",()=>body.classList.add("modal-open"));
   </script>
 
 </body>
