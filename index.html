@@ -1,189 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PrimeX</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PrimeX</title>
 
-    <!-- Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="primex-mark-44-clean.png" />
-    <link rel="shortcut icon" href="primex-mark-44-clean.png" />
-    <meta name="theme-color" content="#0b0b0b" />
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png" />
+  <meta name="theme-color" content="#0b0b0b" />
 
-    <style>
-      :root {
-        --bg: #050505;
-        --glass: rgba(18, 18, 18, 0.62);
-        --stroke: rgba(255, 255, 255, 0.14);
-        --text: rgba(255, 255, 255, 0.95);
-        --muted: rgba(255, 255, 255, 0.75);
-        --gold: #f2b400;
-        --gold2: #d79b00;
-        --radius: 24px;
-      }
+  <style>
+    :root {
+      --bg:#050505;
+      --glass:rgba(18,18,18,.62);
+      --stroke:rgba(255,255,255,.14);
+      --text:rgba(255,255,255,.95);
+      --muted:rgba(255,255,255,.75);
+      --gold:#f2b400;
+      --gold2:#d79b00;
+      --radius:24px;
+    }
 
-      * {
-        box-sizing: border-box;
-      }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto;
+      background:var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
 
-      body {
-        margin: 0;
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-        background: var(--bg);
-        color: var(--text);
-        overflow-x: hidden;
-      }
+    /* Background */
+    .bg-wrap{position:fixed;inset:0;z-index:-2}
+    video{width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.45)}
+    .vignette{position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(242,180,0,.2),transparent 60%),linear-gradient(to bottom,rgba(0,0,0,.4),rgba(0,0,0,.85))}
 
-      /* Background */
-      .bg-wrap {
-        position: fixed;
-        inset: 0;
-        z-index: -2;
-        overflow: hidden;
-      }
+    /* Header */
+    header{
+      position:fixed;top:0;width:100%;
+      padding:18px 28px;
+      display:flex;justify-content:space-between;align-items:center;
+      z-index:10;
+    }
+    nav a{
+      color:white;text-decoration:none;font-weight:800;
+      font-size:13px;padding:10px 14px;border-radius:999px;
+    }
 
-      video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: grayscale(1) brightness(0.45);
-      }
+    /* Hero */
+    main{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:140px 20px;
+    }
+    .hero-card{
+      max-width:900px;width:100%;
+      background:var(--glass);
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      padding:42px 36px;
+      text-align:center;
+      backdrop-filter:blur(6px);
+    }
+    .pill{
+      display:inline-block;
+      padding:7px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      font-weight:900;font-size:12px;
+      margin-bottom:18px;
+    }
+    h1{margin:0 0 14px;font-size:clamp(36px,5vw,60px)}
+    .sub{color:var(--muted);margin-bottom:26px}
+    .cta{
+      background:linear-gradient(180deg,var(--gold),var(--gold2));
+      border:none;color:#0b0b0b;
+      font-weight:900;padding:14px 30px;
+      border-radius:999px;cursor:pointer;
+    }
 
-      .vignette {
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at 50% 30%, rgba(242,180,0,0.2), transparent 60%),
-          linear-gradient(to bottom, rgba(0,0,0,.4), rgba(0,0,0,.8));
-      }
+    /* MODAL */
+    .overlay{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.6);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:50;
+    }
+    .overlay.active{display:flex}
+    .modal{
+      width:420px;
+      background:#0e0e0e;
+      border-radius:20px;
+      border:1px solid var(--stroke);
+      padding:24px;
+    }
+    .modal h2{margin-top:0}
+    .field{margin-bottom:14px}
+    input{
+      width:100%;padding:12px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
+      background:#000;color:white;
+    }
+    .xbtn{
+      position:absolute;top:14px;right:16px;
+      background:none;border:none;color:white;
+      font-size:18px;cursor:pointer;
+    }
+  </style>
+</head>
 
-      /* Header */
-      header {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        padding: 18px 28px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 10;
-      }
+<body>
 
-      .brand img {
-        height: 44px;
-      }
+<!-- Background -->
+<div class="bg-wrap">
+  <video autoplay muted loop playsinline>
+    <source src="montage.mp4" type="video/mp4" />
+  </video>
+  <div class="vignette"></div>
+</div>
 
-      nav {
-        display: flex;
-        gap: 14px;
-      }
+<header>
+  <img src="primex-full-transparent-clean.png" height="42" />
+  <nav>
+    <a href="#">Trading</a>
+    <a href="#">Live Sessions</a>
+    <a href="#">Community</a>
+    <a href="#">About</a>
+  </nav>
+</header>
 
-      nav a {
-        color: white;
-        text-decoration: none;
-        font-weight: 800;
-        font-size: 13px;
-        padding: 10px 14px;
-        border-radius: 999px;
-        transition: background 0.2s;
-      }
+<main>
+  <section class="hero-card">
+    <div class="pill">Beyond Limits</div>
+    <h1>Welcome to PrimeX</h1>
+    <p class="sub">PrimeX | Trading × Mindset × Business</p>
+    <button class="cta" id="joinBtn">Join Now</button>
+  </section>
+</main>
 
-      nav a:hover {
-        background: rgba(255,255,255,0.08);
-      }
+<!-- AUTH MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="xbtn" id="closeBtn">✕</button>
+    <h2>Create your account</h2>
 
-      /* Main */
-      main {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 140px 20px 80px;
-      }
-
-      .hero-card {
-        max-width: 900px;
-        width: 100%;
-        background: var(--glass);
-        border: 1px solid var(--stroke);
-        border-radius: var(--radius);
-        padding: 42px 36px;
-        text-align: center;
-        backdrop-filter: blur(4px);
-      }
-
-      .pill {
-        display: inline-block;
-        padding: 7px 14px;
-        border-radius: 999px;
-        background: rgba(255,255,255,0.08);
-        margin-bottom: 18px;
-        font-weight: 900;
-        font-size: 12px;
-      }
-
-      h1 {
-        margin: 0 0 14px;
-        font-size: clamp(36px, 5vw, 60px);
-        font-weight: 900;
-      }
-
-      .sub {
-        margin-bottom: 26px;
-        font-size: 14px;
-        color: var(--muted);
-      }
-
-      .cta {
-        background: linear-gradient(180deg, var(--gold), var(--gold2));
-        border: none;
-        color: #0b0b0b;
-        font-weight: 900;
-        padding: 14px 30px;
-        border-radius: 999px;
-        cursor: pointer;
-        font-size: 14px;
-      }
-
-      .cta:hover {
-        transform: translateY(-1px);
-      }
-    </style>
-  </head>
-
-  <body>
-    <!-- Background -->
-    <div class="bg-wrap">
-      <video autoplay muted loop playsinline>
-        <source src="montage.mp4" type="video/mp4" />
-      </video>
-      <div class="vignette"></div>
+    <div class="field">
+      <input type="email" placeholder="Email" />
+    </div>
+    <div class="field">
+      <input type="password" placeholder="Password" />
     </div>
 
-    <!-- Header -->
-    <header>
-      <a class="brand" href="index.html">
-        <img src="primex-full-transparent-clean.png" alt="PrimeX" />
-      </a>
+    <button class="cta" style="width:100%" onclick="location.href='dashboard.html'">
+      Create Account
+    </button>
+  </div>
+</div>
 
-      <nav>
-        <a href="#">Trading</a>
-        <a href="#">Live Sessions</a>
-        <a href="#">Community</a>
-        <a href="#">About</a>
-      </nav>
-    </header>
+<script>
+  const overlay = document.getElementById("overlay");
+  const joinBtn = document.getElementById("joinBtn");
+  const closeBtn = document.getElementById("closeBtn");
 
-    <!-- Home -->
-    <main>
-      <section class="hero-card">
-        <div class="pill">Beyond Limits</div>
-        <h1>Welcome to PrimeX</h1>
-        <p class="sub">PrimeX | Trading × Mindset × Business</p>
-        <button class="cta" onclick="location.href='dashboard.html'">
-          Join Now
-        </button>
-      </section>
-    </main>
-  </body>
+  joinBtn.onclick = () => overlay.classList.add("active");
+  closeBtn.onclick = () => overlay.classList.remove("active");
+  overlay.onclick = e => { if (e.target === overlay) overlay.classList.remove("active"); };
+</script>
+
+</body>
 </html>
