@@ -2,77 +2,49 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PrimeX — Live Sessions</title>
-
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>PrimeX — Academy</title>
+    <meta name="theme-color" content="#070707" />
     <link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png" />
-    <meta name="theme-color" content="#0b0b0b" />
 
     <style>
       :root {
-        --bg: #050505;
+        --bg: #070707;
+        --panel: rgba(18, 18, 18, 0.72);
+        --panel2: rgba(0, 0, 0, 0.35);
+        --stroke: rgba(255, 255, 255, 0.10);
+        --stroke2: rgba(255, 255, 255, 0.14);
 
-        --glass: rgba(18, 18, 18, 0.62);
-        --glass2: rgba(0, 0, 0, 0.28);
-        --stroke: rgba(255, 255, 255, 0.12);
-        --muted: rgba(255, 255, 255, 0.74);
-        --text: rgba(255, 255, 255, 0.94);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.70);
+        --muted2: rgba(255, 255, 255, 0.55);
 
         --gold: #f2b400;
         --gold2: #d79b00;
 
-        --shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
-        --radius: 26px;
+        --shadow: 0 22px 70px rgba(0, 0, 0, 0.60);
+        --radius: 20px;
+        --radius2: 16px;
 
-        --glowGoldA: rgba(242, 180, 0, 0.34);
-        --glowGoldB: rgba(242, 180, 0, 0.14);
-        --glowBlueA: rgba(88, 199, 255, 0.16);
+        --glowGoldA: rgba(242, 180, 0, 0.28);
+        --glowGoldB: rgba(242, 180, 0, 0.12);
+        --glowBlueA: rgba(88, 199, 255, 0.14);
       }
 
-      * {
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        height: 100%;
-      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
       body {
         margin: 0;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-        background: var(--bg);
+        background: radial-gradient(1200px 700px at 20% 10%, rgba(242,180,0,.08), transparent 55%),
+                    radial-gradient(900px 650px at 80% 15%, rgba(255,255,255,.05), transparent 60%),
+                    radial-gradient(900px 650px at 50% 85%, rgba(0,0,0,.75), transparent 60%),
+                    var(--bg);
         color: var(--text);
         overflow-x: hidden;
       }
 
-      /* ===== Background video ===== */
-      .bg-wrap {
-        position: fixed;
-        inset: 0;
-        z-index: -3;
-        background: #000;
-        overflow: hidden;
-      }
-      video#bgVideo {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: grayscale(1) contrast(0.98) brightness(0.38) blur(2px);
-        transform: scale(1.035);
-      }
-      .vignette {
-        position: absolute;
-        inset: -2px;
-        background: radial-gradient(1200px 700px at 15% 10%, rgba(242, 180, 0, 0.14), transparent 60%),
-          radial-gradient(900px 600px at 80% 20%, rgba(255, 255, 255, 0.05), transparent 62%),
-          radial-gradient(1100px 800px at 50% 80%, rgba(0, 0, 0, 0.6), transparent 55%),
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.82));
-        z-index: -2;
-        pointer-events: none;
-      }
-
-      /* ===== Glow surface (keep your effect) ===== */
+      /* ===== Glow hover ===== */
       .glow-surface {
         position: relative;
         overflow: hidden;
@@ -86,22 +58,13 @@
         opacity: 0;
         transition: opacity 0.22s ease;
         z-index: 0;
-        background: radial-gradient(420px 260px at var(--mx, 50%) var(--my, 50%), var(--glowGoldA), transparent 60%),
-          radial-gradient(
-            520px 320px at calc(var(--mx, 50%) + 8%) calc(var(--my, 50%) + 6%),
-            var(--glowGoldB),
-            transparent 62%
-          ),
-          radial-gradient(
-            520px 320px at calc(var(--mx, 50%) - 10%) calc(var(--my, 50%) - 8%),
-            var(--glowBlueA),
-            transparent 64%
-          );
+        background:
+          radial-gradient(420px 260px at var(--mx, 50%) var(--my, 50%), var(--glowGoldA), transparent 60%),
+          radial-gradient(520px 320px at calc(var(--mx, 50%) + 8%) calc(var(--my, 50%) + 6%), var(--glowGoldB), transparent 62%),
+          radial-gradient(520px 320px at calc(var(--mx, 50%) - 10%) calc(var(--my, 50%) - 8%), var(--glowBlueA), transparent 64%);
         mix-blend-mode: screen;
       }
-      .glow-surface:hover::before {
-        opacity: 1;
-      }
+      .glow-surface:hover::before { opacity: 1; }
       .glow-surface::after {
         content: "";
         position: absolute;
@@ -110,564 +73,741 @@
         z-index: 0;
         opacity: 0;
         transition: opacity 0.22s ease;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 45%, rgba(242, 180, 0, 0.06));
+        background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 45%, rgba(242,180,0,0.06));
       }
-      .glow-surface:hover::after {
-        opacity: 0.9;
-      }
-      .glow-surface > * {
-        position: relative;
-        z-index: 1;
+      .glow-surface:hover::after { opacity: 0.9; }
+      .glow-surface > * { position: relative; z-index: 1; }
+
+      /* ===== App frame ===== */
+      .app {
+        display: grid;
+        grid-template-columns: 84px 1fr;
+        min-height: 100vh;
       }
 
-      /* ===== Top Nav (template-ish) ===== */
-      .topbar {
-        position: fixed;
+      /* ===== Sidebar ===== */
+      .sidebar {
+        position: sticky;
         top: 0;
-        left: 0;
-        right: 0;
-        z-index: 50;
-        padding: 18px 22px;
+        height: 100vh;
+        background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.35));
+        border-right: 1px solid rgba(255,255,255,.08);
+        padding: 14px 12px;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
         gap: 14px;
       }
-      .topbar::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
-        pointer-events: none;
+      .side-logo {
+        width: 46px;
+        height: 46px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(242,180,0,.22);
+        background: radial-gradient(18px 18px at 30% 25%, rgba(242,180,0,.35), transparent 60%), rgba(0,0,0,.35);
+        box-shadow: 0 10px 28px rgba(0,0,0,.45);
+      }
+      .side-logo svg { width: 22px; height: 22px; }
+
+      .side-stack {
+        margin-top: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        align-items: center;
+      }
+      .side-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,.10);
+        background: rgba(255,255,255,.04);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        transition: transform .14s ease, background .14s ease, border-color .14s ease;
+      }
+      .side-btn:hover {
+        transform: translateY(-1px);
+        background: rgba(255,255,255,.07);
+        border-color: rgba(242,180,0,.20);
+      }
+      .side-btn.active {
+        background: rgba(242,180,0,.12);
+        border-color: rgba(242,180,0,.26);
+      }
+      .side-btn svg { width: 20px; height: 20px; opacity: .92; }
+      .side-spacer { flex: 1; }
+      .side-badge {
+        width: 44px; height: 44px; border-radius: 16px;
+        border: 1px solid rgba(255,255,255,.10);
+        background: rgba(255,255,255,.04);
+        display: grid; place-items: center;
+        position: relative;
+      }
+      .side-badge::after{
+        content:"";
+        position:absolute;
+        right: 8px; top: 8px;
+        width: 9px; height: 9px;
+        border-radius: 999px;
+        background: rgba(242,180,0,.95);
+        box-shadow: 0 0 0 4px rgba(242,180,0,.14);
+      }
+
+      /* ===== Main ===== */
+      .main {
+        padding: 14px 18px 30px;
+      }
+
+      /* ===== Top bar ===== */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 10px 0 14px;
+        backdrop-filter: blur(10px);
       }
       .topbar-inner {
-        width: min(1260px, 100%);
-        margin: 0 auto;
+        background: rgba(0,0,0,.35);
+        border: 1px solid rgba(255,255,255,.10);
+        border-radius: 18px;
+        box-shadow: 0 18px 60px rgba(0,0,0,.45);
+        padding: 12px 14px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 14px;
-        position: relative;
-        z-index: 1;
+        gap: 12px;
       }
-
       .brand {
         display: flex;
         align-items: center;
         gap: 12px;
         min-width: 170px;
       }
-      .brand-mark {
-        width: 42px;
-        height: 42px;
-        border-radius: 14px;
-        border: 1px solid rgba(242, 180, 0, 0.22);
-        background: radial-gradient(20px 18px at 30% 25%, rgba(242, 180, 0, 0.35), transparent 60%),
-          rgba(0, 0, 0, 0.35);
-        display: grid;
-        place-items: center;
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
-      }
-      .brand-mark svg {
-        width: 20px;
-        height: 20px;
-        opacity: 0.95;
-      }
-      .brand-text {
+      .brand-name {
         display: flex;
         flex-direction: column;
         line-height: 1.05;
       }
-      .brand-text strong {
-        font-size: 14px;
-        font-weight: 1000;
-        letter-spacing: 0.2px;
-      }
-      .brand-text span {
-        font-size: 11px;
-        font-weight: 850;
-        color: rgba(255, 255, 255, 0.65);
-      }
+      .brand-name strong { font-size: 13px; font-weight: 1000; letter-spacing: .2px; }
+      .brand-name span { font-size: 11px; font-weight: 850; color: rgba(255,255,255,.60); }
 
-      .navlinks {
+      .nav {
         display: flex;
         align-items: center;
         gap: 10px;
         flex-wrap: wrap;
         justify-content: center;
       }
-      .navlinks a {
+      .nav .item {
+        position: relative;
+      }
+      .nav a, .nav button {
+        appearance: none;
+        border: 1px solid transparent;
+        background: transparent;
+        color: rgba(255,255,255,.72);
         text-decoration: none;
-        color: rgba(255, 255, 255, 0.72);
         font-weight: 950;
         font-size: 12px;
         padding: 9px 12px;
         border-radius: 999px;
-        border: 1px solid transparent;
-        transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+        cursor: pointer;
+        transition: background .18s ease, border-color .18s ease, color .18s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
       }
-      .navlinks a:hover {
-        color: rgba(255, 255, 255, 0.92);
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.12);
+      .nav a:hover, .nav button:hover {
+        color: rgba(255,255,255,.92);
+        background: rgba(255,255,255,.06);
+        border-color: rgba(255,255,255,.12);
       }
-      .navlinks a.active {
-        color: rgba(255, 255, 255, 0.94);
-        background: rgba(242, 180, 0, 0.1);
-        border-color: rgba(242, 180, 0, 0.22);
+      .nav a.active {
+        color: rgba(255,255,255,.94);
+        background: rgba(242,180,0,.10);
+        border-color: rgba(242,180,0,.22);
+      }
+      .caret { opacity: .85; transform: translateY(1px); }
+
+      /* dropdown */
+      .dd {
+        position: absolute;
+        top: 44px;
+        left: 0;
+        min-width: 210px;
+        background: rgba(10,10,10,.92);
+        border: 1px solid rgba(255,255,255,.10);
+        border-radius: 16px;
+        box-shadow: 0 20px 70px rgba(0,0,0,.65);
+        padding: 8px;
+        display: none;
+      }
+      .dd.open { display: block; }
+      .dd a {
+        display: flex;
+        padding: 10px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 900;
+        color: rgba(255,255,255,.84);
+      }
+      .dd a:hover {
+        background: rgba(255,255,255,.06);
+        border-color: transparent;
       }
 
-      .right-actions {
+      .top-right {
         display: flex;
         align-items: center;
-        gap: 10px;
         justify-content: flex-end;
-        min-width: 240px;
+        gap: 10px;
+        min-width: 320px;
       }
-
       .pill {
         display: inline-flex;
         align-items: center;
         gap: 8px;
         padding: 9px 12px;
         border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(0,0,0,.35);
         font-size: 12px;
         font-weight: 980;
-        color: rgba(255, 255, 255, 0.88);
+        color: rgba(255,255,255,.88);
         cursor: pointer;
         user-select: none;
-        transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
+        transition: transform .14s ease, background .14s ease, border-color .14s ease;
+        white-space: nowrap;
       }
       .pill:hover {
         transform: translateY(-1px);
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(242, 180, 0, 0.2);
+        background: rgba(255,255,255,.06);
+        border-color: rgba(242,180,0,.20);
       }
       .pill.gold {
-        background: linear-gradient(180deg, rgba(242, 180, 0, 0.16), rgba(215, 155, 0, 0.08));
-        border-color: rgba(242, 180, 0, 0.25);
+        background: linear-gradient(180deg, rgba(242,180,0,.18), rgba(215,155,0,.08));
+        border-color: rgba(242,180,0,.26);
       }
-
       .avatar {
         width: 38px;
         height: 38px;
         border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(255,255,255,.06);
         display: grid;
         place-items: center;
+        overflow: hidden;
       }
-      .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
-        background: rgba(242, 180, 0, 0.9);
-        box-shadow: 0 0 0 4px rgba(242, 180, 0, 0.14);
-      }
+      .avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-      /* ===== Main layout ===== */
-      main {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 124px 22px 90px; /* room for topbar */
-      }
-
-      /* ===== Big center glass card (template-ish) ===== */
+      /* ===== Content panel ===== */
       .panel {
-        width: min(1200px, 100%);
-        border-radius: var(--radius);
-        background: var(--glass);
-        border: 1px solid var(--stroke);
-        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.48);
-        backdrop-filter: blur(9px);
-        -webkit-backdrop-filter: blur(9px);
-        padding: 18px;
+        margin-top: 14px;
+        border-radius: 24px;
+        border: 1px solid rgba(255,255,255,.10);
+        background: rgba(0,0,0,.28);
+        box-shadow: var(--shadow);
+        padding: 16px;
       }
-
       .panel-inner {
-        border-radius: calc(var(--radius) - 8px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(0, 0, 0, 0.18);
-        padding: 18px;
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,.08);
+        background: rgba(0,0,0,.20);
+        padding: 16px;
       }
 
-      .panel-head {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 14px;
-        margin-bottom: 14px;
-      }
-      .panel-head h2 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 1000;
-        letter-spacing: 0.2px;
-      }
-      .panel-head p {
-        margin: 6px 0 0;
-        font-size: 12px;
-        font-weight: 850;
-        color: rgba(255, 255, 255, 0.72);
-        line-height: 1.45;
-        max-width: 720px;
-      }
-
-      .filters {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        margin-top: 2px;
-      }
-      .chip {
-        padding: 8px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(255, 255, 255, 0.04);
-        font-size: 12px;
-        font-weight: 980;
-        color: rgba(255, 255, 255, 0.86);
-        cursor: pointer;
-        user-select: none;
-        transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
-      }
-      .chip:hover {
-        transform: translateY(-1px);
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(242, 180, 0, 0.2);
-      }
-      .chip.active {
-        background: rgba(242, 180, 0, 0.12);
-        border-color: rgba(242, 180, 0, 0.24);
-        color: rgba(255, 255, 255, 0.94);
-      }
-
-      /* ===== Schedule grid ===== */
-      .schedule {
-        border-radius: 22px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(0, 0, 0, 0.22);
-        padding: 14px;
-      }
-
-      .sched-top {
+      /* ===== Section title ===== */
+      .section-title {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
         margin-bottom: 12px;
       }
-      .sched-top strong {
-        font-size: 12px;
-        font-weight: 1000;
-        letter-spacing: 0.2px;
-      }
-      .sched-top span {
-        display: block;
-        margin-top: 4px;
-        font-size: 11px;
-        font-weight: 850;
-        color: rgba(255, 255, 255, 0.66);
-      }
-
-      .week {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 10px;
-      }
-      .day {
-        border-radius: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(0, 0, 0, 0.18);
-        padding: 10px;
-        min-height: 220px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .day h4 {
+      .section-title h2 {
         margin: 0;
-        font-size: 11px;
+        font-size: 14px;
         font-weight: 1000;
-        letter-spacing: 0.18px;
-        color: rgba(255, 255, 255, 0.82);
+        letter-spacing: .2px;
       }
-
-      .session {
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(0, 0, 0, 0.28);
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
-      }
-      .session:hover {
-        transform: translateY(-1px);
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(242, 180, 0, 0.2);
-      }
-      .session .meta {
-        min-width: 0;
-      }
-      .session .title {
-        font-size: 11px;
-        font-weight: 1000;
-        letter-spacing: 0.18px;
-        color: rgba(255, 255, 255, 0.9);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 200px;
-      }
-      .session .sub {
-        margin-top: 5px;
-        font-size: 10.5px;
+      .section-title .hint {
+        font-size: 12px;
         font-weight: 850;
-        color: rgba(255, 255, 255, 0.66);
-      }
-      .openbtn {
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(255, 255, 255, 0.06);
-        color: rgba(255, 255, 255, 0.9);
-        border-radius: 999px;
-        padding: 8px 12px;
-        font-size: 11px;
-        font-weight: 1000;
-        cursor: pointer;
-        transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
-        white-space: nowrap;
-      }
-      .openbtn:hover {
-        transform: translateY(-1px);
-        background: rgba(242, 180, 0, 0.12);
-        border-color: rgba(242, 180, 0, 0.22);
+        color: rgba(255,255,255,.65);
       }
 
-      /* ===== Bottom row: Upcoming preview ===== */
-      .bottom-row {
-        margin-top: 12px;
+      /* ===== Category cards row ===== */
+      .cat-row {
         display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
+        grid-template-columns: repeat(5, 1fr);
         gap: 12px;
+        margin: 12px 0 16px;
       }
-      .up-cta {
-        border-radius: 22px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(0, 0, 0, 0.25);
-        padding: 16px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 12px;
-      }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
-        border-radius: 999px;
-        padding: 12px 16px;
-        font-weight: 1000;
-        cursor: pointer;
-        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.42);
-      }
-      .btn-gold {
-        background: linear-gradient(180deg, var(--gold), var(--gold2));
-        color: #0b0b0b;
-      }
-
-      .up-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .up-item {
+      .cat {
         border-radius: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255,255,255,.10);
+        background: rgba(0,0,0,.28);
         padding: 12px;
         display: flex;
-        justify-content: space-between;
         gap: 12px;
-        align-items: flex-start;
+        align-items: center;
+        min-height: 86px;
+        cursor: pointer;
+        transition: transform .14s ease, background .14s ease, border-color .14s ease;
       }
-      .up-item strong {
+      .cat:hover {
+        transform: translateY(-1px);
+        background: rgba(255,255,255,.05);
+        border-color: rgba(242,180,0,.18);
+      }
+      .cat.active {
+        border-color: rgba(242,180,0,.28);
+        background: rgba(242,180,0,.08);
+      }
+      .cat-thumb {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,.10);
+        background:
+          radial-gradient(16px 16px at 30% 25%, rgba(242,180,0,.18), transparent 60%),
+          rgba(255,255,255,.03);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+      .cat-thumb img { width: 100%; height: 100%; object-fit: cover; }
+      .cat-meta strong {
         display: block;
         font-size: 12px;
         font-weight: 1000;
-        letter-spacing: 0.2px;
-        max-width: 420px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        letter-spacing: .18px;
       }
-      .up-item span {
+      .cat-meta span {
         display: block;
         margin-top: 6px;
         font-size: 11px;
-        color: rgba(255, 255, 255, 0.7);
         font-weight: 850;
-      }
-      .up-chip {
-        padding: 7px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(255, 255, 255, 0.06);
-        font-size: 11px;
-        font-weight: 1000;
-        color: rgba(255, 255, 255, 0.9);
-        white-space: nowrap;
+        color: rgba(255,255,255,.62);
       }
 
-      @media (max-width: 1080px) {
-        .week {
-          grid-template-columns: repeat(3, 1fr);
-        }
+      /* ===== Tabs + Search row ===== */
+      .tools-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin: 8px 0 12px;
+        padding: 10px 12px;
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,.10);
+        background: rgba(0,0,0,.22);
       }
-      @media (max-width: 860px) {
-        .topbar {
-          padding: 14px 14px;
-        }
-        .right-actions {
-          min-width: unset;
-        }
-        .navlinks {
-          display: none; /* keep it clean on mobile like many templates */
-        }
-        .bottom-row {
-          grid-template-columns: 1fr;
-        }
+
+      .tabs {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
-      @media (max-width: 620px) {
-        main {
-          padding: 110px 14px 70px;
-        }
-        .week {
-          grid-template-columns: 1fr;
-        }
-        .session .title {
-          max-width: 62vw;
-        }
+      .tab {
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: rgba(255,255,255,.72);
+        font-size: 12px;
+        font-weight: 980;
+        cursor: pointer;
+        transition: background .18s ease, border-color .18s ease, color .18s ease;
+      }
+      .tab:hover {
+        background: rgba(255,255,255,.06);
+        border-color: rgba(255,255,255,.12);
+        color: rgba(255,255,255,.90);
+      }
+      .tab.active {
+        background: rgba(242,180,0,.10);
+        border-color: rgba(242,180,0,.22);
+        color: rgba(255,255,255,.94);
+      }
+
+      .search-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        flex: 1;
+      }
+      .search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,.10);
+        background: rgba(255,255,255,.04);
+        min-width: min(420px, 100%);
+      }
+      .search input {
+        border: none;
+        outline: none;
+        background: transparent;
+        color: rgba(255,255,255,.92);
+        width: 100%;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .select {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,.10);
+        background: rgba(255,255,255,.04);
+        color: rgba(255,255,255,.86);
+        font-size: 12px;
+        font-weight: 980;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      /* ===== Course grid ===== */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      .card {
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,.10);
+        background: rgba(0,0,0,.30);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 330px;
+        transition: transform .14s ease, background .14s ease, border-color .14s ease;
+      }
+      .card:hover {
+        transform: translateY(-1px);
+        background: rgba(255,255,255,.05);
+        border-color: rgba(242,180,0,.18);
+      }
+      .hero {
+        height: 170px;
+        position: relative;
+        background: rgba(255,255,255,.03);
+      }
+      .hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: contrast(.98) brightness(.92);
+      }
+      .badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(0,0,0,.40);
+        font-size: 11px;
+        font-weight: 1000;
+        letter-spacing: .15px;
+      }
+      .fav {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 34px; height: 34px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(0,0,0,.35);
+        display: grid; place-items: center;
+        cursor: pointer;
+      }
+
+      .body {
+        padding: 12px 12px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex: 1;
+      }
+      .title {
+        font-size: 12px;
+        font-weight: 1000;
+        letter-spacing: .15px;
+        margin: 0;
+      }
+      .meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(255,255,255,.68);
+        font-size: 11px;
+        font-weight: 850;
+      }
+      .meta .who {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+      }
+      .meta .who img {
+        width: 24px; height: 24px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,.10);
+        object-fit: cover;
+      }
+      .meta .who span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 160px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-top: 4px;
+      }
+      .stat {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255,255,255,.62);
+        font-size: 11px;
+        font-weight: 850;
+      }
+
+      .progress {
+        margin-top: auto;
+        padding-top: 10px;
+      }
+      .bar {
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.08);
+        border: 1px solid rgba(255,255,255,.08);
+        overflow: hidden;
+      }
+      .bar > div {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, rgba(242,180,0,.95), rgba(215,155,0,.95));
+      }
+      .ptext {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 8px;
+        color: rgba(255,255,255,.62);
+        font-size: 11px;
+        font-weight: 900;
+      }
+      .ptext b { color: rgba(242,180,0,.95); font-weight: 1000; }
+
+      /* ===== Responsive ===== */
+      @media (max-width: 1220px) {
+        .cat-row { grid-template-columns: repeat(3, 1fr); }
+        .grid { grid-template-columns: repeat(3, 1fr); }
+      }
+      @media (max-width: 920px) {
+        .nav { display: none; }
+        .top-right { min-width: unset; }
+        .grid { grid-template-columns: repeat(2, 1fr); }
+        .search { min-width: min(360px, 100%); }
+      }
+      @media (max-width: 640px) {
+        .app { grid-template-columns: 72px 1fr; }
+        .main { padding: 12px 12px 24px; }
+        .cat-row { grid-template-columns: 1fr; }
+        .grid { grid-template-columns: 1fr; }
+        .search { min-width: 100%; }
       }
     </style>
   </head>
 
   <body>
-    <div class="bg-wrap">
-      <video id="bgVideo" autoplay muted loop playsinline preload="auto">
-        <source src="montage.mp4" type="video/mp4" />
-      </video>
-      <div class="vignette"></div>
-    </div>
+    <div class="app">
+      <!-- LEFT SIDEBAR -->
+      <aside class="sidebar">
+        <div class="side-logo glow-surface" title="PrimeX">
+          <!-- PrimeX glyph -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M7 17V7h6.2c2.1 0 3.3 1.2 3.3 2.9 0 1.7-1.2 2.9-3.3 2.9H9.3V17H7Zm2.3-6.2h3.6c1 0 1.6-.5 1.6-1.3s-.6-1.3-1.6-1.3H9.3v2.6Z"
+              stroke="rgba(255,255,255,.92)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+            />
+            <path
+              d="M14.2 17l2.2-3.1L18.6 17M18.6 7l-2.2 3.1L14.2 7"
+              stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+            />
+          </svg>
+        </div>
 
-    <!-- Top navigation -->
-    <header class="topbar">
-      <div class="topbar-inner">
-        <div class="brand">
-          <div class="brand-mark glow-surface" aria-hidden="true">
-            <!-- simple PX glyph -->
+        <div class="side-stack">
+          <div class="side-btn glow-surface" title="Dashboard">
             <svg viewBox="0 0 24 24" fill="none">
-              <path
-                d="M7 17V7h6.2c2.1 0 3.3 1.2 3.3 2.9 0 1.7-1.2 2.9-3.3 2.9H9.3V17H7Zm2.3-6.2h3.6c1 0 1.6-.5 1.6-1.3s-.6-1.3-1.6-1.3H9.3v2.6Z"
-                stroke="rgba(255,255,255,.92)"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M14.2 17l2.2-3.1L18.6 17M18.6 7l-2.2 3.1L14.2 7"
-                stroke="rgba(242,180,0,.95)"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+              <path d="M4 13h7V4H4v9Zm9 7h7V11h-7v9ZM4 20h7v-5H4v5Zm9-11h7V4h-7v5Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6" />
             </svg>
           </div>
-          <div class="brand-text">
-            <strong>PrimeX</strong>
-            <span>Beyond limits</span>
+          <div class="side-btn glow-surface" title="Trade">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M6 16l4-4 3 3 5-6" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M18 9h2v2" stroke="rgba(242,180,0,.95)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="side-btn glow-surface" title="Live Sessions">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 7h16v10H4V7Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6" />
+              <path d="M9 12l3-2v4l-3-2Z" fill="rgba(242,180,0,.95)" />
+            </svg>
+          </div>
+          <div class="side-btn active glow-surface" title="Academy">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3l9 5-9 5-9-5 9-5Z" stroke="rgba(255,255,255,.90)" stroke-width="1.6" />
+              <path d="M3 8v8l9 5 9-5V8" stroke="rgba(242,180,0,.95)" stroke-width="1.6" />
+            </svg>
+          </div>
+          <div class="side-btn glow-surface" title="Tools">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 8a4 4 0 100 8 4 4 0 000-8Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6" />
+              <path d="M19.4 15a7.9 7.9 0 000-6" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M4.6 9a7.9 7.9 0 000 6" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
           </div>
         </div>
 
-        <nav class="navlinks" aria-label="Primary">
-          <a href="#" id="navLive" class="active">Live Sessions</a>
-          <a href="#" id="navDashboard">Dashboard</a>
-          <a href="#" id="navAcademy">Academy</a>
-          <a href="#" id="navTools">Tools</a>
-          <a href="#" id="navSupport">Support</a>
-        </nav>
+        <div class="side-spacer"></div>
 
-        <div class="right-actions">
-          <div class="pill gold glow-surface" id="topLiveBtn" role="button" tabindex="0">Live Sessions</div>
-          <div class="pill glow-surface" id="topSubBtn" role="button" tabindex="0">Subscription</div>
-          <div class="avatar glow-surface" title="Account">
-            <div class="dot"></div>
-          </div>
+        <div class="side-badge glow-surface" title="Notifications">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M18 8a6 6 0 10-12 0c0 7-3 7-3 7h18s-3 0-3-7Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6" />
+            <path d="M10 19a2 2 0 004 0" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
         </div>
-      </div>
-    </header>
+      </aside>
 
-    <main>
-      <section class="panel glow-surface" id="livePanel" aria-label="Live Sessions Panel">
-        <div class="panel-inner glow-surface">
-          <div class="panel-head">
-            <div>
-              <h2>Live Sessions</h2>
-              <p>Upcoming sessions (details visible — joining opens your session link). Filter by market to stay focused.</p>
-            </div>
-
-            <div class="filters" id="filterRow" aria-label="Filters">
-              <div class="chip active" data-filter="All">All</div>
-              <div class="chip" data-filter="Forex">Forex</div>
-              <div class="chip" data-filter="Crypto">Crypto</div>
-              <div class="chip" data-filter="Futures">Futures</div>
-              <div class="chip" data-filter="Indices">Indices</div>
-              <div class="chip" data-filter="Gold">Gold</div>
-            </div>
-          </div>
-
-          <div class="schedule glow-surface" id="scheduleWrap">
-            <div class="sched-top">
-              <div>
-                <strong>Schedule</strong>
-                <span>(demo calendar layout)</span>
-              </div>
-              <div style="display:flex; gap:10px; align-items:center;">
-                <div class="pill glow-surface" id="tzPill" style="cursor: default;">UTC+01:00</div>
+      <!-- MAIN -->
+      <main class="main">
+        <!-- TOP NAV -->
+        <div class="topbar">
+          <div class="topbar-inner glow-surface">
+            <div class="brand">
+              <div class="brand-name">
+                <strong>PrimeX</strong>
+                <span>Academy</span>
               </div>
             </div>
 
-            <div class="week" id="weekGrid"></div>
-          </div>
+            <nav class="nav" aria-label="Primary">
+              <a href="#" class="item-link">Trade</a>
+              <a href="#" class="item-link">Live Sessions</a>
 
-          <div class="bottom-row">
-            <div class="up-cta glow-surface">
-              <div>
-                <strong style="font-size: 12px; font-weight: 1000">Upcoming sessions</strong>
-                <div style="margin-top: 6px; font-size: 11px; color: rgba(255, 255, 255, 0.72); font-weight: 850; line-height: 1.45">
-                  Quick preview of what’s next. Use the filter pills to narrow by market.
+              <div class="item">
+                <button class="ddBtn" data-dd="ddAcademy">
+                  Academy <span class="caret">▾</span>
+                </button>
+                <div class="dd glow-surface" id="ddAcademy">
+                  <a href="#">All Category</a>
+                  <a href="#">My Courses</a>
+                  <a href="#">Certificates</a>
                 </div>
               </div>
-              <button class="btn btn-gold" id="openNextBtn" type="button">Open next session</button>
-            </div>
 
-            <div class="up-list" id="upcomingList"></div>
+              <div class="item">
+                <button class="ddBtn" data-dd="ddCrypto">
+                  Crypto Trading <span class="caret">▾</span>
+                </button>
+                <div class="dd glow-surface" id="ddCrypto">
+                  <a href="#">Basics</a>
+                  <a href="#">Strategies</a>
+                  <a href="#">Risk</a>
+                </div>
+              </div>
+
+              <div class="item">
+                <button class="ddBtn" data-dd="ddTools">
+                  Smart Tools <span class="caret">▾</span>
+                </button>
+                <div class="dd glow-surface" id="ddTools">
+                  <a href="#">Scanner</a>
+                  <a href="#">Signals</a>
+                  <a href="#">Journal</a>
+                </div>
+              </div>
+            </nav>
+
+            <div class="top-right">
+              <div class="pill glow-surface" id="tzPill">UTC+01:00</div>
+              <div class="pill gold glow-surface" id="mtPill">MT5: 20572465</div>
+              <div class="pill glow-surface" id="langPill">En</div>
+              <div class="avatar glow-surface" title="Account">
+                <img src="https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60" alt="avatar" />
+              </div>
+            </div>
           </div>
         </div>
-      </section>
-    </main>
+
+        <!-- CONTENT -->
+        <section class="panel glow-surface">
+          <div class="panel-inner glow-surface">
+            <div class="section-title">
+              <div>
+                <h2>All Category</h2>
+                <div class="hint">Browse categories and courses like the screenshot layout</div>
+              </div>
+            </div>
+
+            <!-- CATEGORY ROW -->
+            <div class="cat-row" id="catRow">
+              <!-- filled by JS -->
+            </div>
+
+            <!-- TABS + SEARCH -->
+            <div class="tools-row glow-surface">
+              <div class="tabs" id="levelTabs">
+                <button class="tab active" data-level="All">All</button>
+                <button class="tab" data-level="Beginner">Beginner</button>
+                <button class="tab" data-level="Advanced">Advanced</button>
+                <button class="tab" data-level="Expert">Expert</button>
+              </div>
+
+              <div class="search-wrap">
+                <div class="search glow-surface">
+                  <span style="opacity:.8">🔎</span>
+                  <input id="searchInput" type="text" placeholder="Search courses..." />
+                </div>
+
+                <div class="select glow-surface" id="langSelect" role="button" tabindex="0">
+                  All Language <span style="opacity:.85">▾</span>
+                </div>
+
+                <div class="select glow-surface" id="filterIcon" title="Filters">
+                  ☰
+                </div>
+              </div>
+            </div>
+
+            <!-- COURSES GRID -->
+            <div class="grid" id="courseGrid"></div>
+          </div>
+        </section>
+      </main>
+    </div>
 
     <script>
-      // ===== Glow helpers (keep) =====
+      // ===== Glow helpers =====
       function bindGlow(el) {
         if (!el) return;
         el.addEventListener("mousemove", (e) => {
@@ -686,166 +826,293 @@
         document.querySelectorAll(".glow-surface").forEach(bindGlow);
       }
 
-      // ===== Demo sessions (PrimeX) =====
-      // day: 0..6 (Sun..Sat)
-      const sessions = [
-        { id: "s1", day: 1, time: "3:15 PM", title: "Execution & Structure", host: "PrimeX", category: "Forex" },
-        { id: "s2", day: 2, time: "3:00 AM", title: "Risk Management", host: "PrimeX", category: "Indices" },
-        { id: "s3", day: 3, time: "3:00 AM", title: "Mindset Under Pressure", host: "PrimeX", category: "Crypto" },
-        { id: "s4", day: 5, time: "8:00 AM", title: "Market Prep Live", host: "PrimeX", category: "Gold" },
-        { id: "s5", day: 6, time: "4:00 PM", title: "Trading Review", host: "PrimeX", category: "Futures" },
+      // ===== Dropdowns =====
+      const ddButtons = document.querySelectorAll(".ddBtn");
+      ddButtons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const id = btn.dataset.dd;
+          document.querySelectorAll(".dd").forEach((d) => {
+            if (d.id !== id) d.classList.remove("open");
+          });
+          document.getElementById(id)?.classList.toggle("open");
+        });
+      });
+      document.addEventListener("click", () => {
+        document.querySelectorAll(".dd").forEach((d) => d.classList.remove("open"));
+      });
+
+      // ===== Data (PrimeX) =====
+      const categories = [
+        { key: "All", name: "All", count: 105, img: "https://images.unsplash.com/photo-1642790106117-5cad6367c7d1?w=400&auto=format&fit=crop&q=60" },
+        { key: "PrimeX", name: "PrimeX", count: 6, img: "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=400&auto=format&fit=crop&q=60" },
+        { key: "Educator", name: "Educator Series", count: 15, img: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=400&auto=format&fit=crop&q=60" },
+        { key: "Master", name: "Master Trading", count: 66, img: "https://images.unsplash.com/photo-1627133805103-ce2dcf3b1c65?w=400&auto=format&fit=crop&q=60" },
+        { key: "Crypto", name: "Crypto", count: 18, img: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=400&auto=format&fit=crop&q=60" },
       ];
 
-      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const courses = [
+        {
+          id: "c1",
+          level: "Beginner",
+          category: "PrimeX",
+          title: "Learn with Arabella",
+          author: "Arabella Angeles",
+          lang: "Español",
+          createdAt: "07/09/2025",
+          users: 1925,
+          lessons: 5,
+          quizzes: 0,
+          progress: 0,
+          cover: "https://images.unsplash.com/photo-1520975958225-476b94b341b4?w=900&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&auto=format&fit=crop&q=60",
+        },
+        {
+          id: "c2",
+          level: "Beginner",
+          category: "Educator",
+          title: "Learn with Aabid",
+          author: "Aabid Mitha",
+          lang: "Español",
+          createdAt: "07/09/2025",
+          users: 298,
+          lessons: 5,
+          quizzes: 0,
+          progress: 0,
+          cover: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=900&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=60",
+        },
+        {
+          id: "c3",
+          level: "Beginner",
+          category: "PrimeX",
+          title: "World of Trading Beginner",
+          author: "PrimeX Academy",
+          lang: "English",
+          createdAt: "23/07/2025",
+          users: 3507,
+          lessons: 4,
+          quizzes: 0,
+          progress: 0,
+          cover: "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=900&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+        },
+        {
+          id: "c4",
+          level: "Advanced",
+          category: "PrimeX",
+          title: "World of Trading Advanced",
+          author: "PrimeX Academy",
+          lang: "English",
+          createdAt: "23/07/2025",
+          users: 1409,
+          lessons: 5,
+          quizzes: 0,
+          progress: 0,
+          cover: "https://images.unsplash.com/photo-1627133805103-ce2dcf3b1c65?w=900&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+        },
+        {
+          id: "c5",
+          level: "Expert",
+          category: "Master",
+          title: "Liquidity & Market Structure (Pro)",
+          author: "PrimeX Academy",
+          lang: "English",
+          createdAt: "01/08/2025",
+          users: 892,
+          lessons: 8,
+          quizzes: 2,
+          progress: 0,
+          cover: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=900&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+        },
+        {
+          id: "c6",
+          level: "Beginner",
+          category: "Crypto",
+          title: "Crypto Fundamentals",
+          author: "PrimeX Academy",
+          lang: "English",
+          createdAt: "02/08/2025",
+          users: 2101,
+          lessons: 6,
+          quizzes: 1,
+          progress: 0,
+          cover: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=900&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+        },
+        {
+          id: "c7",
+          level: "Advanced",
+          category: "Master",
+          title: "Risk & Position Sizing",
+          author: "PrimeX Academy",
+          lang: "English",
+          createdAt: "04/08/2025",
+          users: 760,
+          lessons: 7,
+          quizzes: 1,
+          progress: 0,
+          cover: "https://images.unsplash.com/photo-1559523161-0fc0d8f7f6e7?w=900&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+        },
+        {
+          id: "c8",
+          level: "Beginner",
+          category: "Educator",
+          title: "Chart Reading Basics",
+          author: "PrimeX Academy",
+          lang: "English",
+          createdAt: "05/08/2025",
+          users: 1203,
+          lessons: 5,
+          quizzes: 0,
+          progress: 0,
+          cover: "https://images.unsplash.com/photo-1642790106117-5cad6367c7d1?w=900&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+        },
+      ];
 
-      let activeFilter = "All";
+      // ===== State =====
+      let activeCategory = "All";
+      let activeLevel = "All";
+      let searchTerm = "";
+      let activeLang = "All";
 
-      function filteredSessions() {
-        if (activeFilter === "All") return sessions.slice();
-        return sessions.filter((s) => s.category === activeFilter);
+      // ===== Render: categories row =====
+      function renderCategories() {
+        const wrap = document.getElementById("catRow");
+        wrap.innerHTML = "";
+        categories.forEach((c) => {
+          const el = document.createElement("div");
+          el.className = "cat glow-surface" + (activeCategory === c.key ? " active" : "");
+          el.innerHTML = `
+            <div class="cat-thumb"><img src="${c.img}" alt="${c.name}" /></div>
+            <div class="cat-meta">
+              <strong>${c.name}</strong>
+              <span>Total ${c.count} Courses</span>
+            </div>
+          `;
+          el.addEventListener("click", () => {
+            activeCategory = c.key;
+            renderCategories();
+            renderCourses();
+          });
+          wrap.appendChild(el);
+          bindGlow(el);
+        });
       }
 
-      function buildWeek() {
-        const grid = document.getElementById("weekGrid");
+      function matchCourse(course) {
+        const catOk = activeCategory === "All" ? true : course.category === activeCategory;
+        const levelOk = activeLevel === "All" ? true : course.level === activeLevel;
+        const langOk = activeLang === "All" ? true : course.lang === activeLang;
+        const q = searchTerm.trim().toLowerCase();
+        const searchOk =
+          !q ||
+          course.title.toLowerCase().includes(q) ||
+          course.author.toLowerCase().includes(q) ||
+          course.category.toLowerCase().includes(q);
+
+        return catOk && levelOk && langOk && searchOk;
+      }
+
+      // ===== Render: courses =====
+      function renderCourses() {
+        const grid = document.getElementById("courseGrid");
         grid.innerHTML = "";
 
-        const list = filteredSessions();
-        for (let d = 0; d < 7; d++) {
-          const col = document.createElement("div");
-          col.className = "day glow-surface";
+        const list = courses.filter(matchCourse);
+        list.forEach((c) => {
+          const card = document.createElement("div");
+          card.className = "card glow-surface";
+          card.innerHTML = `
+            <div class="hero">
+              <img src="${c.cover}" alt="${c.title}" />
+              <div class="badge">${c.level}</div>
+              <div class="fav" title="Save">♡</div>
+            </div>
 
-          const h = document.createElement("h4");
-          h.textContent = days[d];
-          col.appendChild(h);
+            <div class="body">
+              <h3 class="title">${c.title}</h3>
 
-          const todays = list.filter((s) => s.day === d);
-          if (todays.length === 0) {
-            const empty = document.createElement("div");
-            empty.style.opacity = "0.55";
-            empty.style.fontSize = "11px";
-            empty.style.fontWeight = "850";
-            empty.style.padding = "6px 2px";
-            empty.textContent = "—";
-            col.appendChild(empty);
-          } else {
-            todays.forEach((s) => {
-              const card = document.createElement("div");
-              card.className = "session glow-surface";
+              <div class="meta">
+                <div class="who">
+                  <img src="${c.avatar}" alt="${c.author}" />
+                  <span>${c.author}</span>
+                </div>
+                <span>•</span>
+                <span>${c.lang}</span>
+              </div>
 
-              const meta = document.createElement("div");
-              meta.className = "meta";
+              <div class="stats">
+                <div class="stat">🗓️ <span>Created At&nbsp; ${c.createdAt}</span></div>
+                <div class="stat">👥 <span>Total user&nbsp; ${c.users}</span></div>
+                <div class="stat">📚 <span>Total lessons&nbsp; ${c.lessons}</span></div>
+                <div class="stat">❓ <span>Total quizzes&nbsp; ${c.quizzes}</span></div>
+              </div>
 
-              const title = document.createElement("div");
-              title.className = "title";
-              title.textContent = s.title;
+              <div class="progress">
+                <div class="bar"><div style="width:${c.progress}%;"></div></div>
+                <div class="ptext"><span><b>${c.progress}%</b> Completed</span><span>${c.progress === 0 ? "0" : Math.round(c.lessons * (c.progress/100))}/${c.lessons} Lessons Completed</span></div>
+              </div>
+            </div>
+          `;
 
-              const sub = document.createElement("div");
-              sub.className = "sub";
-              sub.textContent = `${s.time} • ${s.category}`;
+          card.addEventListener("click", () => {
+            alert(`Open course: ${c.title}\nCategory: ${c.category}\nLevel: ${c.level}`);
+          });
 
-              meta.appendChild(title);
-              meta.appendChild(sub);
+          grid.appendChild(card);
+          bindGlow(card);
+        });
 
-              const btn = document.createElement("button");
-              btn.className = "openbtn";
-              btn.type = "button";
-              btn.textContent = "Open";
-              btn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                // Replace this with your real Zoom/join URL logic:
-                alert(`Join: ${s.title}\n${s.time} • ${s.category}\nHost: ${s.host}`);
-              });
-
-              card.addEventListener("click", () => {
-                // clicking card also opens details
-                alert(`Details: ${s.title}\n${s.time} • ${s.category}\nHost: ${s.host}`);
-              });
-
-              card.appendChild(meta);
-              card.appendChild(btn);
-              col.appendChild(card);
-
-              bindGlow(card);
-            });
-          }
-
-          grid.appendChild(col);
-          bindGlow(col);
+        if (list.length === 0) {
+          const empty = document.createElement("div");
+          empty.style.opacity = "0.7";
+          empty.style.fontWeight = "900";
+          empty.style.padding = "16px";
+          empty.textContent = "No courses match your filters.";
+          grid.appendChild(empty);
         }
       }
 
-      function buildUpcoming() {
-        const upcomingList = document.getElementById("upcomingList");
-        upcomingList.innerHTML = "";
-
-        const list = filteredSessions().slice(0, 3);
-        list.forEach((s) => {
-          const item = document.createElement("div");
-          item.className = "up-item glow-surface";
-
-          const left = document.createElement("div");
-          left.style.minWidth = "0";
-
-          const t = document.createElement("strong");
-          t.textContent = s.title;
-
-          const m = document.createElement("span");
-          m.textContent = `${days[s.day]} • ${s.time} • ${s.category} • Host: ${s.host}`;
-
-          left.appendChild(t);
-          left.appendChild(m);
-
-          const chip = document.createElement("div");
-          chip.className = "up-chip";
-          chip.textContent = s.category;
-
-          item.appendChild(left);
-          item.appendChild(chip);
-
-          upcomingList.appendChild(item);
-          bindGlow(item);
-
-          item.addEventListener("click", () => {
-            alert(`Details: ${s.title}\n${days[s.day]} • ${s.time} • ${s.category}\nHost: ${s.host}`);
-          });
+      // ===== Tabs =====
+      document.querySelectorAll("#levelTabs .tab").forEach((t) => {
+        t.addEventListener("click", () => {
+          activeLevel = t.dataset.level;
+          document.querySelectorAll("#levelTabs .tab").forEach((x) => x.classList.toggle("active", x === t));
+          renderCourses();
         });
-      }
+      });
 
-      function setFilter(next) {
-        activeFilter = next;
+      // ===== Search =====
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        searchTerm = e.target.value;
+        renderCourses();
+      });
 
-        document.querySelectorAll(".chip").forEach((c) => {
-          c.classList.toggle("active", c.dataset.filter === next);
-        });
-
-        buildWeek();
-        buildUpcoming();
-      }
-
-      // ===== Wiring for nav / top buttons (replace with real routes) =====
-      document.getElementById("topLiveBtn")?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-      document.getElementById("topSubBtn")?.addEventListener("click", () => alert("Route to: Subscription"));
-      document.getElementById("navDashboard")?.addEventListener("click", (e) => { e.preventDefault(); alert("Route to: Dashboard"); });
-      document.getElementById("navAcademy")?.addEventListener("click", (e) => { e.preventDefault(); alert("Route to: Academy"); });
-      document.getElementById("navTools")?.addEventListener("click", (e) => { e.preventDefault(); alert("Route to: Tools"); });
-      document.getElementById("navSupport")?.addEventListener("click", (e) => { e.preventDefault(); alert("Route to: Support"); });
-
-      document.getElementById("openNextBtn")?.addEventListener("click", () => {
-        const next = filteredSessions()[0];
-        if (!next) return alert("No sessions in this filter.");
-        alert(`Join next: ${next.title}\n${days[next.day]} • ${next.time} • ${next.category}\nHost: ${next.host}`);
+      // ===== Language dropdown (simple cycle demo) =====
+      const langs = ["All", "English", "Español"];
+      document.getElementById("langSelect").addEventListener("click", () => {
+        const i = langs.indexOf(activeLang);
+        activeLang = langs[(i + 1) % langs.length];
+        document.getElementById("langSelect").innerHTML = `${activeLang === "All" ? "All Language" : activeLang} <span style="opacity:.85">▾</span>`;
+        renderCourses();
       });
 
       // ===== Init =====
       function init() {
-        // filter pills
-        document.querySelectorAll(".chip").forEach((c) => {
-          c.addEventListener("click", () => setFilter(c.dataset.filter));
-        });
-
-        buildWeek();
-        buildUpcoming();
+        renderCategories();
+        renderCourses();
         bindAllGlow();
+
+        // demo clicks
+        document.getElementById("mtPill").addEventListener("click", () => alert("Connect MT5 / Account settings"));
+        document.getElementById("langPill").addEventListener("click", () => alert("Language settings"));
+        document.getElementById("filterIcon").addEventListener("click", () => alert("Open advanced filters panel"));
       }
       init();
     </script>
