@@ -1,813 +1,965 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>PrimeX — Academy</title>
-    <meta name="theme-color" content="#070707" />
-    <link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>PrimeX — Academy</title>
+  <meta name="theme-color" content="#070707" />
+  <link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png" />
+  <style>
+    :root{
+      --bg:#070707;
+      --ink:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.66);
+      --muted2:rgba(255,255,255,.52);
 
-    <style>
-      :root {
-        --bg: #070707;
-        --panel: rgba(18, 18, 18, 0.72);
-        --panel2: rgba(0, 0, 0, 0.35);
-        --stroke: rgba(255, 255, 255, 0.10);
-        --stroke2: rgba(255, 255, 255, 0.14);
+      --panel:rgba(12,12,12,.62);
+      --panel2:rgba(0,0,0,.34);
+      --stroke:rgba(255,255,255,.10);
+      --stroke2:rgba(255,255,255,.14);
 
-        --text: rgba(255, 255, 255, 0.92);
-        --muted: rgba(255, 255, 255, 0.70);
-        --muted2: rgba(255, 255, 255, 0.55);
+      --gold:#f2b400;
+      --gold2:#d79b00;
 
-        --gold: #f2b400;
-        --gold2: #d79b00;
+      --shadowA:0 22px 80px rgba(0,0,0,.62);
+      --shadowB:0 16px 55px rgba(0,0,0,.50);
+      --shadowC:0 10px 28px rgba(0,0,0,.45);
 
-        --shadow: 0 22px 70px rgba(0, 0, 0, 0.60);
-        --radius: 20px;
-        --radius2: 16px;
+      --r24:24px;
+      --r20:20px;
+      --r18:18px;
+      --r16:16px;
+      --r14:14px;
 
-        --glowGoldA: rgba(242, 180, 0, 0.28);
-        --glowGoldB: rgba(242, 180, 0, 0.12);
-        --glowBlueA: rgba(88, 199, 255, 0.14);
-      }
+      --glowGoldA: rgba(242, 180, 0, 0.26);
+      --glowGoldB: rgba(242, 180, 0, 0.12);
+      --glowBlueA: rgba(88, 199, 255, 0.13);
 
-      * { box-sizing: border-box; }
-      html, body { height: 100%; }
-      body {
-        margin: 0;
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-        background: radial-gradient(1200px 700px at 20% 10%, rgba(242,180,0,.08), transparent 55%),
-                    radial-gradient(900px 650px at 80% 15%, rgba(255,255,255,.05), transparent 60%),
-                    radial-gradient(900px 650px at 50% 85%, rgba(0,0,0,.75), transparent 60%),
-                    var(--bg);
-        color: var(--text);
-        overflow-x: hidden;
-      }
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
 
-      /* ===== Glow hover ===== */
-      .glow-surface {
-        position: relative;
-        overflow: hidden;
-        isolation: isolate;
-      }
-      .glow-surface::before {
-        content: "";
-        position: absolute;
-        inset: -2px;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.22s ease;
-        z-index: 0;
-        background:
-          radial-gradient(420px 260px at var(--mx, 50%) var(--my, 50%), var(--glowGoldA), transparent 60%),
-          radial-gradient(520px 320px at calc(var(--mx, 50%) + 8%) calc(var(--my, 50%) + 6%), var(--glowGoldB), transparent 62%),
-          radial-gradient(520px 320px at calc(var(--mx, 50%) - 10%) calc(var(--my, 50%) - 8%), var(--glowBlueA), transparent 64%);
-        mix-blend-mode: screen;
-      }
-      .glow-surface:hover::before { opacity: 1; }
-      .glow-surface::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 0;
-        opacity: 0;
-        transition: opacity 0.22s ease;
-        background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 45%, rgba(242,180,0,0.06));
-      }
-      .glow-surface:hover::after { opacity: 0.9; }
-      .glow-surface > * { position: relative; z-index: 1; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--ink);
+      background:
+        radial-gradient(900px 520px at 18% 8%, rgba(242,180,0,.10), transparent 58%),
+        radial-gradient(900px 520px at 82% 10%, rgba(255,255,255,.06), transparent 62%),
+        radial-gradient(900px 560px at 50% 92%, rgba(0,0,0,.82), transparent 62%),
+        linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.18) 25%, rgba(0,0,0,.35) 60%, rgba(0,0,0,.55)),
+        var(--bg);
+      overflow-x:hidden;
+    }
 
-      /* ===== App frame ===== */
-      .app {
-        display: grid;
-        grid-template-columns: 84px 1fr;
-        min-height: 100vh;
-      }
+    .glow-surface{
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .glow-surface::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .20s ease;
+      z-index:0;
+      background:
+        radial-gradient(430px 270px at var(--mx, 50%) var(--my, 50%), var(--glowGoldA), transparent 62%),
+        radial-gradient(560px 320px at calc(var(--mx, 50%) + 9%) calc(var(--my, 50%) + 7%), var(--glowGoldB), transparent 66%),
+        radial-gradient(520px 320px at calc(var(--mx, 50%) - 10%) calc(var(--my, 50%) - 8%), var(--glowBlueA), transparent 68%);
+      mix-blend-mode:screen;
+    }
+    .glow-surface::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      opacity:0;
+      transition:opacity .20s ease;
+      background:linear-gradient(135deg, rgba(255,255,255,.08), transparent 48%, rgba(242,180,0,.06));
+    }
+    .glow-surface:hover::before{opacity:1}
+    .glow-surface:hover::after{opacity:.92}
+    .glow-surface>*{position:relative;z-index:1}
 
-      /* ===== Sidebar ===== */
-      .sidebar {
-        position: sticky;
-        top: 0;
-        height: 100vh;
-        background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.35));
-        border-right: 1px solid rgba(255,255,255,.08);
-        padding: 14px 12px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 14px;
-      }
-      .side-logo {
-        width: 46px;
-        height: 46px;
-        border-radius: 16px;
-        display: grid;
-        place-items: center;
-        border: 1px solid rgba(242,180,0,.22);
-        background: radial-gradient(18px 18px at 30% 25%, rgba(242,180,0,.35), transparent 60%), rgba(0,0,0,.35);
-        box-shadow: 0 10px 28px rgba(0,0,0,.45);
-      }
-      .side-logo svg { width: 22px; height: 22px; }
+    .app{
+      display:grid;
+      grid-template-columns: 86px 1fr;
+      min-height:100vh;
+    }
 
-      .side-stack {
-        margin-top: 8px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-        align-items: center;
-      }
-      .side-btn {
-        width: 44px;
-        height: 44px;
-        border-radius: 16px;
-        border: 1px solid rgba(255,255,255,.10);
-        background: rgba(255,255,255,.04);
-        display: grid;
-        place-items: center;
-        cursor: pointer;
-        transition: transform .14s ease, background .14s ease, border-color .14s ease;
-      }
-      .side-btn:hover {
-        transform: translateY(-1px);
-        background: rgba(255,255,255,.07);
-        border-color: rgba(242,180,0,.20);
-      }
-      .side-btn.active {
-        background: rgba(242,180,0,.12);
-        border-color: rgba(242,180,0,.26);
-      }
-      .side-btn svg { width: 20px; height: 20px; opacity: .92; }
-      .side-spacer { flex: 1; }
-      .side-badge {
-        width: 44px; height: 44px; border-radius: 16px;
-        border: 1px solid rgba(255,255,255,.10);
-        background: rgba(255,255,255,.04);
-        display: grid; place-items: center;
-        position: relative;
-      }
-      .side-badge::after{
-        content:"";
-        position:absolute;
-        right: 8px; top: 8px;
-        width: 9px; height: 9px;
-        border-radius: 999px;
-        background: rgba(242,180,0,.95);
-        box-shadow: 0 0 0 4px rgba(242,180,0,.14);
-      }
+    .sidebar{
+      position:sticky;
+      top:0;
+      height:100vh;
+      padding:14px 12px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+      background:linear-gradient(180deg, rgba(0,0,0,.80), rgba(0,0,0,.38));
+      border-right:1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(10px);
+    }
+    .side-logo{
+      width:48px;height:48px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(242,180,0,.22);
+      background:
+        radial-gradient(20px 18px at 30% 25%, rgba(242,180,0,.38), transparent 60%),
+        rgba(0,0,0,.34);
+      box-shadow: var(--shadowC);
+      cursor:default;
+      user-select:none;
+    }
+    .side-logo svg{width:22px;height:22px}
+    .side-stack{
+      width:100%;
+      margin-top:8px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:center;
+    }
+    .side-btn{
+      width:46px;height:46px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:transform .14s ease, background .14s ease, border-color .14s ease;
+    }
+    .side-btn:hover{
+      transform: translateY(-1px);
+      background:rgba(255,255,255,.07);
+      border-color: rgba(242,180,0,.20);
+    }
+    .side-btn.active{
+      background: rgba(242,180,0,.12);
+      border-color: rgba(242,180,0,.26);
+    }
+    .side-btn svg{width:20px;height:20px;opacity:.92}
+    .side-spacer{flex:1}
+    .side-badge{
+      width:46px;height:46px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      display:grid;
+      place-items:center;
+      position:relative;
+    }
+    .side-badge::after{
+      content:"";
+      position:absolute;
+      right:9px; top:9px;
+      width:9px;height:9px;
+      border-radius:999px;
+      background: rgba(242,180,0,.95);
+      box-shadow: 0 0 0 4px rgba(242,180,0,.14);
+    }
 
-      /* ===== Main ===== */
-      .main {
-        padding: 14px 18px 30px;
-      }
+    .main{
+      padding:14px 18px 34px;
+    }
 
-      /* ===== Top bar ===== */
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        padding: 10px 0 14px;
-        backdrop-filter: blur(10px);
-      }
-      .topbar-inner {
-        background: rgba(0,0,0,.35);
-        border: 1px solid rgba(255,255,255,.10);
-        border-radius: 18px;
-        box-shadow: 0 18px 60px rgba(0,0,0,.45);
-        padding: 12px 14px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-      }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        min-width: 170px;
-      }
-      .brand-name {
-        display: flex;
-        flex-direction: column;
-        line-height: 1.05;
-      }
-      .brand-name strong { font-size: 13px; font-weight: 1000; letter-spacing: .2px; }
-      .brand-name span { font-size: 11px; font-weight: 850; color: rgba(255,255,255,.60); }
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      padding:10px 0 14px;
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner{
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.34);
+      box-shadow: var(--shadowB);
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
 
-      .nav {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .nav .item {
-        position: relative;
-      }
-      .nav a, .nav button {
-        appearance: none;
-        border: 1px solid transparent;
-        background: transparent;
-        color: rgba(255,255,255,.72);
-        text-decoration: none;
-        font-weight: 950;
-        font-size: 12px;
-        padding: 9px 12px;
-        border-radius: 999px;
-        cursor: pointer;
-        transition: background .18s ease, border-color .18s ease, color .18s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .nav a:hover, .nav button:hover {
-        color: rgba(255,255,255,.92);
-        background: rgba(255,255,255,.06);
-        border-color: rgba(255,255,255,.12);
-      }
-      .nav a.active {
-        color: rgba(255,255,255,.94);
-        background: rgba(242,180,0,.10);
-        border-color: rgba(242,180,0,.22);
-      }
-      .caret { opacity: .85; transform: translateY(1px); }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:170px;
+    }
+    .brand-badge{
+      width:34px;height:34px;
+      border-radius:14px;
+      border:1px solid rgba(242,180,0,.22);
+      background:
+        radial-gradient(16px 16px at 30% 25%, rgba(242,180,0,.34), transparent 62%),
+        rgba(255,255,255,.04);
+      display:grid;
+      place-items:center;
+      box-shadow: 0 12px 26px rgba(0,0,0,.45);
+    }
+    .brand-badge svg{width:18px;height:18px}
+    .brand-name{
+      display:flex;
+      flex-direction:column;
+      line-height:1.05;
+    }
+    .brand-name strong{
+      font-size:13px;
+      font-weight:1000;
+      letter-spacing:.22px;
+    }
+    .brand-name span{
+      font-size:11px;
+      font-weight:900;
+      color:rgba(255,255,255,.60);
+      letter-spacing:.12px;
+    }
 
-      /* dropdown */
-      .dd {
-        position: absolute;
-        top: 44px;
-        left: 0;
-        min-width: 210px;
-        background: rgba(10,10,10,.92);
-        border: 1px solid rgba(255,255,255,.10);
-        border-radius: 16px;
-        box-shadow: 0 20px 70px rgba(0,0,0,.65);
-        padding: 8px;
-        display: none;
-      }
-      .dd.open { display: block; }
-      .dd a {
-        display: flex;
-        padding: 10px 10px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 900;
-        color: rgba(255,255,255,.84);
-      }
-      .dd a:hover {
-        background: rgba(255,255,255,.06);
-        border-color: transparent;
-      }
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .nav .item{position:relative}
+    .nav a,.nav button{
+      appearance:none;
+      border:1px solid transparent;
+      background:transparent;
+      color:rgba(255,255,255,.72);
+      text-decoration:none;
+      font-weight:950;
+      font-size:12px;
+      padding:9px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      transition:background .18s ease,border-color .18s ease,color .18s ease,transform .14s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      user-select:none;
+    }
+    .nav a:hover,.nav button:hover{
+      color:rgba(255,255,255,.92);
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.12);
+      transform: translateY(-1px);
+    }
+    .nav a.active{
+      color:rgba(255,255,255,.95);
+      background: rgba(242,180,0,.10);
+      border-color: rgba(242,180,0,.22);
+    }
+    .caret{opacity:.85;transform:translateY(1px)}
 
-      .top-right {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 10px;
-        min-width: 320px;
-      }
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 9px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,.12);
-        background: rgba(0,0,0,.35);
-        font-size: 12px;
-        font-weight: 980;
-        color: rgba(255,255,255,.88);
-        cursor: pointer;
-        user-select: none;
-        transition: transform .14s ease, background .14s ease, border-color .14s ease;
-        white-space: nowrap;
-      }
-      .pill:hover {
-        transform: translateY(-1px);
-        background: rgba(255,255,255,.06);
-        border-color: rgba(242,180,0,.20);
-      }
-      .pill.gold {
-        background: linear-gradient(180deg, rgba(242,180,0,.18), rgba(215,155,0,.08));
-        border-color: rgba(242,180,0,.26);
-      }
-      .avatar {
-        width: 38px;
-        height: 38px;
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,.12);
-        background: rgba(255,255,255,.06);
-        display: grid;
-        place-items: center;
-        overflow: hidden;
-      }
-      .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .dd{
+      position:absolute;
+      top:44px;
+      left:0;
+      min-width:220px;
+      background: rgba(10,10,10,.92);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      box-shadow: var(--shadowA);
+      padding:8px;
+      display:none;
+    }
+    .dd.open{display:block}
+    .dd a{
+      display:flex;
+      padding:10px 10px;
+      border-radius:14px;
+      font-size:12px;
+      font-weight:900;
+      color: rgba(255,255,255,.86);
+    }
+    .dd a:hover{background:rgba(255,255,255,.06)}
 
-      /* ===== Content panel ===== */
-      .panel {
-        margin-top: 14px;
-        border-radius: 24px;
-        border: 1px solid rgba(255,255,255,.10);
-        background: rgba(0,0,0,.28);
-        box-shadow: var(--shadow);
-        padding: 16px;
-      }
-      .panel-inner {
-        border-radius: 18px;
-        border: 1px solid rgba(255,255,255,.08);
-        background: rgba(0,0,0,.20);
-        padding: 16px;
-      }
+    .top-right{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
+      min-width:320px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.35);
+      font-size:12px;
+      font-weight:980;
+      color: rgba(255,255,255,.88);
+      user-select:none;
+      white-space:nowrap;
+      transition: transform .14s ease, background .14s ease, border-color .14s ease;
+      cursor:pointer;
+    }
+    .pill:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.06);
+      border-color: rgba(242,180,0,.20);
+    }
+    .pill.gold{
+      background: linear-gradient(180deg, rgba(242,180,0,.18), rgba(215,155,0,.08));
+      border-color: rgba(242,180,0,.26);
+    }
+    .avatar{
+      width:38px;height:38px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      cursor:pointer;
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover}
 
-      /* ===== Section title ===== */
-      .section-title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 12px;
-      }
-      .section-title h2 {
-        margin: 0;
-        font-size: 14px;
-        font-weight: 1000;
-        letter-spacing: .2px;
-      }
-      .section-title .hint {
-        font-size: 12px;
-        font-weight: 850;
-        color: rgba(255,255,255,.65);
-      }
+    .panel{
+      margin-top:14px;
+      border-radius: var(--r24);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.26);
+      box-shadow: var(--shadowA);
+      padding:16px;
+    }
+    .panel-inner{
+      border-radius: 20px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
+      padding:16px;
+    }
 
-      /* ===== Category cards row ===== */
-      .cat-row {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
-        margin: 12px 0 16px;
-      }
-      .cat {
-        border-radius: 18px;
-        border: 1px solid rgba(255,255,255,.10);
-        background: rgba(0,0,0,.28);
-        padding: 12px;
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        min-height: 86px;
-        cursor: pointer;
-        transition: transform .14s ease, background .14s ease, border-color .14s ease;
-      }
-      .cat:hover {
-        transform: translateY(-1px);
-        background: rgba(255,255,255,.05);
-        border-color: rgba(242,180,0,.18);
-      }
-      .cat.active {
-        border-color: rgba(242,180,0,.28);
-        background: rgba(242,180,0,.08);
-      }
-      .cat-thumb {
-        width: 54px;
-        height: 54px;
-        border-radius: 16px;
-        border: 1px solid rgba(255,255,255,.10);
-        background:
-          radial-gradient(16px 16px at 30% 25%, rgba(242,180,0,.18), transparent 60%),
-          rgba(255,255,255,.03);
-        display: grid;
-        place-items: center;
-        overflow: hidden;
-      }
-      .cat-thumb img { width: 100%; height: 100%; object-fit: cover; }
-      .cat-meta strong {
-        display: block;
-        font-size: 12px;
-        font-weight: 1000;
-        letter-spacing: .18px;
-      }
-      .cat-meta span {
-        display: block;
-        margin-top: 6px;
-        font-size: 11px;
-        font-weight: 850;
-        color: rgba(255,255,255,.62);
-      }
+    .section-title{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size:14px;
+      font-weight:1000;
+      letter-spacing:.2px;
+    }
+    .section-title .hint{
+      margin-top:6px;
+      font-size:12px;
+      font-weight:850;
+      color: rgba(255,255,255,.62);
+    }
 
-      /* ===== Tabs + Search row ===== */
-      .tools-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        flex-wrap: wrap;
-        margin: 8px 0 12px;
-        padding: 10px 12px;
-        border-radius: 18px;
-        border: 1px solid rgba(255,255,255,.10);
-        background: rgba(0,0,0,.22);
-      }
+    .cat-row{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap:12px;
+      margin:12px 0 16px;
+    }
 
-      .tabs {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .tab {
-        padding: 8px 12px;
-        border-radius: 999px;
-        border: 1px solid transparent;
-        background: transparent;
-        color: rgba(255,255,255,.72);
-        font-size: 12px;
-        font-weight: 980;
-        cursor: pointer;
-        transition: background .18s ease, border-color .18s ease, color .18s ease;
-      }
-      .tab:hover {
-        background: rgba(255,255,255,.06);
-        border-color: rgba(255,255,255,.12);
-        color: rgba(255,255,255,.90);
-      }
-      .tab.active {
-        background: rgba(242,180,0,.10);
-        border-color: rgba(242,180,0,.22);
-        color: rgba(255,255,255,.94);
-      }
+    .cat{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.28);
+      min-height:112px;
+      padding:12px;
+      cursor:pointer;
+      transition: transform .14s ease, background .14s ease, border-color .14s ease;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      gap:8px;
+    }
+    .cat:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.05);
+      border-color: rgba(242,180,0,.18);
+    }
+    .cat.active{
+      border-color: rgba(242,180,0,.28);
+      background: rgba(242,180,0,.08);
+    }
+    .cat-img{
+      position:absolute;
+      inset:0;
+      background-size:cover;
+      background-position:center;
+      filter: contrast(.98) brightness(.72) saturate(1.05);
+      transform: scale(1.02);
+    }
+    .cat::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(340px 220px at 20% 25%, rgba(242,180,0,.18), transparent 55%),
+        linear-gradient(180deg, rgba(0,0,0,.38), rgba(0,0,0,.72));
+      z-index:0;
+      pointer-events:none;
+    }
+    .cat .center-icon{
+      width:46px;height:46px;
+      border-radius:18px;
+      border:1px solid rgba(242,180,0,.20);
+      background: rgba(0,0,0,.34);
+      display:grid;
+      place-items:center;
+      box-shadow: 0 14px 34px rgba(0,0,0,.55);
+      margin: 0 auto 6px;
+      backdrop-filter: blur(6px);
+    }
+    .cat .center-icon svg{width:20px;height:20px}
+    .cat .cat-meta{
+      text-align:center;
+      padding-bottom:6px;
+    }
+    .cat .cat-meta strong{
+      display:block;
+      font-size:12px;
+      font-weight:1000;
+      letter-spacing:.18px;
+    }
+    .cat .cat-meta span{
+      display:block;
+      margin-top:6px;
+      font-size:11px;
+      font-weight:850;
+      color: rgba(255,255,255,.62);
+    }
 
-      .search-wrap {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        flex: 1;
-      }
-      .search {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 9px 12px;
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,.10);
-        background: rgba(255,255,255,.04);
-        min-width: min(420px, 100%);
-      }
-      .search input {
-        border: none;
-        outline: none;
-        background: transparent;
-        color: rgba(255,255,255,.92);
-        width: 100%;
-        font-size: 12px;
-        font-weight: 900;
-      }
-      .select {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 9px 12px;
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,.10);
-        background: rgba(255,255,255,.04);
-        color: rgba(255,255,255,.86);
-        font-size: 12px;
-        font-weight: 980;
-        cursor: pointer;
-        user-select: none;
-      }
+    .tools-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin:8px 0 12px;
+      padding:10px 12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+    }
 
-      /* ===== Course grid ===== */
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-      }
+    .tabs{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .tab{
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid transparent;
+      background:transparent;
+      color: rgba(255,255,255,.72);
+      font-size:12px;
+      font-weight:980;
+      cursor:pointer;
+      transition: background .18s ease, border-color .18s ease, color .18s ease, transform .14s ease;
+      user-select:none;
+    }
+    .tab:hover{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.12);
+      color: rgba(255,255,255,.92);
+      transform: translateY(-1px);
+    }
+    .tab.active{
+      background: rgba(242,180,0,.10);
+      border-color: rgba(242,180,0,.22);
+      color: rgba(255,255,255,.95);
+    }
 
-      .card {
-        border-radius: 18px;
-        border: 1px solid rgba(255,255,255,.10);
-        background: rgba(0,0,0,.30);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        min-height: 330px;
-        transition: transform .14s ease, background .14s ease, border-color .14s ease;
-      }
-      .card:hover {
-        transform: translateY(-1px);
-        background: rgba(255,255,255,.05);
-        border-color: rgba(242,180,0,.18);
-      }
-      .hero {
-        height: 170px;
-        position: relative;
-        background: rgba(255,255,255,.03);
-      }
-      .hero img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: contrast(.98) brightness(.92);
-      }
-      .badge {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,.12);
-        background: rgba(0,0,0,.40);
-        font-size: 11px;
-        font-weight: 1000;
-        letter-spacing: .15px;
-      }
-      .fav {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        width: 34px; height: 34px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,.12);
-        background: rgba(0,0,0,.35);
-        display: grid; place-items: center;
-        cursor: pointer;
-      }
+    .search-wrap{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      flex:1;
+    }
+    .search{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:9px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      min-width: min(420px, 100%);
+      transition: border-color .14s ease, background .14s ease;
+    }
+    .search:focus-within{
+      border-color: rgba(242,180,0,.22);
+      background: rgba(255,255,255,.05);
+    }
+    .search svg{width:16px;height:16px;opacity:.78}
+    .search input{
+      border:none;
+      outline:none;
+      background:transparent;
+      color: rgba(255,255,255,.92);
+      width:100%;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.1px;
+    }
+    .select{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:9px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.86);
+      font-size:12px;
+      font-weight:980;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .14s ease, background .14s ease, border-color .14s ease;
+      white-space:nowrap;
+    }
+    .select:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.06);
+      border-color: rgba(242,180,0,.20);
+    }
 
-      .body {
-        padding: 12px 12px 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        flex: 1;
-      }
-      .title {
-        font-size: 12px;
-        font-weight: 1000;
-        letter-spacing: .15px;
-        margin: 0;
-      }
-      .meta {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: rgba(255,255,255,.68);
-        font-size: 11px;
-        font-weight: 850;
-      }
-      .meta .who {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        min-width: 0;
-      }
-      .meta .who img {
-        width: 24px; height: 24px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,.10);
-        object-fit: cover;
-      }
-      .meta .who span {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 160px;
-      }
+    .lang-dd{
+      position:relative;
+    }
+    .lang-menu{
+      position:absolute;
+      right:0;
+      top:44px;
+      min-width:170px;
+      background: rgba(10,10,10,.92);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      box-shadow: var(--shadowA);
+      padding:8px;
+      display:none;
+      z-index:60;
+    }
+    .lang-menu.open{display:block}
+    .lang-menu button{
+      width:100%;
+      text-align:left;
+      appearance:none;
+      border:0;
+      background:transparent;
+      color: rgba(255,255,255,.86);
+      font-size:12px;
+      font-weight:900;
+      padding:10px 10px;
+      border-radius:12px;
+      cursor:pointer;
+    }
+    .lang-menu button:hover{background: rgba(255,255,255,.06)}
+    .lang-menu button.active{
+      background: rgba(242,180,0,.10);
+      color: rgba(255,255,255,.95);
+      border:1px solid rgba(242,180,0,.22);
+    }
 
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-        margin-top: 4px;
-      }
-      .stat {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: rgba(255,255,255,.62);
-        font-size: 11px;
-        font-weight: 850;
-      }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+    }
 
-      .progress {
-        margin-top: auto;
-        padding-top: 10px;
-      }
-      .bar {
-        height: 6px;
-        border-radius: 999px;
-        background: rgba(255,255,255,.08);
-        border: 1px solid rgba(255,255,255,.08);
-        overflow: hidden;
-      }
-      .bar > div {
-        height: 100%;
-        width: 0%;
-        background: linear-gradient(90deg, rgba(242,180,0,.95), rgba(215,155,0,.95));
-      }
-      .ptext {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 8px;
-        color: rgba(255,255,255,.62);
-        font-size: 11px;
-        font-weight: 900;
-      }
-      .ptext b { color: rgba(242,180,0,.95); font-weight: 1000; }
+    .card{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.30);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height: 350px;
+      transition: transform .14s ease, background .14s ease, border-color .14s ease;
+    }
+    .card:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.05);
+      border-color: rgba(242,180,0,.18);
+    }
 
-      /* ===== Responsive ===== */
-      @media (max-width: 1220px) {
-        .cat-row { grid-template-columns: repeat(3, 1fr); }
-        .grid { grid-template-columns: repeat(3, 1fr); }
-      }
-      @media (max-width: 920px) {
-        .nav { display: none; }
-        .top-right { min-width: unset; }
-        .grid { grid-template-columns: repeat(2, 1fr); }
-        .search { min-width: min(360px, 100%); }
-      }
-      @media (max-width: 640px) {
-        .app { grid-template-columns: 72px 1fr; }
-        .main { padding: 12px 12px 24px; }
-        .cat-row { grid-template-columns: 1fr; }
-        .grid { grid-template-columns: 1fr; }
-        .search { min-width: 100%; }
-      }
-    </style>
-  </head>
+    .hero{
+      height: 182px;
+      position:relative;
+      background: rgba(255,255,255,.03);
+    }
+    .hero img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: contrast(.98) brightness(.86) saturate(1.04);
+      transform: scale(1.02);
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(340px 180px at 70% 15%, rgba(242,180,0,.20), transparent 62%),
+        linear-gradient(180deg, rgba(0,0,0,.00), rgba(0,0,0,.46));
+      pointer-events:none;
+    }
+    .badge{
+      position:absolute;
+      top:10px;
+      left:10px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.42);
+      font-size:11px;
+      font-weight:1000;
+      letter-spacing:.15px;
+      backdrop-filter: blur(6px);
+    }
+    .fav{
+      position:absolute;
+      top:10px;
+      right:10px;
+      width:34px;height:34px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.36);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      backdrop-filter: blur(6px);
+      transition: transform .14s ease, border-color .14s ease, background .14s ease;
+    }
+    .fav:hover{
+      transform: translateY(-1px);
+      border-color: rgba(242,180,0,.22);
+      background: rgba(0,0,0,.44);
+    }
+    .fav svg{width:16px;height:16px}
+    .fav.on{
+      border-color: rgba(242,180,0,.28);
+      background: rgba(242,180,0,.10);
+    }
 
-  <body>
-    <div class="app">
-      <!-- LEFT SIDEBAR -->
-      <aside class="sidebar">
-        <div class="side-logo glow-surface" title="PrimeX">
-          <!-- PrimeX glyph -->
-          <svg viewBox="0 0 24 24" fill="none">
-            <path
-              d="M7 17V7h6.2c2.1 0 3.3 1.2 3.3 2.9 0 1.7-1.2 2.9-3.3 2.9H9.3V17H7Zm2.3-6.2h3.6c1 0 1.6-.5 1.6-1.3s-.6-1.3-1.6-1.3H9.3v2.6Z"
-              stroke="rgba(255,255,255,.92)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
-            />
-            <path
-              d="M14.2 17l2.2-3.1L18.6 17M18.6 7l-2.2 3.1L14.2 7"
-              stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
-            />
+    .body{
+      padding:12px 12px 10px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+    }
+    .title{
+      font-size:12px;
+      font-weight:1000;
+      letter-spacing:.15px;
+      margin:0;
+      line-height:1.25;
+    }
+
+    .meta{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color: rgba(255,255,255,.68);
+      font-size:11px;
+      font-weight:850;
+    }
+    .meta .who{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
+    }
+    .meta .who img{
+      width:24px;height:24px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      object-fit:cover;
+      background: rgba(255,255,255,.05);
+    }
+    .meta .who span{
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 160px;
+      color: rgba(255,255,255,.84);
+      font-weight:950;
+    }
+    .dot{
+      opacity:.6;
+      transform: translateY(-1px);
+      user-select:none;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:8px;
+      margin-top:4px;
+    }
+    .stat{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color: rgba(255,255,255,.62);
+      font-size:11px;
+      font-weight:850;
+      min-width:0;
+    }
+    .stat svg{width:14px;height:14px;opacity:.82;flex:0 0 auto}
+    .stat span{
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .progress{
+      margin-top:auto;
+      padding-top:10px;
+    }
+    .bar{
+      height:6px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+      overflow:hidden;
+    }
+    .bar>div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(242,180,0,.98), rgba(215,155,0,.98));
+    }
+    .ptext{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:8px;
+      color: rgba(255,255,255,.62);
+      font-size:11px;
+      font-weight:900;
+    }
+    .ptext b{color: rgba(242,180,0,.96); font-weight:1000}
+    .empty{
+      opacity:.72;
+      font-weight:950;
+      padding:16px;
+      border-radius:16px;
+      border:1px dashed rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 1220px){
+      .cat-row{grid-template-columns: repeat(3, 1fr)}
+      .grid{grid-template-columns: repeat(3, 1fr)}
+    }
+    @media (max-width: 980px){
+      .nav{display:none}
+      .top-right{min-width: unset}
+      .grid{grid-template-columns: repeat(2, 1fr)}
+      .search{min-width:min(360px,100%)}
+    }
+    @media (max-width: 640px){
+      .app{grid-template-columns: 74px 1fr}
+      .main{padding:12px 12px 26px}
+      .cat-row{grid-template-columns: 1fr}
+      .grid{grid-template-columns: 1fr}
+      .search{min-width:100%}
+      .topbar-inner{border-radius:18px}
+      .panel{border-radius:22px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="side-logo glow-surface" title="PrimeX">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 17V7h6.2c2.1 0 3.3 1.2 3.3 2.9 0 1.7-1.2 2.9-3.3 2.9H9.3V17H7Z" stroke="rgba(255,255,255,.92)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14.2 17l2.2-3.1L18.6 17M18.6 7l-2.2 3.1L14.2 7" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="side-stack">
+        <div class="side-btn glow-surface" title="Dashboard" role="button" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 13h7V4H4v9Zm9 7h7V11h-7v9ZM4 20h7v-5H4v5Zm9-11h7V4h-7v5Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6"/>
           </svg>
         </div>
-
-        <div class="side-stack">
-          <div class="side-btn glow-surface" title="Dashboard">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M4 13h7V4H4v9Zm9 7h7V11h-7v9ZM4 20h7v-5H4v5Zm9-11h7V4h-7v5Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6" />
-            </svg>
-          </div>
-          <div class="side-btn glow-surface" title="Trade">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M6 16l4-4 3 3 5-6" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M18 9h2v2" stroke="rgba(242,180,0,.95)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="side-btn glow-surface" title="Live Sessions">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M4 7h16v10H4V7Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6" />
-              <path d="M9 12l3-2v4l-3-2Z" fill="rgba(242,180,0,.95)" />
-            </svg>
-          </div>
-          <div class="side-btn active glow-surface" title="Academy">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M12 3l9 5-9 5-9-5 9-5Z" stroke="rgba(255,255,255,.90)" stroke-width="1.6" />
-              <path d="M3 8v8l9 5 9-5V8" stroke="rgba(242,180,0,.95)" stroke-width="1.6" />
-            </svg>
-          </div>
-          <div class="side-btn glow-surface" title="Tools">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M12 8a4 4 0 100 8 4 4 0 000-8Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6" />
-              <path d="M19.4 15a7.9 7.9 0 000-6" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/>
-              <path d="M4.6 9a7.9 7.9 0 000 6" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/>
-            </svg>
-          </div>
-        </div>
-
-        <div class="side-spacer"></div>
-
-        <div class="side-badge glow-surface" title="Notifications">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M18 8a6 6 0 10-12 0c0 7-3 7-3 7h18s-3 0-3-7Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6" />
-            <path d="M10 19a2 2 0 004 0" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/>
+        <div class="side-btn glow-surface" title="Trade" role="button" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 16l4-4 3 3 5-6" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18 9h2v2" stroke="rgba(242,180,0,.95)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-      </aside>
+        <div class="side-btn glow-surface" title="Live Sessions" role="button" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7h16v10H4V7Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6"/>
+            <path d="M9 12l3-2v4l-3-2Z" fill="rgba(242,180,0,.95)"/>
+          </svg>
+        </div>
+        <div class="side-btn active glow-surface" title="Academy" role="button" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3l9 5-9 5-9-5 9-5Z" stroke="rgba(255,255,255,.90)" stroke-width="1.6"/>
+            <path d="M3 8v8l9 5 9-5V8" stroke="rgba(242,180,0,.95)" stroke-width="1.6"/>
+          </svg>
+        </div>
+        <div class="side-btn glow-surface" title="Tools" role="button" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 8a4 4 0 100 8 4 4 0 000-8Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6"/>
+            <path d="M19.4 15a7.9 7.9 0 000-6" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M4.6 9a7.9 7.9 0 000 6" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
 
-      <!-- MAIN -->
-      <main class="main">
-        <!-- TOP NAV -->
-        <div class="topbar">
-          <div class="topbar-inner glow-surface">
-            <div class="brand">
-              <div class="brand-name">
-                <strong>PrimeX</strong>
-                <span>Academy</span>
+      <div class="side-spacer"></div>
+
+      <div class="side-badge glow-surface" title="Notifications" role="button" tabindex="0">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M18 8a6 6 0 10-12 0c0 7-3 7-3 7h18s-3 0-3-7Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6"/>
+          <path d="M10 19a2 2 0 004 0" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-inner glow-surface">
+          <div class="brand">
+            <div class="brand-badge glow-surface" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M7 17V7h6.2c2.1 0 3.3 1.2 3.3 2.9 0 1.7-1.2 2.9-3.3 2.9H9.3V17H7Z" stroke="rgba(255,255,255,.92)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14.2 17l2.2-3.1L18.6 17M18.6 7l-2.2 3.1L14.2 7" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="brand-name">
+              <strong>PrimeX</strong>
+              <span>Academy</span>
+            </div>
+          </div>
+
+          <nav class="nav" aria-label="Primary">
+            <a href="#" class="item-link">Trade</a>
+            <a href="#" class="item-link">Live Sessions</a>
+
+            <div class="item">
+              <button class="ddBtn" data-dd="ddAcademy" type="button">
+                Academy <span class="caret">▾</span>
+              </button>
+              <div class="dd glow-surface" id="ddAcademy">
+                <a href="#">Browse</a>
+                <a href="#">My Library</a>
+                <a href="#">Certificates</a>
               </div>
             </div>
 
-            <nav class="nav" aria-label="Primary">
-              <a href="#" class="item-link">Trade</a>
-              <a href="#" class="item-link">Live Sessions</a>
-
-              <div class="item">
-                <button class="ddBtn" data-dd="ddAcademy">
-                  Academy <span class="caret">▾</span>
-                </button>
-                <div class="dd glow-surface" id="ddAcademy">
-                  <a href="#">All Category</a>
-                  <a href="#">My Courses</a>
-                  <a href="#">Certificates</a>
-                </div>
+            <div class="item">
+              <button class="ddBtn" data-dd="ddMarkets" type="button">
+                Markets <span class="caret">▾</span>
+              </button>
+              <div class="dd glow-surface" id="ddMarkets">
+                <a href="#">Forex</a>
+                <a href="#">Indices</a>
+                <a href="#">Crypto</a>
               </div>
+            </div>
 
-              <div class="item">
-                <button class="ddBtn" data-dd="ddCrypto">
-                  Crypto Trading <span class="caret">▾</span>
-                </button>
-                <div class="dd glow-surface" id="ddCrypto">
-                  <a href="#">Basics</a>
-                  <a href="#">Strategies</a>
-                  <a href="#">Risk</a>
-                </div>
+            <div class="item">
+              <button class="ddBtn" data-dd="ddTools" type="button">
+                Smart Tools <span class="caret">▾</span>
+              </button>
+              <div class="dd glow-surface" id="ddTools">
+                <a href="#">Scanner</a>
+                <a href="#">Signals</a>
+                <a href="#">Journal</a>
               </div>
+            </div>
+          </nav>
 
-              <div class="item">
-                <button class="ddBtn" data-dd="ddTools">
-                  Smart Tools <span class="caret">▾</span>
-                </button>
-                <div class="dd glow-surface" id="ddTools">
-                  <a href="#">Scanner</a>
-                  <a href="#">Signals</a>
-                  <a href="#">Journal</a>
-                </div>
-              </div>
-            </nav>
-
-            <div class="top-right">
-              <div class="pill glow-surface" id="tzPill">UTC+01:00</div>
-              <div class="pill gold glow-surface" id="mtPill">MT5: 20572465</div>
-              <div class="pill glow-surface" id="langPill">En</div>
-              <div class="avatar glow-surface" title="Account">
-                <img src="https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60" alt="avatar" />
-              </div>
+          <div class="top-right">
+            <div class="pill glow-surface" id="tzPill">UTC+01:00</div>
+            <div class="pill gold glow-surface" id="mtPill">MT5: 20572465</div>
+            <div class="pill glow-surface" id="langPill">En</div>
+            <div class="avatar glow-surface" title="Account">
+              <img src="https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=240&auto=format&fit=crop&q=60" alt="avatar" />
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- CONTENT -->
-        <section class="panel glow-surface">
-          <div class="panel-inner glow-surface">
-            <div class="section-title">
-              <div>
-                <h2>All Category</h2>
-                <div class="hint">Browse categories and courses like the screenshot layout</div>
-              </div>
+      <section class="panel glow-surface">
+        <div class="panel-inner glow-surface">
+          <div class="section-title">
+            <div>
+              <h2>All Category</h2>
+              <div class="hint">Browse categories and courses</div>
+            </div>
+          </div>
+
+          <div class="cat-row" id="catRow"></div>
+
+          <div class="tools-row glow-surface">
+            <div class="tabs" id="levelTabs">
+              <button class="tab active" data-level="All" type="button">All</button>
+              <button class="tab" data-level="Beginner" type="button">Beginner</button>
+              <button class="tab" data-level="Advanced" type="button">Advanced</button>
+              <button class="tab" data-level="Expert" type="button">Expert</button>
             </div>
 
-            <!-- CATEGORY ROW -->
-            <div class="cat-row" id="catRow">
-              <!-- filled by JS -->
-            </div>
-
-            <!-- TABS + SEARCH -->
-            <div class="tools-row glow-surface">
-              <div class="tabs" id="levelTabs">
-                <button class="tab active" data-level="All">All</button>
-                <button class="tab" data-level="Beginner">Beginner</button>
-                <button class="tab" data-level="Advanced">Advanced</button>
-                <button class="tab" data-level="Expert">Expert</button>
+            <div class="search-wrap">
+              <div class="search glow-surface">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6"/>
+                  <path d="M16.2 16.2 21 21" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+                <input id="searchInput" type="text" placeholder="Search courses..." autocomplete="off" />
               </div>
 
-              <div class="search-wrap">
-                <div class="search glow-surface">
-                  <span style="opacity:.8">🔎</span>
-                  <input id="searchInput" type="text" placeholder="Search courses..." />
-                </div>
-
-                <div class="select glow-surface" id="langSelect" role="button" tabindex="0">
+              <div class="lang-dd">
+                <div class="select glow-surface" id="langSelect" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
                   All Language <span style="opacity:.85">▾</span>
                 </div>
-
-                <div class="select glow-surface" id="filterIcon" title="Filters">
-                  ☰
+                <div class="lang-menu glow-surface" id="langMenu" role="menu" aria-label="Language">
+                  <button type="button" data-lang="All" class="active">All Language</button>
+                  <button type="button" data-lang="English">English</button>
+                  <button type="button" data-lang="Español">Español</button>
                 </div>
               </div>
+
+              <div class="select glow-surface" id="filterIcon" title="Filters" role="button" tabindex="0" aria-label="Filters">
+                <span style="font-weight:1000;letter-spacing:.2px">☰</span>
+              </div>
             </div>
-
-            <!-- COURSES GRID -->
-            <div class="grid" id="courseGrid"></div>
           </div>
-        </section>
-      </main>
-    </div>
 
-    <script>
-      // ===== Glow helpers =====
+          <div class="grid" id="courseGrid"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
       function bindGlow(el) {
         if (!el) return;
         el.addEventListener("mousemove", (e) => {
@@ -826,7 +978,6 @@
         document.querySelectorAll(".glow-surface").forEach(bindGlow);
       }
 
-      // ===== Dropdowns =====
       const ddButtons = document.querySelectorAll(".ddBtn");
       ddButtons.forEach((btn) => {
         btn.addEventListener("click", (e) => {
@@ -836,58 +987,109 @@
           document.querySelectorAll(".dd").forEach((d) => {
             if (d.id !== id) d.classList.remove("open");
           });
-          document.getElementById(id)?.classList.toggle("open");
+          const target = document.getElementById(id);
+          if (target) target.classList.toggle("open");
         });
       });
-      document.addEventListener("click", () => {
+
+      const langSelect = document.getElementById("langSelect");
+      const langMenu = document.getElementById("langMenu");
+
+      function closeAllMenus() {
         document.querySelectorAll(".dd").forEach((d) => d.classList.remove("open"));
+        langMenu.classList.remove("open");
+        langSelect.setAttribute("aria-expanded", "false");
+      }
+
+      document.addEventListener("click", () => closeAllMenus());
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeAllMenus();
       });
 
-      // ===== Data (PrimeX) =====
+      langSelect.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        document.querySelectorAll(".dd").forEach((d) => d.classList.remove("open"));
+        const isOpen = langMenu.classList.toggle("open");
+        langSelect.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+
       const categories = [
-        { key: "All", name: "All", count: 105, img: "https://images.unsplash.com/photo-1642790106117-5cad6367c7d1?w=400&auto=format&fit=crop&q=60" },
-        { key: "PrimeX", name: "PrimeX", count: 6, img: "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=400&auto=format&fit=crop&q=60" },
-        { key: "Educator", name: "Educator Series", count: 15, img: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=400&auto=format&fit=crop&q=60" },
-        { key: "Master", name: "Master Trading", count: 66, img: "https://images.unsplash.com/photo-1627133805103-ce2dcf3b1c65?w=400&auto=format&fit=crop&q=60" },
-        { key: "Crypto", name: "Crypto", count: 18, img: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=400&auto=format&fit=crop&q=60" },
+        {
+          key: "All",
+          name: "All",
+          count: 105,
+          img: "https://images.unsplash.com/photo-1642790106117-5cad6367c7d1?w=1200&auto=format&fit=crop&q=60",
+          icon: "layers"
+        },
+        {
+          key: "PrimeX",
+          name: "PrimeX",
+          count: 8,
+          img: "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=1200&auto=format&fit=crop&q=60",
+          icon: "logo"
+        },
+        {
+          key: "Series",
+          name: "Educator Series",
+          count: 16,
+          img: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=1200&auto=format&fit=crop&q=60",
+          icon: "cap"
+        },
+        {
+          key: "Master",
+          name: "Master Trading",
+          count: 66,
+          img: "https://images.unsplash.com/photo-1627133805103-ce2dcf3b1c65?w=1200&auto=format&fit=crop&q=60",
+          icon: "bars"
+        },
+        {
+          key: "Crypto",
+          name: "Crypto",
+          count: 18,
+          img: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=1200&auto=format&fit=crop&q=60",
+          icon: "coin"
+        },
       ];
 
       const courses = [
         {
-          id: "c1",
+          id: "p1",
           level: "Beginner",
           category: "PrimeX",
-          title: "Learn with Arabella",
-          author: "Arabella Angeles",
-          lang: "Español",
+          title: "Foundations: Setup & Basics",
+          author: "PrimeX Academy",
+          lang: "English",
           createdAt: "07/09/2025",
           users: 1925,
           lessons: 5,
           quizzes: 0,
           progress: 0,
-          cover: "https://images.unsplash.com/photo-1520975958225-476b94b341b4?w=900&auto=format&fit=crop&q=60",
-          avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&auto=format&fit=crop&q=60",
+          cover: "https://images.unsplash.com/photo-1520975958225-476b94b341b4?w=1400&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=240&auto=format&fit=crop&q=60",
+          fav: false
         },
         {
-          id: "c2",
+          id: "p2",
           level: "Beginner",
-          category: "Educator",
-          title: "Learn with Aabid",
-          author: "Aabid Mitha",
+          category: "Series",
+          title: "Execution: Reading Price Action",
+          author: "PrimeX Academy",
           lang: "Español",
           createdAt: "07/09/2025",
           users: 298,
           lessons: 5,
           quizzes: 0,
           progress: 0,
-          cover: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=900&auto=format&fit=crop&q=60",
-          avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=60",
+          cover: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1400&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=240&auto=format&fit=crop&q=60",
+          fav: false
         },
         {
-          id: "c3",
+          id: "p3",
           level: "Beginner",
           category: "PrimeX",
-          title: "World of Trading Beginner",
+          title: "World of Trading: Beginner Track",
           author: "PrimeX Academy",
           lang: "English",
           createdAt: "23/07/2025",
@@ -895,14 +1097,15 @@
           lessons: 4,
           quizzes: 0,
           progress: 0,
-          cover: "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=900&auto=format&fit=crop&q=60",
-          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+          cover: "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=1400&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=240&auto=format&fit=crop&q=60",
+          fav: false
         },
         {
-          id: "c4",
+          id: "p4",
           level: "Advanced",
           category: "PrimeX",
-          title: "World of Trading Advanced",
+          title: "World of Trading: Advanced Track",
           author: "PrimeX Academy",
           lang: "English",
           createdAt: "23/07/2025",
@@ -910,14 +1113,15 @@
           lessons: 5,
           quizzes: 0,
           progress: 0,
-          cover: "https://images.unsplash.com/photo-1627133805103-ce2dcf3b1c65?w=900&auto=format&fit=crop&q=60",
-          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+          cover: "https://images.unsplash.com/photo-1627133805103-ce2dcf3b1c65?w=1400&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=240&auto=format&fit=crop&q=60",
+          fav: false
         },
         {
-          id: "c5",
+          id: "p5",
           level: "Expert",
           category: "Master",
-          title: "Liquidity & Market Structure (Pro)",
+          title: "Liquidity & Structure: Pro Route",
           author: "PrimeX Academy",
           lang: "English",
           createdAt: "01/08/2025",
@@ -925,14 +1129,15 @@
           lessons: 8,
           quizzes: 2,
           progress: 0,
-          cover: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=900&auto=format&fit=crop&q=60",
-          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+          cover: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1400&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=240&auto=format&fit=crop&q=60",
+          fav: false
         },
         {
-          id: "c6",
+          id: "p6",
           level: "Beginner",
           category: "Crypto",
-          title: "Crypto Fundamentals",
+          title: "Crypto Fundamentals: Starter Pack",
           author: "PrimeX Academy",
           lang: "English",
           createdAt: "02/08/2025",
@@ -940,11 +1145,12 @@
           lessons: 6,
           quizzes: 1,
           progress: 0,
-          cover: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=900&auto=format&fit=crop&q=60",
-          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+          cover: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=1400&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=240&auto=format&fit=crop&q=60",
+          fav: false
         },
         {
-          id: "c7",
+          id: "p7",
           level: "Advanced",
           category: "Master",
           title: "Risk & Position Sizing",
@@ -955,14 +1161,15 @@
           lessons: 7,
           quizzes: 1,
           progress: 0,
-          cover: "https://images.unsplash.com/photo-1559523161-0fc0d8f7f6e7?w=900&auto=format&fit=crop&q=60",
-          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+          cover: "https://images.unsplash.com/photo-1559523161-0fc0d8f7f6e7?w=1400&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=240&auto=format&fit=crop&q=60",
+          fav: false
         },
         {
-          id: "c8",
+          id: "p8",
           level: "Beginner",
-          category: "Educator",
-          title: "Chart Reading Basics",
+          category: "Series",
+          title: "Charts: The Clean Read",
           author: "PrimeX Academy",
           lang: "English",
           createdAt: "05/08/2025",
@@ -970,18 +1177,60 @@
           lessons: 5,
           quizzes: 0,
           progress: 0,
-          cover: "https://images.unsplash.com/photo-1642790106117-5cad6367c7d1?w=900&auto=format&fit=crop&q=60",
-          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=200&auto=format&fit=crop&q=60",
+          cover: "https://images.unsplash.com/photo-1642790106117-5cad6367c7d1?w=1400&auto=format&fit=crop&q=60",
+          avatar: "https://images.unsplash.com/photo-1520975693416-35a0f5e59500?w=240&auto=format&fit=crop&q=60",
+          fav: false
         },
       ];
 
-      // ===== State =====
       let activeCategory = "All";
       let activeLevel = "All";
       let searchTerm = "";
       let activeLang = "All";
 
-      // ===== Render: categories row =====
+      function iconSVG(kind) {
+        if (kind === "layers") return `
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3l9 5-9 5-9-5 9-5Z" stroke="rgba(255,255,255,.92)" stroke-width="1.6"/>
+            <path d="M3 13l9 5 9-5" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>`;
+        if (kind === "cap") return `
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3l10 6-10 6L2 9l10-6Z" stroke="rgba(255,255,255,.92)" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>`;
+        if (kind === "bars") return `
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 16V8" stroke="rgba(255,255,255,.92)" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M12 18V6" stroke="rgba(242,180,0,.95)" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M18 15V9" stroke="rgba(255,255,255,.92)" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>`;
+        if (kind === "coin") return `
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 21c4.4 0 8-2 8-4.5S16.4 12 12 12s-8 2-8 4.5S7.6 21 12 21Z" stroke="rgba(255,255,255,.92)" stroke-width="1.6"/>
+            <path d="M20 7.5C20 10 16.4 12 12 12S4 10 4 7.5 7.6 3 12 3s8 2 8 4.5Z" stroke="rgba(242,180,0,.95)" stroke-width="1.6"/>
+            <path d="M4 7.5v9" stroke="rgba(255,255,255,.65)" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M20 7.5v9" stroke="rgba(255,255,255,.65)" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>`;
+        return `
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 17V7h6.2c2.1 0 3.3 1.2 3.3 2.9 0 1.7-1.2 2.9-3.3 2.9H9.3V17H7Z" stroke="rgba(255,255,255,.92)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14.2 17l2.2-3.1L18.6 17M18.6 7l-2.2 3.1L14.2 7" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>`;
+      }
+
+      function statIcon(type) {
+        if (type === "date") return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3v3M17 3v3" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/><path d="M5 7h14" stroke="rgba(255,255,255,.82)" stroke-width="1.6" stroke-linecap="round"/><path d="M6 10h12v10H6V10Z" stroke="rgba(255,255,255,.72)" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
+        if (type === "users") return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M16 11a4 4 0 10-8 0 4 4 0 008 0Z" stroke="rgba(255,255,255,.82)" stroke-width="1.6"/><path d="M4 21a8 8 0 0116 0" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+        if (type === "lessons") return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 4h12v16H6V4Z" stroke="rgba(255,255,255,.78)" stroke-width="1.6"/><path d="M9 8h6M9 12h6M9 16h6" stroke="rgba(242,180,0,.95)" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+        return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9.5 9a2.5 2.5 0 115 0c0 2-2.5 2-2.5 4" stroke="rgba(255,255,255,.82)" stroke-width="1.6" stroke-linecap="round"/><path d="M12 18h.01" stroke="rgba(242,180,0,.95)" stroke-width="2.4" stroke-linecap="round"/></svg>`;
+      }
+
+      function heartSVG(filled) {
+        if (filled) return `<svg viewBox="0 0 24 24" fill="rgba(242,180,0,.95)" aria-hidden="true"><path d="M12 21s-7-4.7-9.2-8.7C1 9.3 2.7 6.6 5.8 6.1c1.7-.3 3.3.4 4.2 1.7.9-1.3 2.5-2 4.2-1.7 3.1.5 4.8 3.2 3 6.2C19 16.3 12 21 12 21Z"/></svg>`;
+        return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-4.7-9.2-8.7C1 9.3 2.7 6.6 5.8 6.1c1.7-.3 3.3.4 4.2 1.7.9-1.3 2.5-2 4.2-1.7 3.1.5 4.8 3.2 3 6.2C19 16.3 12 21 12 21Z" stroke="rgba(255,255,255,.88)" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
+      }
+
       function renderCategories() {
         const wrap = document.getElementById("catRow");
         wrap.innerHTML = "";
@@ -989,13 +1238,15 @@
           const el = document.createElement("div");
           el.className = "cat glow-surface" + (activeCategory === c.key ? " active" : "");
           el.innerHTML = `
-            <div class="cat-thumb"><img src="${c.img}" alt="${c.name}" /></div>
+            <div class="cat-img" style="background-image:url('${c.img}')"></div>
+            <div class="center-icon glow-surface">${iconSVG(c.icon)}</div>
             <div class="cat-meta">
               <strong>${c.name}</strong>
               <span>Total ${c.count} Courses</span>
             </div>
           `;
-          el.addEventListener("click", () => {
+          el.addEventListener("click", (e) => {
+            e.preventDefault();
             activeCategory = c.key;
             renderCategories();
             renderCourses();
@@ -1015,16 +1266,14 @@
           course.title.toLowerCase().includes(q) ||
           course.author.toLowerCase().includes(q) ||
           course.category.toLowerCase().includes(q);
-
         return catOk && levelOk && langOk && searchOk;
       }
 
-      // ===== Render: courses =====
       function renderCourses() {
         const grid = document.getElementById("courseGrid");
         grid.innerHTML = "";
-
         const list = courses.filter(matchCourse);
+
         list.forEach((c) => {
           const card = document.createElement("div");
           card.className = "card glow-surface";
@@ -1032,7 +1281,9 @@
             <div class="hero">
               <img src="${c.cover}" alt="${c.title}" />
               <div class="badge">${c.level}</div>
-              <div class="fav" title="Save">♡</div>
+              <div class="fav glow-surface ${c.fav ? "on" : ""}" data-id="${c.id}" role="button" tabindex="0" aria-label="Favorite">
+                ${heartSVG(c.fav)}
+              </div>
             </div>
 
             <div class="body">
@@ -1043,78 +1294,96 @@
                   <img src="${c.avatar}" alt="${c.author}" />
                   <span>${c.author}</span>
                 </div>
-                <span>•</span>
+                <span class="dot">•</span>
                 <span>${c.lang}</span>
               </div>
 
               <div class="stats">
-                <div class="stat">🗓️ <span>Created At&nbsp; ${c.createdAt}</span></div>
-                <div class="stat">👥 <span>Total user&nbsp; ${c.users}</span></div>
-                <div class="stat">📚 <span>Total lessons&nbsp; ${c.lessons}</span></div>
-                <div class="stat">❓ <span>Total quizzes&nbsp; ${c.quizzes}</span></div>
+                <div class="stat">${statIcon("date")} <span>Created ${c.createdAt}</span></div>
+                <div class="stat">${statIcon("users")} <span>Total users ${c.users}</span></div>
+                <div class="stat">${statIcon("lessons")} <span>Lessons ${c.lessons}</span></div>
+                <div class="stat">${statIcon("quiz")} <span>Quizzes ${c.quizzes}</span></div>
               </div>
 
               <div class="progress">
                 <div class="bar"><div style="width:${c.progress}%;"></div></div>
-                <div class="ptext"><span><b>${c.progress}%</b> Completed</span><span>${c.progress === 0 ? "0" : Math.round(c.lessons * (c.progress/100))}/${c.lessons} Lessons Completed</span></div>
+                <div class="ptext">
+                  <span><b>${c.progress}%</b> Completed</span>
+                  <span>${c.progress === 0 ? "0" : Math.round(c.lessons * (c.progress/100))}/${c.lessons} Lessons</span>
+                </div>
               </div>
             </div>
           `;
-
-          card.addEventListener("click", () => {
-            alert(`Open course: ${c.title}\nCategory: ${c.category}\nLevel: ${c.level}`);
-          });
-
           grid.appendChild(card);
           bindGlow(card);
         });
 
+        grid.querySelectorAll(".fav").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = btn.getAttribute("data-id");
+            const item = courses.find(x => x.id === id);
+            if (!item) return;
+            item.fav = !item.fav;
+            renderCourses();
+          });
+          btn.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              btn.click();
+            }
+          });
+        });
+
         if (list.length === 0) {
           const empty = document.createElement("div");
-          empty.style.opacity = "0.7";
-          empty.style.fontWeight = "900";
-          empty.style.padding = "16px";
+          empty.className = "empty";
           empty.textContent = "No courses match your filters.";
           grid.appendChild(empty);
         }
       }
 
-      // ===== Tabs =====
       document.querySelectorAll("#levelTabs .tab").forEach((t) => {
-        t.addEventListener("click", () => {
+        t.addEventListener("click", (e) => {
+          e.preventDefault();
           activeLevel = t.dataset.level;
           document.querySelectorAll("#levelTabs .tab").forEach((x) => x.classList.toggle("active", x === t));
           renderCourses();
         });
       });
 
-      // ===== Search =====
       document.getElementById("searchInput").addEventListener("input", (e) => {
-        searchTerm = e.target.value;
+        searchTerm = e.target.value || "";
         renderCourses();
       });
 
-      // ===== Language dropdown (simple cycle demo) =====
-      const langs = ["All", "English", "Español"];
-      document.getElementById("langSelect").addEventListener("click", () => {
-        const i = langs.indexOf(activeLang);
-        activeLang = langs[(i + 1) % langs.length];
-        document.getElementById("langSelect").innerHTML = `${activeLang === "All" ? "All Language" : activeLang} <span style="opacity:.85">▾</span>`;
-        renderCourses();
+      langMenu.querySelectorAll("button[data-lang]").forEach((b) => {
+        b.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          activeLang = b.dataset.lang;
+          langMenu.querySelectorAll("button[data-lang]").forEach((x) => x.classList.toggle("active", x === b));
+          langSelect.innerHTML = `${activeLang === "All" ? "All Language" : activeLang} <span style="opacity:.85">▾</span>`;
+          langMenu.classList.remove("open");
+          langSelect.setAttribute("aria-expanded", "false");
+          renderCourses();
+        });
       });
 
-      // ===== Init =====
+      document.getElementById("filterIcon").addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeAllMenus();
+      });
+
       function init() {
         renderCategories();
         renderCourses();
         bindAllGlow();
-
-        // demo clicks
-        document.getElementById("mtPill").addEventListener("click", () => alert("Connect MT5 / Account settings"));
-        document.getElementById("langPill").addEventListener("click", () => alert("Language settings"));
-        document.getElementById("filterIcon").addEventListener("click", () => alert("Open advanced filters panel"));
       }
       init();
-    </script>
-  </body>
+    })();
+  </script>
+</body>
 </html>
