@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PrimeX — Dashboard</title>
+    <title>PrimeX — Live Sessions</title>
 
     <link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png" />
     <meta name="theme-color" content="#0b0b0b" />
@@ -11,22 +11,31 @@
     <style>
       :root {
         --bg: #050505;
+
         --glass: rgba(18, 18, 18, 0.62);
-        --stroke: rgba(255, 255, 255, 0.14);
+        --glass2: rgba(0, 0, 0, 0.28);
+        --stroke: rgba(255, 255, 255, 0.12);
         --muted: rgba(255, 255, 255, 0.74);
         --text: rgba(255, 255, 255, 0.94);
+
         --gold: #f2b400;
         --gold2: #d79b00;
+
         --shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
-        --radius: 24px;
+        --radius: 26px;
 
         --glowGoldA: rgba(242, 180, 0, 0.34);
         --glowGoldB: rgba(242, 180, 0, 0.14);
-        --glowBlueA: rgba(88, 199, 255, 0.18);
+        --glowBlueA: rgba(88, 199, 255, 0.16);
       }
 
-      * { box-sizing: border-box; }
-      html, body { height: 100%; }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
       body {
         margin: 0;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -49,22 +58,21 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: grayscale(1) contrast(0.98) brightness(0.4) blur(2px);
+        filter: grayscale(1) contrast(0.98) brightness(0.38) blur(2px);
         transform: scale(1.035);
       }
       .vignette {
         position: absolute;
         inset: -2px;
-        background:
-          radial-gradient(1200px 700px at 20% 10%, rgba(242, 180, 0, 0.14), transparent 60%),
+        background: radial-gradient(1200px 700px at 15% 10%, rgba(242, 180, 0, 0.14), transparent 60%),
           radial-gradient(900px 600px at 80% 20%, rgba(255, 255, 255, 0.05), transparent 62%),
           radial-gradient(1100px 800px at 50% 80%, rgba(0, 0, 0, 0.6), transparent 55%),
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.78));
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.82));
         z-index: -2;
         pointer-events: none;
       }
 
-      /* ===== Glow surface (same as your original) ===== */
+      /* ===== Glow surface (keep your effect) ===== */
       .glow-surface {
         position: relative;
         overflow: hidden;
@@ -78,13 +86,22 @@
         opacity: 0;
         transition: opacity 0.22s ease;
         z-index: 0;
-        background:
-          radial-gradient(420px 260px at var(--mx, 50%) var(--my, 50%), var(--glowGoldA), transparent 60%),
-          radial-gradient(520px 320px at calc(var(--mx, 50%) + 8%) calc(var(--my, 50%) + 6%), var(--glowGoldB), transparent 62%),
-          radial-gradient(520px 320px at calc(var(--mx, 50%) - 10%) calc(var(--my, 50%) - 8%), var(--glowBlueA), transparent 64%);
+        background: radial-gradient(420px 260px at var(--mx, 50%) var(--my, 50%), var(--glowGoldA), transparent 60%),
+          radial-gradient(
+            520px 320px at calc(var(--mx, 50%) + 8%) calc(var(--my, 50%) + 6%),
+            var(--glowGoldB),
+            transparent 62%
+          ),
+          radial-gradient(
+            520px 320px at calc(var(--mx, 50%) - 10%) calc(var(--my, 50%) - 8%),
+            var(--glowBlueA),
+            transparent 64%
+          );
         mix-blend-mode: screen;
       }
-      .glow-surface:hover::before { opacity: 1; }
+      .glow-surface:hover::before {
+        opacity: 1;
+      }
       .glow-surface::after {
         content: "";
         position: absolute;
@@ -95,183 +112,348 @@
         transition: opacity 0.22s ease;
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 45%, rgba(242, 180, 0, 0.06));
       }
-      .glow-surface:hover::after { opacity: 0.9; }
-      .glow-surface > * { position: relative; z-index: 1; }
+      .glow-surface:hover::after {
+        opacity: 0.9;
+      }
+      .glow-surface > * {
+        position: relative;
+        z-index: 1;
+      }
 
-      /* ===== Layout ===== */
+      /* ===== Top Nav (template-ish) ===== */
+      .topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        padding: 18px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+      .topbar::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
+        pointer-events: none;
+      }
+      .topbar-inner {
+        width: min(1260px, 100%);
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 170px;
+      }
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        border: 1px solid rgba(242, 180, 0, 0.22);
+        background: radial-gradient(20px 18px at 30% 25%, rgba(242, 180, 0, 0.35), transparent 60%),
+          rgba(0, 0, 0, 0.35);
+        display: grid;
+        place-items: center;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      }
+      .brand-mark svg {
+        width: 20px;
+        height: 20px;
+        opacity: 0.95;
+      }
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.05;
+      }
+      .brand-text strong {
+        font-size: 14px;
+        font-weight: 1000;
+        letter-spacing: 0.2px;
+      }
+      .brand-text span {
+        font-size: 11px;
+        font-weight: 850;
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      .navlinks {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .navlinks a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.72);
+        font-weight: 950;
+        font-size: 12px;
+        padding: 9px 12px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+      }
+      .navlinks a:hover {
+        color: rgba(255, 255, 255, 0.92);
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+      .navlinks a.active {
+        color: rgba(255, 255, 255, 0.94);
+        background: rgba(242, 180, 0, 0.1);
+        border-color: rgba(242, 180, 0, 0.22);
+      }
+
+      .right-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: flex-end;
+        min-width: 240px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.35);
+        font-size: 12px;
+        font-weight: 980;
+        color: rgba(255, 255, 255, 0.88);
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
+      }
+      .pill:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(242, 180, 0, 0.2);
+      }
+      .pill.gold {
+        background: linear-gradient(180deg, rgba(242, 180, 0, 0.16), rgba(215, 155, 0, 0.08));
+        border-color: rgba(242, 180, 0, 0.25);
+      }
+
+      .avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
+        display: grid;
+        place-items: center;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(242, 180, 0, 0.9);
+        box-shadow: 0 0 0 4px rgba(242, 180, 0, 0.14);
+      }
+
+      /* ===== Main layout ===== */
       main {
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 110px 22px 80px;
+        padding: 124px 22px 90px; /* room for topbar */
       }
 
-      /* ===== Dashboard card ===== */
-      .card {
-        width: min(1120px, 100%);
+      /* ===== Big center glass card (template-ish) ===== */
+      .panel {
+        width: min(1200px, 100%);
         border-radius: var(--radius);
-        background: rgba(18, 18, 18, 0.62);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: var(--glass);
+        border: 1px solid var(--stroke);
         box-shadow: 0 18px 55px rgba(0, 0, 0, 0.48);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(9px);
+        -webkit-backdrop-filter: blur(9px);
         padding: 18px;
       }
 
-      .dash-title {
+      .panel-inner {
+        border-radius: calc(var(--radius) - 8px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(0, 0, 0, 0.18);
+        padding: 18px;
+      }
+
+      .panel-head {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        gap: 12px;
+        gap: 14px;
         margin-bottom: 14px;
       }
-      .dash-title h2 {
+      .panel-head h2 {
         margin: 0;
         font-size: 16px;
-        font-weight: 990;
+        font-weight: 1000;
         letter-spacing: 0.2px;
       }
-      .dash-title p {
+      .panel-head p {
         margin: 6px 0 0;
         font-size: 12px;
         font-weight: 850;
-        line-height: 1.45;
-        max-width: 620px;
         color: rgba(255, 255, 255, 0.72);
+        line-height: 1.45;
+        max-width: 720px;
       }
 
-      .acct-pill {
-        display: inline-flex;
+      .filters {
+        display: flex;
         align-items: center;
-        gap: 8px;
-        margin-top: 8px;
-        padding: 7px 10px;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        margin-top: 2px;
+      }
+      .chip {
+        padding: 8px 12px;
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(0, 0, 0, 0.35);
-        font-size: 11px;
+        background: rgba(255, 255, 255, 0.04);
+        font-size: 12px;
         font-weight: 980;
-        color: rgba(255, 255, 255, 0.88);
-      }
-
-      .grid4 {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-      }
-
-      .qa {
-        border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(0, 0, 0, 0.25);
-        padding: 14px;
+        color: rgba(255, 255, 255, 0.86);
         cursor: pointer;
-        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
-        min-height: 92px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        user-select: none;
+        transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
       }
-      .qa:hover {
+      .chip:hover {
         transform: translateY(-1px);
         background: rgba(255, 255, 255, 0.06);
         border-color: rgba(242, 180, 0, 0.2);
       }
-      .qa strong {
-        font-size: 12px;
-        font-weight: 990;
-        letter-spacing: 0.2px;
-        color: rgba(255, 255, 255, 0.96);
+      .chip.active {
+        background: rgba(242, 180, 0, 0.12);
+        border-color: rgba(242, 180, 0, 0.24);
+        color: rgba(255, 255, 255, 0.94);
       }
-      .qa span {
+
+      /* ===== Schedule grid ===== */
+      .schedule {
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.22);
+        padding: 14px;
+      }
+
+      .sched-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .sched-top strong {
+        font-size: 12px;
+        font-weight: 1000;
+        letter-spacing: 0.2px;
+      }
+      .sched-top span {
+        display: block;
+        margin-top: 4px;
         font-size: 11px;
         font-weight: 850;
-        line-height: 1.35;
-        color: rgba(255, 255, 255, 0.72);
+        color: rgba(255, 255, 255, 0.66);
       }
-      .qa .tag {
-        margin-top: 10px;
-        display: inline-flex;
+
+      .week {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+      }
+      .day {
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(0, 0, 0, 0.18);
+        padding: 10px;
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .day h4 {
+        margin: 0;
+        font-size: 11px;
+        font-weight: 1000;
+        letter-spacing: 0.18px;
+        color: rgba(255, 255, 255, 0.82);
+      }
+
+      .session {
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.28);
+        padding: 10px;
+        display: flex;
         align-items: center;
-        gap: 8px;
-        width: fit-content;
-        padding: 7px 10px;
-        border-radius: 999px;
+        justify-content: space-between;
+        gap: 10px;
+        transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
+      }
+      .session:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(242, 180, 0, 0.2);
+      }
+      .session .meta {
+        min-width: 0;
+      }
+      .session .title {
+        font-size: 11px;
+        font-weight: 1000;
+        letter-spacing: 0.18px;
+        color: rgba(255, 255, 255, 0.9);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+      }
+      .session .sub {
+        margin-top: 5px;
+        font-size: 10.5px;
+        font-weight: 850;
+        color: rgba(255, 255, 255, 0.66);
+      }
+      .openbtn {
         border: 1px solid rgba(255, 255, 255, 0.12);
         background: rgba(255, 255, 255, 0.06);
-        font-size: 11px;
-        font-weight: 990;
         color: rgba(255, 255, 255, 0.9);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 11px;
+        font-weight: 1000;
+        cursor: pointer;
+        transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
+        white-space: nowrap;
       }
-      .qa .tag.gold {
+      .openbtn:hover {
+        transform: translateY(-1px);
         background: rgba(242, 180, 0, 0.12);
         border-color: rgba(242, 180, 0, 0.22);
       }
 
-      .modules {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-top: 14px;
-      }
-      .mod {
-        border-radius: 22px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(0, 0, 0, 0.25);
-        padding: 16px;
-        min-height: 150px;
-        position: relative;
-        overflow: hidden;
-        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
-      }
-      .mod:hover {
-        transform: translateY(-1px);
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(242, 180, 0, 0.2);
-      }
-      .mod h3 {
-        margin: 0;
-        font-size: 13px;
-        font-weight: 990;
-        letter-spacing: 0.2px;
-        color: rgba(255, 255, 255, 0.96);
-      }
-      .mod p {
-        margin: 8px 0 0;
-        font-size: 11px;
-        font-weight: 850;
-        line-height: 1.45;
-        color: rgba(255, 255, 255, 0.72);
-      }
-      .mod .pillx {
-        position: absolute;
-        top: 14px;
-        right: 14px;
-        padding: 7px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(0, 0, 0, 0.35);
-        font-size: 11px;
-        font-weight: 990;
-        color: rgba(255, 255, 255, 0.9);
-      }
-
-      .mod.locked { cursor: pointer; }
-      .mod .cta-mini {
-        margin-top: 14px;
-        width: fit-content;
-        padding: 10px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(242, 180, 0, 0.22);
-        background: rgba(242, 180, 0, 0.1);
-        color: rgba(255, 255, 255, 0.92);
-        font-weight: 990;
-        font-size: 11px;
-        cursor: pointer;
-      }
-
-      .upcoming {
+      /* ===== Bottom row: Upcoming preview ===== */
+      .bottom-row {
         margin-top: 12px;
         display: grid;
         grid-template-columns: 1.15fr 0.85fr;
@@ -287,7 +469,6 @@
         justify-content: space-between;
         gap: 12px;
       }
-
       .btn {
         display: inline-flex;
         align-items: center;
@@ -295,7 +476,7 @@
         border: none;
         border-radius: 999px;
         padding: 12px 16px;
-        font-weight: 980;
+        font-weight: 1000;
         cursor: pointer;
         box-shadow: 0 10px 26px rgba(0, 0, 0, 0.42);
       }
@@ -304,7 +485,11 @@
         color: #0b0b0b;
       }
 
-      .up-list { display: flex; flex-direction: column; gap: 10px; }
+      .up-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
       .up-item {
         border-radius: 18px;
         border: 1px solid rgba(255, 255, 255, 0.12);
@@ -318,7 +503,7 @@
       .up-item strong {
         display: block;
         font-size: 12px;
-        font-weight: 990;
+        font-weight: 1000;
         letter-spacing: 0.2px;
         max-width: 420px;
         white-space: nowrap;
@@ -338,18 +523,40 @@
         border: 1px solid rgba(255, 255, 255, 0.12);
         background: rgba(255, 255, 255, 0.06);
         font-size: 11px;
-        font-weight: 990;
+        font-weight: 1000;
         color: rgba(255, 255, 255, 0.9);
         white-space: nowrap;
       }
 
-      @media (max-width: 980px) {
-        .grid4 { grid-template-columns: 1fr 1fr; }
-        .modules { grid-template-columns: 1fr; }
-        .upcoming { grid-template-columns: 1fr; }
+      @media (max-width: 1080px) {
+        .week {
+          grid-template-columns: repeat(3, 1fr);
+        }
       }
-      @media (max-width: 520px) {
-        .grid4 { grid-template-columns: 1fr; }
+      @media (max-width: 860px) {
+        .topbar {
+          padding: 14px 14px;
+        }
+        .right-actions {
+          min-width: unset;
+        }
+        .navlinks {
+          display: none; /* keep it clean on mobile like many templates */
+        }
+        .bottom-row {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 620px) {
+        main {
+          padding: 110px 14px 70px;
+        }
+        .week {
+          grid-template-columns: 1fr;
+        }
+        .session .title {
+          max-width: 62vw;
+        }
       }
     </style>
   </head>
@@ -362,94 +569,105 @@
       <div class="vignette"></div>
     </div>
 
-    <main>
-      <div class="card glow-surface" id="dashboardCard">
-        <div class="dash-title">
-          <div>
-            <h2>Dashboard</h2>
-            <p>Quick access to sessions, signals, and your modules. Everything is built for clarity — no marketing.</p>
+    <!-- Top navigation -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <div class="brand-mark glow-surface" aria-hidden="true">
+            <!-- simple PX glyph -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M7 17V7h6.2c2.1 0 3.3 1.2 3.3 2.9 0 1.7-1.2 2.9-3.3 2.9H9.3V17H7Zm2.3-6.2h3.6c1 0 1.6-.5 1.6-1.3s-.6-1.3-1.6-1.3H9.3v2.6Z"
+                stroke="rgba(255,255,255,.92)"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M14.2 17l2.2-3.1L18.6 17M18.6 7l-2.2 3.1L14.2 7"
+                stroke="rgba(242,180,0,.95)"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
           </div>
-
-          <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end">
-            <div class="acct-pill" id="homeSubPill" style="margin: 0">Subscription: Active</div>
-            <div class="acct-pill" id="homeBizPill" style="margin: 0">Business: Not active</div>
-          </div>
-        </div>
-
-        <div class="grid4">
-          <div class="qa glow-surface" id="qaLive" role="button" tabindex="0">
-            <div>
-              <strong>Live Sessions</strong>
-              <span>Open the calendar and join scheduled sessions.</span>
-            </div>
-            <div class="tag">Calendar</div>
-          </div>
-
-          <div class="qa glow-surface" id="qaSub" role="button" tabindex="0">
-            <div>
-              <strong>Subscription</strong>
-              <span>View plan details and your current status.</span>
-            </div>
-            <div class="tag gold" id="qaSubTag">Active</div>
-          </div>
-
-          <div class="qa glow-surface" id="qaBusiness" role="button" tabindex="0">
-            <div>
-              <strong>Business</strong>
-              <span>Unlock your personal business dashboard module.</span>
-            </div>
-            <div class="tag" id="qaBizTag">Locked • $50</div>
-          </div>
-
-          <!-- optional spacer tile (keeps the 4-col layout same as your original when signals is hidden) -->
-          <div class="qa glow-surface" style="opacity:.35; pointer-events:none;">
-            <div>
-              <strong>—</strong>
-              <span>—</span>
-            </div>
-            <div class="tag">—</div>
+          <div class="brand-text">
+            <strong>PrimeX</strong>
+            <span>Beyond limits</span>
           </div>
         </div>
 
-        <div class="modules">
-          <div class="mod glow-surface">
-            <div class="pillx">Active</div>
-            <h3>Trading</h3>
-            <p>Access sessions, frameworks, and structured learning. Built for execution.</p>
-          </div>
+        <nav class="navlinks" aria-label="Primary">
+          <a href="#" id="navLive" class="active">Live Sessions</a>
+          <a href="#" id="navDashboard">Dashboard</a>
+          <a href="#" id="navAcademy">Academy</a>
+          <a href="#" id="navTools">Tools</a>
+          <a href="#" id="navSupport">Support</a>
+        </nav>
 
-          <div class="mod glow-surface">
-            <div class="pillx">Active</div>
-            <h3>Signals</h3>
-            <p>Group signals + market direction. Designed for high signal-to-noise.</p>
+        <div class="right-actions">
+          <div class="pill gold glow-surface" id="topLiveBtn" role="button" tabindex="0">Live Sessions</div>
+          <div class="pill glow-surface" id="topSubBtn" role="button" tabindex="0">Subscription</div>
+          <div class="avatar glow-surface" title="Account">
+            <div class="dot"></div>
           </div>
-
-          <div class="mod locked glow-surface" id="businessModule" role="button" tabindex="0">
-            <div class="pillx" id="bizPill">Locked • $50</div>
-            <h3>Business Dashboard</h3>
-            <p>Unlock advanced tools and personal dashboard features (USDT TRC20 — manual verification).</p>
-            <button class="cta-mini" id="bizUnlockBtn" type="button">Unlock Business</button>
-          </div>
-        </div>
-
-        <div class="upcoming">
-          <div class="up-cta glow-surface">
-            <div>
-              <strong style="font-size: 12px; font-weight: 990">Upcoming sessions</strong>
-              <div style="margin-top: 6px; font-size: 11px; color: rgba(255, 255, 255, 0.72); font-weight: 850; line-height: 1.45">
-                Preview of what’s next. Open Live Sessions for the full schedule.
-              </div>
-            </div>
-            <button class="btn btn-gold" id="viewCalendarBtn" type="button">Open Live Sessions</button>
-          </div>
-
-          <div class="up-list" id="upcomingList"></div>
         </div>
       </div>
+    </header>
+
+    <main>
+      <section class="panel glow-surface" id="livePanel" aria-label="Live Sessions Panel">
+        <div class="panel-inner glow-surface">
+          <div class="panel-head">
+            <div>
+              <h2>Live Sessions</h2>
+              <p>Upcoming sessions (details visible — joining opens your session link). Filter by market to stay focused.</p>
+            </div>
+
+            <div class="filters" id="filterRow" aria-label="Filters">
+              <div class="chip active" data-filter="All">All</div>
+              <div class="chip" data-filter="Forex">Forex</div>
+              <div class="chip" data-filter="Crypto">Crypto</div>
+              <div class="chip" data-filter="Futures">Futures</div>
+              <div class="chip" data-filter="Indices">Indices</div>
+              <div class="chip" data-filter="Gold">Gold</div>
+            </div>
+          </div>
+
+          <div class="schedule glow-surface" id="scheduleWrap">
+            <div class="sched-top">
+              <div>
+                <strong>Schedule</strong>
+                <span>(demo calendar layout)</span>
+              </div>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <div class="pill glow-surface" id="tzPill" style="cursor: default;">UTC+01:00</div>
+              </div>
+            </div>
+
+            <div class="week" id="weekGrid"></div>
+          </div>
+
+          <div class="bottom-row">
+            <div class="up-cta glow-surface">
+              <div>
+                <strong style="font-size: 12px; font-weight: 1000">Upcoming sessions</strong>
+                <div style="margin-top: 6px; font-size: 11px; color: rgba(255, 255, 255, 0.72); font-weight: 850; line-height: 1.45">
+                  Quick preview of what’s next. Use the filter pills to narrow by market.
+                </div>
+              </div>
+              <button class="btn btn-gold" id="openNextBtn" type="button">Open next session</button>
+            </div>
+
+            <div class="up-list" id="upcomingList"></div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <script>
-      // ===== Glow helpers (copied from your original) =====
+      // ===== Glow helpers (keep) =====
       function bindGlow(el) {
         if (!el) return;
         el.addEventListener("mousemove", (e) => {
@@ -468,22 +686,100 @@
         document.querySelectorAll(".glow-surface").forEach(bindGlow);
       }
 
-      // ===== Demo sessions (copied from your original) =====
+      // ===== Demo sessions (PrimeX) =====
+      // day: 0..6 (Sun..Sat)
       const sessions = [
-        { id: "s1", time: "3:15 PM", title: "Execution & Structure", host: "PrimeX", category: "Forex" },
-        { id: "s2", time: "3:00 AM", title: "Risk Management", host: "PrimeX", category: "Indices" },
-        { id: "s3", time: "3:00 AM", title: "Mindset Under Pressure", host: "PrimeX", category: "Crypto" },
-        { id: "s4", time: "8:00 AM", title: "Market Prep Live", host: "PrimeX", category: "Gold" },
-        { id: "s5", time: "4:00 PM", title: "Trading Review", host: "PrimeX", category: "Futures" },
+        { id: "s1", day: 1, time: "3:15 PM", title: "Execution & Structure", host: "PrimeX", category: "Forex" },
+        { id: "s2", day: 2, time: "3:00 AM", title: "Risk Management", host: "PrimeX", category: "Indices" },
+        { id: "s3", day: 3, time: "3:00 AM", title: "Mindset Under Pressure", host: "PrimeX", category: "Crypto" },
+        { id: "s4", day: 5, time: "8:00 AM", title: "Market Prep Live", host: "PrimeX", category: "Gold" },
+        { id: "s5", day: 6, time: "4:00 PM", title: "Trading Review", host: "PrimeX", category: "Futures" },
       ];
 
-      // ===== Upcoming list (copied from your original) =====
-      const upcomingList = document.getElementById("upcomingList");
-      function buildUpcoming() {
-        upcomingList.innerHTML = "";
-        const preview = sessions.slice(0, 3);
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-        preview.forEach((s) => {
+      let activeFilter = "All";
+
+      function filteredSessions() {
+        if (activeFilter === "All") return sessions.slice();
+        return sessions.filter((s) => s.category === activeFilter);
+      }
+
+      function buildWeek() {
+        const grid = document.getElementById("weekGrid");
+        grid.innerHTML = "";
+
+        const list = filteredSessions();
+        for (let d = 0; d < 7; d++) {
+          const col = document.createElement("div");
+          col.className = "day glow-surface";
+
+          const h = document.createElement("h4");
+          h.textContent = days[d];
+          col.appendChild(h);
+
+          const todays = list.filter((s) => s.day === d);
+          if (todays.length === 0) {
+            const empty = document.createElement("div");
+            empty.style.opacity = "0.55";
+            empty.style.fontSize = "11px";
+            empty.style.fontWeight = "850";
+            empty.style.padding = "6px 2px";
+            empty.textContent = "—";
+            col.appendChild(empty);
+          } else {
+            todays.forEach((s) => {
+              const card = document.createElement("div");
+              card.className = "session glow-surface";
+
+              const meta = document.createElement("div");
+              meta.className = "meta";
+
+              const title = document.createElement("div");
+              title.className = "title";
+              title.textContent = s.title;
+
+              const sub = document.createElement("div");
+              sub.className = "sub";
+              sub.textContent = `${s.time} • ${s.category}`;
+
+              meta.appendChild(title);
+              meta.appendChild(sub);
+
+              const btn = document.createElement("button");
+              btn.className = "openbtn";
+              btn.type = "button";
+              btn.textContent = "Open";
+              btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                // Replace this with your real Zoom/join URL logic:
+                alert(`Join: ${s.title}\n${s.time} • ${s.category}\nHost: ${s.host}`);
+              });
+
+              card.addEventListener("click", () => {
+                // clicking card also opens details
+                alert(`Details: ${s.title}\n${s.time} • ${s.category}\nHost: ${s.host}`);
+              });
+
+              card.appendChild(meta);
+              card.appendChild(btn);
+              col.appendChild(card);
+
+              bindGlow(card);
+            });
+          }
+
+          grid.appendChild(col);
+          bindGlow(col);
+        }
+      }
+
+      function buildUpcoming() {
+        const upcomingList = document.getElementById("upcomingList");
+        upcomingList.innerHTML = "";
+
+        const list = filteredSessions().slice(0, 3);
+        list.forEach((s) => {
           const item = document.createElement("div");
           item.className = "up-item glow-surface";
 
@@ -494,7 +790,7 @@
           t.textContent = s.title;
 
           const m = document.createElement("span");
-          m.textContent = `${s.time} • ${s.category} • Host: ${s.host}`;
+          m.textContent = `${days[s.day]} • ${s.time} • ${s.category} • Host: ${s.host}`;
 
           left.appendChild(t);
           left.appendChild(m);
@@ -508,21 +804,46 @@
 
           upcomingList.appendChild(item);
           bindGlow(item);
+
+          item.addEventListener("click", () => {
+            alert(`Details: ${s.title}\n${days[s.day]} • ${s.time} • ${s.category}\nHost: ${s.host}`);
+          });
         });
       }
 
-      // ===== Button wiring (you can replace with real routing) =====
-      document.getElementById("qaLive")?.addEventListener("click", () => alert("Route to: Live Sessions"));
-      document.getElementById("viewCalendarBtn")?.addEventListener("click", () => alert("Route to: Live Sessions"));
-      document.getElementById("qaSub")?.addEventListener("click", () => alert("Route to: Subscription"));
-      document.getElementById("qaBusiness")?.addEventListener("click", () => alert("Open: Business payment flow"));
-      document.getElementById("businessModule")?.addEventListener("click", () => alert("Open: Business payment flow"));
-      document.getElementById("bizUnlockBtn")?.addEventListener("click", (e) => {
-        e.stopPropagation();
-        alert("Open: Business payment flow");
+      function setFilter(next) {
+        activeFilter = next;
+
+        document.querySelectorAll(".chip").forEach((c) => {
+          c.classList.toggle("active", c.dataset.filter === next);
+        });
+
+        buildWeek();
+        buildUpcoming();
+      }
+
+      // ===== Wiring for nav / top buttons (replace with real routes) =====
+      document.getElementById("topLiveBtn")?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+      document.getElementById("topSubBtn")?.addEventListener("click", () => alert("Route to: Subscription"));
+      document.getElementById("navDashboard")?.addEventListener("click", (e) => { e.preventDefault(); alert("Route to: Dashboard"); });
+      document.getElementById("navAcademy")?.addEventListener("click", (e) => { e.preventDefault(); alert("Route to: Academy"); });
+      document.getElementById("navTools")?.addEventListener("click", (e) => { e.preventDefault(); alert("Route to: Tools"); });
+      document.getElementById("navSupport")?.addEventListener("click", (e) => { e.preventDefault(); alert("Route to: Support"); });
+
+      document.getElementById("openNextBtn")?.addEventListener("click", () => {
+        const next = filteredSessions()[0];
+        if (!next) return alert("No sessions in this filter.");
+        alert(`Join next: ${next.title}\n${days[next.day]} • ${next.time} • ${next.category}\nHost: ${next.host}`);
       });
 
+      // ===== Init =====
       function init() {
+        // filter pills
+        document.querySelectorAll(".chip").forEach((c) => {
+          c.addEventListener("click", () => setFilter(c.dataset.filter));
+        });
+
+        buildWeek();
         buildUpcoming();
         bindAllGlow();
       }
