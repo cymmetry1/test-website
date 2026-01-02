@@ -1,139 +1,532 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>PrimeX Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PrimeX — Dashboard</title>
 
-<body class="active-app home-subdued">
+    <link rel="icon" type="image/png" sizes="32x32" href="primex-mark-44-clean.png" />
+    <meta name="theme-color" content="#0b0b0b" />
 
-  <!-- DASHBOARD -->
-  <main>
-    <section class="app-wrap" id="app">
+    <style>
+      :root {
+        --bg: #050505;
+        --glass: rgba(18, 18, 18, 0.62);
+        --stroke: rgba(255, 255, 255, 0.14);
+        --muted: rgba(255, 255, 255, 0.74);
+        --text: rgba(255, 255, 255, 0.94);
+        --gold: #f2b400;
+        --gold2: #d79b00;
+        --shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
+        --radius: 24px;
 
-      <!-- HOME / DASHBOARD -->
-      <div class="section active" id="section-home">
-        <div class="card glow-surface">
+        --glowGoldA: rgba(242, 180, 0, 0.34);
+        --glowGoldB: rgba(242, 180, 0, 0.14);
+        --glowBlueA: rgba(88, 199, 255, 0.18);
+      }
 
-          <div class="dash-title">
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      /* ===== Background video ===== */
+      .bg-wrap {
+        position: fixed;
+        inset: 0;
+        z-index: -3;
+        background: #000;
+        overflow: hidden;
+      }
+      video#bgVideo {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(1) contrast(0.98) brightness(0.4) blur(2px);
+        transform: scale(1.035);
+      }
+      .vignette {
+        position: absolute;
+        inset: -2px;
+        background:
+          radial-gradient(1200px 700px at 20% 10%, rgba(242, 180, 0, 0.14), transparent 60%),
+          radial-gradient(900px 600px at 80% 20%, rgba(255, 255, 255, 0.05), transparent 62%),
+          radial-gradient(1100px 800px at 50% 80%, rgba(0, 0, 0, 0.6), transparent 55%),
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.78));
+        z-index: -2;
+        pointer-events: none;
+      }
+
+      /* ===== Glow surface (same as your original) ===== */
+      .glow-surface {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .glow-surface::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.22s ease;
+        z-index: 0;
+        background:
+          radial-gradient(420px 260px at var(--mx, 50%) var(--my, 50%), var(--glowGoldA), transparent 60%),
+          radial-gradient(520px 320px at calc(var(--mx, 50%) + 8%) calc(var(--my, 50%) + 6%), var(--glowGoldB), transparent 62%),
+          radial-gradient(520px 320px at calc(var(--mx, 50%) - 10%) calc(var(--my, 50%) - 8%), var(--glowBlueA), transparent 64%);
+        mix-blend-mode: screen;
+      }
+      .glow-surface:hover::before { opacity: 1; }
+      .glow-surface::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0;
+        transition: opacity 0.22s ease;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 45%, rgba(242, 180, 0, 0.06));
+      }
+      .glow-surface:hover::after { opacity: 0.9; }
+      .glow-surface > * { position: relative; z-index: 1; }
+
+      /* ===== Layout ===== */
+      main {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 110px 22px 80px;
+      }
+
+      /* ===== Dashboard card ===== */
+      .card {
+        width: min(1120px, 100%);
+        border-radius: var(--radius);
+        background: rgba(18, 18, 18, 0.62);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.48);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 18px;
+      }
+
+      .dash-title {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .dash-title h2 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 990;
+        letter-spacing: 0.2px;
+      }
+      .dash-title p {
+        margin: 6px 0 0;
+        font-size: 12px;
+        font-weight: 850;
+        line-height: 1.45;
+        max-width: 620px;
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .acct-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.35);
+        font-size: 11px;
+        font-weight: 980;
+        color: rgba(255, 255, 255, 0.88);
+      }
+
+      .grid4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      .qa {
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.25);
+        padding: 14px;
+        cursor: pointer;
+        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+        min-height: 92px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .qa:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(242, 180, 0, 0.2);
+      }
+      .qa strong {
+        font-size: 12px;
+        font-weight: 990;
+        letter-spacing: 0.2px;
+        color: rgba(255, 255, 255, 0.96);
+      }
+      .qa span {
+        font-size: 11px;
+        font-weight: 850;
+        line-height: 1.35;
+        color: rgba(255, 255, 255, 0.72);
+      }
+      .qa .tag {
+        margin-top: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
+        font-size: 11px;
+        font-weight: 990;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .qa .tag.gold {
+        background: rgba(242, 180, 0, 0.12);
+        border-color: rgba(242, 180, 0, 0.22);
+      }
+
+      .modules {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 14px;
+      }
+      .mod {
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.25);
+        padding: 16px;
+        min-height: 150px;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+      }
+      .mod:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(242, 180, 0, 0.2);
+      }
+      .mod h3 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 990;
+        letter-spacing: 0.2px;
+        color: rgba(255, 255, 255, 0.96);
+      }
+      .mod p {
+        margin: 8px 0 0;
+        font-size: 11px;
+        font-weight: 850;
+        line-height: 1.45;
+        color: rgba(255, 255, 255, 0.72);
+      }
+      .mod .pillx {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.35);
+        font-size: 11px;
+        font-weight: 990;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .mod.locked { cursor: pointer; }
+      .mod .cta-mini {
+        margin-top: 14px;
+        width: fit-content;
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(242, 180, 0, 0.22);
+        background: rgba(242, 180, 0, 0.1);
+        color: rgba(255, 255, 255, 0.92);
+        font-weight: 990;
+        font-size: 11px;
+        cursor: pointer;
+      }
+
+      .upcoming {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 12px;
+      }
+      .up-cta {
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.25);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 999px;
+        padding: 12px 16px;
+        font-weight: 980;
+        cursor: pointer;
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.42);
+      }
+      .btn-gold {
+        background: linear-gradient(180deg, var(--gold), var(--gold2));
+        color: #0b0b0b;
+      }
+
+      .up-list { display: flex; flex-direction: column; gap: 10px; }
+      .up-item {
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.25);
+        padding: 12px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .up-item strong {
+        display: block;
+        font-size: 12px;
+        font-weight: 990;
+        letter-spacing: 0.2px;
+        max-width: 420px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .up-item span {
+        display: block;
+        margin-top: 6px;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 850;
+      }
+      .up-chip {
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
+        font-size: 11px;
+        font-weight: 990;
+        color: rgba(255, 255, 255, 0.9);
+        white-space: nowrap;
+      }
+
+      @media (max-width: 980px) {
+        .grid4 { grid-template-columns: 1fr 1fr; }
+        .modules { grid-template-columns: 1fr; }
+        .upcoming { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 520px) {
+        .grid4 { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="bg-wrap">
+      <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+        <source src="montage.mp4" type="video/mp4" />
+      </video>
+      <div class="vignette"></div>
+    </div>
+
+    <main>
+      <div class="card glow-surface" id="dashboardCard">
+        <div class="dash-title">
+          <div>
+            <h2>Dashboard</h2>
+            <p>Quick access to sessions, signals, and your modules. Everything is built for clarity — no marketing.</p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end">
+            <div class="acct-pill" id="homeSubPill" style="margin: 0">Subscription: Active</div>
+            <div class="acct-pill" id="homeBizPill" style="margin: 0">Business: Not active</div>
+          </div>
+        </div>
+
+        <div class="grid4">
+          <div class="qa glow-surface" id="qaLive" role="button" tabindex="0">
             <div>
-              <h2>Dashboard</h2>
-              <p>
-                Quick access to sessions, signals, and your modules.
-                Everything is built for clarity — no marketing.
-              </p>
+              <strong>Live Sessions</strong>
+              <span>Open the calendar and join scheduled sessions.</span>
             </div>
-
-            <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-end">
-              <div class="acct-pill">Subscription: Active</div>
-              <div class="acct-pill">Business: Not active</div>
-            </div>
+            <div class="tag">Calendar</div>
           </div>
 
-          <!-- QUICK ACTIONS -->
-          <div class="grid4">
-            <div class="qa glow-surface">
-              <div>
-                <strong>Live Sessions</strong>
-                <span>Open the calendar and join scheduled sessions.</span>
-              </div>
-              <div class="tag">Calendar</div>
+          <div class="qa glow-surface" id="qaSub" role="button" tabindex="0">
+            <div>
+              <strong>Subscription</strong>
+              <span>View plan details and your current status.</span>
             </div>
-
-            <div class="qa glow-surface">
-              <div>
-                <strong>Subscription</strong>
-                <span>View plan details and your current status.</span>
-              </div>
-              <div class="tag gold">Active</div>
-            </div>
-
-            <div class="qa glow-surface">
-              <div>
-                <strong>Business</strong>
-                <span>Unlock your personal business dashboard module.</span>
-              </div>
-              <div class="tag">Locked • $50</div>
-            </div>
+            <div class="tag gold" id="qaSubTag">Active</div>
           </div>
 
-          <!-- MODULES -->
-          <div class="modules" style="margin-top:14px">
-            <div class="mod glow-surface">
-              <div class="pillx">Active</div>
-              <h3>Trading</h3>
-              <p>
-                Access sessions, frameworks, and structured learning.
-                Built for execution.
-              </p>
+          <div class="qa glow-surface" id="qaBusiness" role="button" tabindex="0">
+            <div>
+              <strong>Business</strong>
+              <span>Unlock your personal business dashboard module.</span>
             </div>
-
-            <div class="mod glow-surface">
-              <div class="pillx">Active</div>
-              <h3>Signals</h3>
-              <p>
-                Group signals + market direction.
-                Designed for high signal-to-noise.
-              </p>
-            </div>
-
-            <div class="mod locked glow-surface">
-              <div class="pillx">Locked • $50</div>
-              <h3>Business Dashboard</h3>
-              <p>
-                Unlock advanced tools and personal dashboard features
-                (USDT TRC20 — manual verification).
-              </p>
-              <button class="cta-mini">Unlock Business</button>
-            </div>
+            <div class="tag" id="qaBizTag">Locked • $50</div>
           </div>
 
-          <!-- UPCOMING -->
-          <div class="upcoming">
-            <div class="up-cta glow-surface">
-              <div>
-                <strong>Upcoming sessions</strong>
-                <div class="sub">
-                  Preview of what’s next.
-                  Open Live Sessions for the full schedule.
-                </div>
-              </div>
-              <button class="btn btn-gold">Open Live Sessions</button>
+          <!-- optional spacer tile (keeps the 4-col layout same as your original when signals is hidden) -->
+          <div class="qa glow-surface" style="opacity:.35; pointer-events:none;">
+            <div>
+              <strong>—</strong>
+              <span>—</span>
             </div>
+            <div class="tag">—</div>
+          </div>
+        </div>
 
-            <div class="up-list">
-              <div class="up-item glow-surface">
-                <div>
-                  <strong>Execution & Structure</strong>
-                  <span>3:15 PM • Forex • Host: PrimeX</span>
-                </div>
-                <div class="up-chip">Forex</div>
-              </div>
-
-              <div class="up-item glow-surface">
-                <div>
-                  <strong>Risk Management</strong>
-                  <span>3:00 AM • Indices • Host: PrimeX</span>
-                </div>
-                <div class="up-chip">Indices</div>
-              </div>
-
-              <div class="up-item glow-surface">
-                <div>
-                  <strong>Mindset Under Pressure</strong>
-                  <span>3:00 AM • Crypto • Host: PrimeX</span>
-                </div>
-                <div class="up-chip">Crypto</div>
-              </div>
-            </div>
+        <div class="modules">
+          <div class="mod glow-surface">
+            <div class="pillx">Active</div>
+            <h3>Trading</h3>
+            <p>Access sessions, frameworks, and structured learning. Built for execution.</p>
           </div>
 
+          <div class="mod glow-surface">
+            <div class="pillx">Active</div>
+            <h3>Signals</h3>
+            <p>Group signals + market direction. Designed for high signal-to-noise.</p>
+          </div>
+
+          <div class="mod locked glow-surface" id="businessModule" role="button" tabindex="0">
+            <div class="pillx" id="bizPill">Locked • $50</div>
+            <h3>Business Dashboard</h3>
+            <p>Unlock advanced tools and personal dashboard features (USDT TRC20 — manual verification).</p>
+            <button class="cta-mini" id="bizUnlockBtn" type="button">Unlock Business</button>
+          </div>
+        </div>
+
+        <div class="upcoming">
+          <div class="up-cta glow-surface">
+            <div>
+              <strong style="font-size: 12px; font-weight: 990">Upcoming sessions</strong>
+              <div style="margin-top: 6px; font-size: 11px; color: rgba(255, 255, 255, 0.72); font-weight: 850; line-height: 1.45">
+                Preview of what’s next. Open Live Sessions for the full schedule.
+              </div>
+            </div>
+            <button class="btn btn-gold" id="viewCalendarBtn" type="button">Open Live Sessions</button>
+          </div>
+
+          <div class="up-list" id="upcomingList"></div>
         </div>
       </div>
+    </main>
 
-    </section>
-  </main>
+    <script>
+      // ===== Glow helpers (copied from your original) =====
+      function bindGlow(el) {
+        if (!el) return;
+        el.addEventListener("mousemove", (e) => {
+          const r = el.getBoundingClientRect();
+          const x = ((e.clientX - r.left) / r.width) * 100;
+          const y = ((e.clientY - r.top) / r.height) * 100;
+          el.style.setProperty("--mx", x.toFixed(2) + "%");
+          el.style.setProperty("--my", y.toFixed(2) + "%");
+        });
+        el.addEventListener("mouseleave", () => {
+          el.style.removeProperty("--mx");
+          el.style.removeProperty("--my");
+        });
+      }
+      function bindAllGlow() {
+        document.querySelectorAll(".glow-surface").forEach(bindGlow);
+      }
 
-</body>
+      // ===== Demo sessions (copied from your original) =====
+      const sessions = [
+        { id: "s1", time: "3:15 PM", title: "Execution & Structure", host: "PrimeX", category: "Forex" },
+        { id: "s2", time: "3:00 AM", title: "Risk Management", host: "PrimeX", category: "Indices" },
+        { id: "s3", time: "3:00 AM", title: "Mindset Under Pressure", host: "PrimeX", category: "Crypto" },
+        { id: "s4", time: "8:00 AM", title: "Market Prep Live", host: "PrimeX", category: "Gold" },
+        { id: "s5", time: "4:00 PM", title: "Trading Review", host: "PrimeX", category: "Futures" },
+      ];
+
+      // ===== Upcoming list (copied from your original) =====
+      const upcomingList = document.getElementById("upcomingList");
+      function buildUpcoming() {
+        upcomingList.innerHTML = "";
+        const preview = sessions.slice(0, 3);
+
+        preview.forEach((s) => {
+          const item = document.createElement("div");
+          item.className = "up-item glow-surface";
+
+          const left = document.createElement("div");
+          left.style.minWidth = "0";
+
+          const t = document.createElement("strong");
+          t.textContent = s.title;
+
+          const m = document.createElement("span");
+          m.textContent = `${s.time} • ${s.category} • Host: ${s.host}`;
+
+          left.appendChild(t);
+          left.appendChild(m);
+
+          const chip = document.createElement("div");
+          chip.className = "up-chip";
+          chip.textContent = s.category;
+
+          item.appendChild(left);
+          item.appendChild(chip);
+
+          upcomingList.appendChild(item);
+          bindGlow(item);
+        });
+      }
+
+      // ===== Button wiring (you can replace with real routing) =====
+      document.getElementById("qaLive")?.addEventListener("click", () => alert("Route to: Live Sessions"));
+      document.getElementById("viewCalendarBtn")?.addEventListener("click", () => alert("Route to: Live Sessions"));
+      document.getElementById("qaSub")?.addEventListener("click", () => alert("Route to: Subscription"));
+      document.getElementById("qaBusiness")?.addEventListener("click", () => alert("Open: Business payment flow"));
+      document.getElementById("businessModule")?.addEventListener("click", () => alert("Open: Business payment flow"));
+      document.getElementById("bizUnlockBtn")?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        alert("Open: Business payment flow");
+      });
+
+      function init() {
+        buildUpcoming();
+        bindAllGlow();
+      }
+      init();
+    </script>
+  </body>
 </html>
